@@ -16,7 +16,7 @@ torch.cuda.empty_cache()
 
 
 model = whisperx.load_model("large-v2", device, compute_type=compute_type)
-audio = whisperx.load_audio("audios/carmen.wav")
+audio = whisperx.load_audio("audios/diablos.wav")
 
 result = model.transcribe(audio, batch_size=batch_size)
 print(result["segments"]) # before alignment
