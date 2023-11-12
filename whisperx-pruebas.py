@@ -15,8 +15,8 @@ gc.collect()
 torch.cuda.empty_cache()
 
 
-model = whisperx.load_model("large-v2", device, compute_type=compute_type)
-audio = whisperx.load_audio("audios/diablos.wav")
+model = whisperx.load_model("large-v3", device, compute_type=compute_type)
+audio = whisperx.load_audio("audios/bdias.wav")
 
 result = model.transcribe(audio, batch_size=batch_size)
 print(result["segments"]) # before alignment
