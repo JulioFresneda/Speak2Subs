@@ -1,0 +1,441 @@
+﻿WEBVTT
+
+00:00:05.920 --> 00:00:08.320
+        Hola, mi nombre es
+    Alejandro Rodríguez Ascaso,
+
+00:00:08.400 --> 00:00:12.720
+ soy profesor del Departamento de 
+Inteligencia Artificial de la UNED.
+
+00:00:12.800 --> 00:00:14.240
+    Este vídeo trata sobre la...
+
+00:00:14.320 --> 00:00:17.680
+    "Accesibilidad de imágenes
+      en textos digitales".
+
+00:00:17.760 --> 00:00:20.680
+        Una imagen es una
+ representación visual y estática
+
+00:00:20.760 --> 00:00:24.360
+          de información
+que se presenta en una superficie.
+
+00:00:24.440 --> 00:00:28.720
+    Esta información puede ser
+figurativa, conceptual, abstracta...
+
+00:00:28.800 --> 00:00:31.480
+      y puede tomar la forma
+    de fotografías, diagramas,
+
+00:00:31.560 --> 00:00:34.560
+ reproducciones de obras de arte...
+
+00:00:34.640 --> 00:00:37.520
+   Las imágenes están presentes
+     en casi cualquier texto.
+
+00:00:37.600 --> 00:00:41.080
+      Se hace raro y aburrido
+    encontrar textos sin ellas.
+
+00:00:41.160 --> 00:00:44.600
+  Se utilizan en libros, apuntes,
+  complementando al texto teórico
+
+00:00:44.680 --> 00:00:48.520
+    y, también, como enunciados
+     de exámenes o ejercicios.
+
+00:00:48.600 --> 00:00:50.120
+      Traigo aquí un ejemplo.
+
+00:00:50.200 --> 00:00:52.640
+        Una representación
+     de nuestro sistema solar:
+
+00:00:52.720 --> 00:00:54.880
+          esa gran bola
+      de fuego que es el Sol
+
+00:00:54.960 --> 00:00:59.320
+  y el resto de cuerpos celestes
+   que orbitan alrededor de él.
+
+00:00:59.400 --> 00:01:02.360
+   Sabemos que hay personas que
+no perciben la información visual.
+
+00:01:02.440 --> 00:01:04.240
+    Por ese motivo, cada imagen
+
+00:01:04.320 --> 00:01:07.640
+         debe acompañarse
+   de un texto que la describa.
+
+00:01:07.720 --> 00:01:09.680
+     ¿Cómo debe ser ese texto?
+
+00:01:09.760 --> 00:01:13.400
+ Debe contener la información que
+con esa imagen deseemos transmitir
+
+00:01:13.480 --> 00:01:16.000
+             a quienes
+    utilicen nuestro documento.
+
+00:01:16.080 --> 00:01:17.680
+            Hay veces
+  en que la imagen la utilizamos
+
+00:01:17.760 --> 00:01:19.960
+ con fines meramente decorativos.
+
+00:01:20.040 --> 00:01:23.240
+           En ese caso,
+   casi es mejor no decir nada.
+
+00:01:23.320 --> 00:01:26.720
+  En otros casos será suficiente
+   con ofrecer el simple texto:
+
+00:01:26.800 --> 00:01:29.600
+"Representación del sistema solar".
+
+00:01:29.680 --> 00:01:32.720
+             En otros,
+ necesitaremos ser más específicos
+
+00:01:32.800 --> 00:01:36.640
+   y escribiremos, por ejemplo,
+que en ella se representan el Sol,
+
+00:01:36.720 --> 00:01:40.320
+los planetas y los planetas enanos,
+      sus tamaños relativos,
+
+00:01:40.400 --> 00:01:44.720
+   el orden de cercanía al Sol, 
+  las diferencias en sus colores...
+
+00:01:44.800 --> 00:01:47.360
+       Si tienes dudas sobre
+  qué texto equivale a tu imagen,
+
+00:01:47.440 --> 00:01:49.760
+te propongo el siguiente ejercicio:
+
+00:01:49.840 --> 00:01:51.200
+   Imagina que por algún motivo
+
+00:01:51.280 --> 00:01:56.080
+   no puedes utilizar esa imagen
+ni ninguna similar en tu documento.
+
+00:01:56.160 --> 00:01:57.840
+         Escribe un texto 
+        que la reemplazaría
+
+00:01:57.920 --> 00:02:01.720
+ y que permitiría a tus lectores 
+tener un conocimiento equivalente.
+
+00:02:01.800 --> 00:02:05.160
+    Ese es el texto alternativo
+        que debes utilizar.
+
+00:02:05.240 --> 00:02:07.120
+La técnica concreta para incluirlo
+
+00:02:07.200 --> 00:02:10.120
+   depende del tipo de documento
+     del que estemos hablando,
+
+00:02:10.200 --> 00:02:11.840
+  si se trata de una página web,
+
+00:02:11.920 --> 00:02:14.960
+un documento que estás escribiendo
+   con tu procesador de textos,
+
+00:02:15.040 --> 00:02:18.600
+         el PDF en el que
+     lo vas a convertir, etc.
+
+00:02:18.680 --> 00:02:21.080
+           En la técnica
+ para incluir el texto alternativo
+
+00:02:21.160 --> 00:02:26.720
+   también influye qué versión 
+  del programa estás utilizando.
+
+00:02:26.800 --> 00:02:29.400
+      Pero, ofrecer un texto
+ alternativo no lo resuelve todo.
+
+00:02:29.480 --> 00:02:31.640
+        Veamos un ejemplo.
+
+00:02:31.720 --> 00:02:33.160
+  Pongamos por caso esta imagen,
+
+00:02:33.240 --> 00:02:35.360
+           una gráfica
+   de evolución de la población
+
+00:02:35.440 --> 00:02:39.400
+      a lo largo de los años
+ que se ofrece en una página web.
+
+00:02:39.480 --> 00:02:40.840
+      También está disponible
+
+00:02:40.920 --> 00:02:45.200
+  la opción de acceder a la misma
+  información mediante una tabla,
+
+00:02:45.280 --> 00:02:49.040
+             es decir,
+  mediante un texto estructurado.
+
+00:02:49.120 --> 00:02:50.800
+           Probablemente
+      esa estrategia es mejor
+
+00:02:50.880 --> 00:02:53.240
+          para un usuario
+       de lector de pantalla
+
+00:02:53.320 --> 00:02:55.000
+           que un texto
+     alternativo a la gráfica,
+
+00:02:55.080 --> 00:02:59.440
+      donde se listen datos
+  y datos sin estructura alguna.
+
+00:02:59.520 --> 00:03:02.360
+         Además, disponer
+de esa información como una tabla,
+
+00:03:02.440 --> 00:03:04.880
+            indica que,
+  probablemente, podré importarla
+
+00:03:04.960 --> 00:03:06.880
+          a un programa
+     de tipo hoja de cálculo,
+
+00:03:06.960 --> 00:03:10.240
+         donde estudiarla
+    más detenida y cómodamente.
+
+00:03:10.320 --> 00:03:13.320
+¡Qué buena es la tecnología cuando
+nos permite ofrecer la información
+
+00:03:13.400 --> 00:03:17.000
+ a cada persona según le convenga!
+
+00:03:17.080 --> 00:03:21.240
+    En general, debemos cuidar
+  la calidad de nuestras imágenes
+
+00:03:21.320 --> 00:03:25.360
+      en nuestros documentos,
+ por estética y por accesibilidad,
+
+00:03:25.440 --> 00:03:29.040
+    para que sea correctamente
+ percibida por nuestros lectores.
+
+00:03:29.120 --> 00:03:30.280
+           Por ejemplo,
+
+00:03:30.360 --> 00:03:33.520
+    quienes ven poco procurarán
+  aumentar el tamaño de la imagen
+
+00:03:33.600 --> 00:03:36.720
+ para percibir bien sus detalles.
+
+00:03:36.800 --> 00:03:38.560
+Tenemos aquí la fórmula matemática
+
+00:03:38.640 --> 00:03:41.440
+          de la solución
+ de la ecuación de segundo grado.
+
+00:03:41.520 --> 00:03:43.560
+           Si la imagen
+      no tiene buena calidad,
+
+00:03:43.640 --> 00:03:47.040
+      al aumentar su tamaño
+aparecerá este efecto de pixelado,
+
+00:03:47.120 --> 00:03:50.760
+       que puede dificultar
+       verla correctamente.
+
+00:03:53.280 --> 00:03:56.240
+     Debo reconocer que este
+ejemplo de la expresión matemática
+
+00:03:56.320 --> 00:03:58.160
+       tiene algo de trampa...
+
+00:03:58.240 --> 00:04:00.240
+Quizá alguien ha reparado en ello.
+
+00:04:00.320 --> 00:04:01.440
+          Efectivamente:
+
+00:04:01.520 --> 00:04:05.560
+   si vuestro documento se basa
+en HTML, deberéis utilizar MathML,
+
+00:04:05.640 --> 00:04:07.640
+      para incluir vuestras 
+     expresiones matemáticas,
+
+00:04:07.720 --> 00:04:09.840
+   nunca imágenes directamente.
+
+00:04:09.920 --> 00:04:11.960
+          Si utilizamos
+     un procesador de textos,
+
+00:04:12.040 --> 00:04:15.360
+     mejor incluir la fórmula
+ mediante el editor de ecuaciones.
+
+00:04:15.440 --> 00:04:20.520
+    Pero esa es otra historia
+  que abordamos en otros vídeos.
+
+00:04:20.600 --> 00:04:21.880
+            Otra cosa.
+
+00:04:21.960 --> 00:04:24.840
+    Existen formatos de imagen
+     denominados vectoriales,
+
+00:04:24.920 --> 00:04:27.880
+       como el formato SVG,
+
+00:04:27.960 --> 00:04:29.840
+          que por mucho
+     que ampliemos su tamaño,
+
+00:04:29.920 --> 00:04:32.560
+ nunca aparece el efecto pixelado.
+
+00:04:32.640 --> 00:04:34.320
+          ¡Buen invento!
+
+00:04:35.040 --> 00:04:37.920
+ Por lo demás, las recomendaciones
+para que una imagen se perciba bien
+
+00:04:38.000 --> 00:04:41.520
+    son similares a las que se
+ofrecen para el texto electrónico:
+
+00:04:41.600 --> 00:04:46.440
+ suficiente tamaño, buen contraste
+ entre la información y el fondo...
+
+00:04:46.520 --> 00:04:47.680
+          Algo a evitar.
+
+00:04:47.760 --> 00:04:50.800
+     Codificar la información
+         mediante color.
+
+00:04:50.880 --> 00:04:53.160
+          Es un recurso
+   que se utiliza habitualmente
+
+00:04:53.240 --> 00:04:54.760
+  para codificar la información,
+
+00:04:54.840 --> 00:04:59.360
+      y que plantea problemas
+de accesibilidad a muchas personas.
+
+00:04:59.440 --> 00:05:03.160
+        Pensad en el plano
+ de transporte de vuestra ciudad,
+
+00:05:03.240 --> 00:05:06.120
+      que encontráis en las
+  estaciones de metro o autobús.
+
+00:05:06.200 --> 00:05:07.680
+       Imaginadlo sin color.
+
+00:05:07.760 --> 00:05:09.640
+        Todo un reto, ¿no?
+
+00:05:09.720 --> 00:05:11.360
+          Voy a escoger
+     otro ejemplo más cercano
+
+00:05:11.440 --> 00:05:13.840
+        a lo que cualquiera
+   de nosotros puede encontrarse
+
+00:05:13.920 --> 00:05:17.600
+            al preparar
+     un informe o un artículo.
+
+00:05:17.680 --> 00:05:19.920
+          En esta gráfica
+     circular de tipo "tarta",
+
+00:05:20.000 --> 00:05:24.480
+ se muestran las ventas realizadas
+por los comerciales de una empresa.
+
+00:05:24.560 --> 00:05:26.040
+           Es probable
+     que planteemos problemas
+
+00:05:26.120 --> 00:05:28.120
+     a algunos de los lectores
+       de nuestro documento
+
+00:05:28.200 --> 00:05:32.680
+si la única forma de conocer a quién
+corresponde una porción de la tarta,
+
+00:05:32.760 --> 00:05:36.240
+      y, por tanto, el número
+de ventas indicadas dentro de ella,
+
+00:05:36.320 --> 00:05:40.240
+      es la tabla de colores
+ que colocamos junto a la gráfica.
+
+00:05:40.320 --> 00:05:42.480
+            En cambio,
+   si en lugar de usar el color,
+
+00:05:42.560 --> 00:05:44.160
+ colocamos el nombre del comercial
+
+00:05:44.240 --> 00:05:46.400
+          junto al sector
+   de ventas que le corresponde,
+
+00:05:46.480 --> 00:05:48.880
+ habremos eliminado ese problema.
+
+00:05:48.960 --> 00:05:54.800
+     ¡Pequeños trucos que nos
+ hacen más fácil la vida a todos!
