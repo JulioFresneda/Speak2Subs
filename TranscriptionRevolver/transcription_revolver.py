@@ -1,4 +1,4 @@
-from .Datasets import dataset_loader
+from .Datasets import media_dataset
 from .ASR import revolver
 from .VAD import vad
 
@@ -7,10 +7,10 @@ def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), s
     rev = revolver.Revolver(ASR)
     to_transcript = []
 
-    if isinstance(dataset, dataset_loader.Dataset):
+    if isinstance(dataset, media_dataset.Dataset):
         to_transcript.append(dataset)
 
-    elif isinstance(dataset, list) and all(isinstance(item, dataset_loader.Dataset) for item in dataset):
+    elif isinstance(dataset, list) and all(isinstance(item, media_dataset.Dataset) for item in dataset):
         to_transcript = dataset
 
     elif isinstance(dataset, tuple) and len(dataset) == 2 and all(isinstance(item, str) for item in dataset):
@@ -27,7 +27,7 @@ def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), s
 
 
     for ds in to_transcript:
-        rev.apply_asr(ds, vad=True, vad_segments=True)
+        rev.apply_asr(ds, original=False, vad=False, vad_segments=True)
 
 
 

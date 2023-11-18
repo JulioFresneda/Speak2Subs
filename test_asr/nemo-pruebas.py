@@ -15,7 +15,7 @@ with open_dict(decoding_cfg):
     decoding_cfg.compute_timestamps = True
 asr_model.change_decoding_strategy(decoding_cfg)
 
-hypotheses = asr_model.transcribe(["tests/diablos.wav"], return_hypotheses=True)
+hypotheses = asr_model.transcribe(["../datasets/mda/VAD/segments/mda_1_VAD_VAD_segment_0.wav"], return_hypotheses=True)
 if type(hypotheses) == tuple and len(hypotheses) == 2:
     hypotheses = hypotheses[0]
 timestamp_dict = hypotheses[0].timestep

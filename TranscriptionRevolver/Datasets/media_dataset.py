@@ -34,12 +34,20 @@ class Dataset:
         self.media = [self.media[i] for i in sorted_indices]
 
     def has_vad(self):
-        i = 0
+        """
+        Checks if any media item in the object has a VAD (Voice Activity Detection) version.
+
+        Returns:
+        - has_vad (bool): Indicates whether any media item has a VAD version.
+        - count (int): Number of media items with VAD versions.
+        """
+        i = 0  # Initialize a counter to track the number of media items with VAD versions
         for m in self.media:
-            if(m.vad_media_path != None):
-                i+=1
-        hasvad = i > 0
-        return hasvad, i
+            if m.vad_media_path is not None:  # Check if the VAD version for a media item exists
+                i += 1  # Increment the counter for each media item with a VAD version
+
+        has_vad = i > 0  # Set has_vad to True if any media item has a VAD version, False otherwise
+        return has_vad, i  # Return a tuple indicating if any VAD exists and the count of VAD versions found
 
     def has_vad_segments(self):
         i = 0

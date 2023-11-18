@@ -32,7 +32,7 @@ def apply_vad(media, max_speech_duration=float('inf'), split=False):
         vad_segments_paths = []
 
         for i, st in enumerate(vad_segments_ts, start=0):
-            segment_path = _modify_path('_VAD_segment_' + str(i), 'segments', vad_path)
+            segment_path = _modify_path('_segment_' + str(i), 'segments', vad_path)
             save_audio(segment_path, collect_chunks(st, wav), sampling_rate=16000)
             vad_segments_paths.append(segment_path)
 
@@ -77,7 +77,7 @@ def _split_audio(file_path, timestamps):
     # Split the audio using timestamps
     for i, (start, end) in enumerate(_ts, start=1):
         segment = audio[start:end]
-        segment.export(f"_VAD_segment_{i}.wav", format="wav")
+        segment.export(f"_segment_{i}.wav", format="wav")
 
 
 
