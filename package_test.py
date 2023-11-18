@@ -10,4 +10,4 @@ all = dsloader.getAll()
 
 print(random)
 
-transcription_revolver.transcript(random, VAD=True)
+transcription_revolver.transcript(random, VAD=True, split=True, max_speech_duration=30)
