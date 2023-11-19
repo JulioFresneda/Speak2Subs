@@ -1,5 +1,5 @@
 from .Datasets import media_dataset
-from .ASR import revolver
+from . import revolver
 from .VAD import vad
 
 def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), split=False):
@@ -24,6 +24,7 @@ def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), s
         for ds in to_transcript:
             for m in ds.media:
                 vad.apply_vad(m, max_speech_duration, split=split)
+                pass
 
 
     for ds in to_transcript:

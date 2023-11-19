@@ -1,21 +1,30 @@
 import wave
 import sys
+import os
 
 from vosk import Model, KaldiRecognizer, SetLogLevel
+
+
 
 # You can set log level to -1 to disable debug messages
 SetLogLevel(0)
 
-wf = wave.open("../datasets/mda/VAD/segments/mda_1_VAD_segment_0.wav", "rb")
+media_path = sys.argv[1]
+
+if(not os.path.exists(media_path)):
+    print("File does not exist")
+    exit(1)
+
+
+print(media_path)
+wf = wave.open(media_path, "rb")
 if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != "NONE":
     print("Audio file must be WAV format mono PCM.")
     sys.exit(1)
 
 model = Model(lang="es")
 
-# You can also init model by name or with a folder path
-# model = Model(model_name="vosk-model-en-us-0.21")
-# model = Model("models/en")
+
 
 rec = KaldiRecognizer(model, wf.getframerate())
 rec.SetWords(True)
@@ -30,5 +39,8 @@ while True:
     else:
         print(rec.PartialResult())
 
-print(rec.FinalResult())
+results = rec.FinalResult()
+print(results)
+
+
 

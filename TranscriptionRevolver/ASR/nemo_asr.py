@@ -23,7 +23,7 @@ def apply_nemo(media_path, model_name="stt_es_quartznet15x5"):
     """
 
     # Load the NeMo ASR model using the specified model name or the default if not provided
-    nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name="stt_es_quartznet15x5")
+    nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name)
 
     # Retrieve the decoding configuration from the NeMo model and customize it
     decoding_cfg = nemo_model.cfg.decoding

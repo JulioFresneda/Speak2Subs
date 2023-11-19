@@ -1,5 +1,4 @@
 from TranscriptionRevolver.Datasets import media_dataset
-from TranscriptionRevolver.ASR import revolver
 from TranscriptionRevolver import transcription_revolver
 
 dsloader = media_dataset.DatasetLoader('./datasets')
