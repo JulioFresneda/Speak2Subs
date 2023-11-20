@@ -109,6 +109,7 @@ class Media:
         self.vad_timestamps = None
 
         self.vad_segments_paths = []
+        self.vad_segments_folder = None
         self.vad_segments_ts = []
 
         self.name = name
@@ -119,6 +120,7 @@ class Media:
 
     def add_vad_segments(self, vad_segments_paths, vad_segments_ts):
         self.vad_segments_paths = vad_segments_paths
+        self.vad_segments_folder = os.path.dirname(vad_segments_paths[0])
         self.vad_segments_ts = vad_segments_ts
 
 
