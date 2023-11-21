@@ -2,6 +2,8 @@ from enum import Enum
 import subprocess  # Importing the subprocess module to execute shell commands
 import os  # Importing the os module for operating system-related functionality
 import docker
+import json
+import ast
 
 class ASRNames(Enum):
     WHISPERX = 'whisperx'
@@ -51,7 +53,7 @@ class Revolver:
             #print(text)
             pass
         elif(asr == ASRNames.VOSK):
-            run_container_with_volume("juliofresneda/tr_vosk_asr:latest", volume_path, media_names, "/vosk/vosk_asr.py")
+            result = run_container_with_volume("juliofresneda/tr_vosk_asr:latest", volume_path, media_names, "/vosk/vosk_asr.py")
 
 
 
@@ -83,16 +85,16 @@ def run_container_with_volume(image_name, volume_path, media_names, script):
     # Run the Docker container with the mounted folder
     container = client.containers.run(
         image_name,
-        command=f'{script} {strings_argument}',  # Pass the folder path to your script
+        command=strings_argument,
         volumes=volumes,
         detach=False
     )
 
-    print(f"Container ID: {container.id}")
+    list_of_dicts_string = container.decode('utf-8') # Use the appropriate encoding
+    list_of_dicts_string = ast.literal_eval(list_of_dicts_string)
 
-    # Get the logs of the container
-    logs = container.logs().decode('utf-8')
-    print(logs)  # Print or process the logs as needed
+
+    return list_of_dicts_string  # Print or process the logs as needed
 
 
 
