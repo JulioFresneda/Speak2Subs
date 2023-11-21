@@ -10,14 +10,12 @@ from vosk import Model, KaldiRecognizer, SetLogLevel
 # You can set log level to -1 to disable debug messages
 SetLogLevel(-1)
 
-media_volume = "/vosk/media"
-media_out_names = sys.argv[1:]
+media_volume = "/media"
 
 complete_result = []
-for media_name in media_out_names:
+for media in os.listdir(media_volume):
 
-    #print(media_name)
-    wf = wave.open(os.path.join(media_volume,media_name), "rb")
+    wf = wave.open(os.path.join(media_volume,media), "rb")
     if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != "NONE":
         print("Audio file must be WAV format mono PCM.")
         sys.exit(1)
@@ -30,20 +28,7 @@ for media_name in media_out_names:
     rec.SetWords(True)
     #rec.SetPartialWords(True)
 
-    """
-    result_list = []
-    while True:
-        data = wf.readframes(4000)
-        if len(data) == 0:
-            break
-        #if rec.AcceptWaveform(data):
-            #result_list.append(rec.Result())
-        #else:
-            #print(rec.PartialResult())
-            #pass
 
-    #print(result_list)
-    """
 
     # Read the entire audio file
     audio_data = wf.readframes(wf.getnframes())
@@ -54,7 +39,7 @@ for media_name in media_out_names:
     # Get the final recognized result
     final_result = rec.FinalResult()
     final_result = json.loads(final_result)
-    final_result['segment_name'] = media_name
+    final_result['segment_name'] = os.path.basename(media)
     complete_result.append(final_result)
 
 sys.stdout.write(str(complete_result))

@@ -4,7 +4,7 @@ from .VAD import vad
 
 def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), split=False):
 
-    rev = revolver.Revolver(ASR)
+    rev = revolver.Revolver(ASR, dataset)
     to_transcript = []
 
     if isinstance(dataset, media_dataset.Dataset):
@@ -27,8 +27,10 @@ def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), s
                 pass
 
 
+
+
     for ds in to_transcript:
-        rev.apply_asr(ds, original=False, vad=False, vad_segments=True)
+        rev.shot(ds)
 
 
 

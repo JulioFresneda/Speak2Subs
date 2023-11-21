@@ -3,12 +3,14 @@ import random
 from moviepy.editor import AudioFileClip
 
 class Dataset:
-    def __init__(self, dir_path, name = None, urls=[]):
+    def __init__(self, dir_path, name, parent_path, urls=[]):
         self.name = name
 
         # Always keep order
         self.media = []
         self.media_names = []
+        self.dir_path = dir_path
+        self.parent_path = parent_path
 
         self._load_paths(dir_path, urls)
         self._order_media()
@@ -123,6 +125,16 @@ class Media:
         self.vad_segments_folder = os.path.dirname(vad_segments_paths[0])
         self.vad_segments_ts = vad_segments_ts
 
+    def get_media_names(self):
+        media_names = {}
+        media_names['original'] = os.path.basename(self.original_media_path)
+        media_names['VAD'] = os.path.basename(self.vad_media_path)
+        media_names['VAD_segments'] = []
+        for m in self.vad_segments_paths:
+            media_names['VAD_segments'].append(os.path.basename(m))
+
+        return media_names
+
 
 
 class DatasetLoader:
@@ -130,7 +142,7 @@ class DatasetLoader:
         self.datasets_path = os.path.abspath(datasets_path)
         self.datasets = {}
         for ds in os.listdir(self.datasets_path):
-            self.datasets[ds] = Dataset(os.path.join(self.datasets_path, ds), ds)
+            self.datasets[ds] = Dataset(os.path.join(self.datasets_path, ds), ds, os.path.abspath(datasets_path))
 
     def get(self, name):
         return self.datasets.copy()[name]

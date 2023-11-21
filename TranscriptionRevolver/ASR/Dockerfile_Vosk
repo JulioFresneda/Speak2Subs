@@ -11,10 +11,12 @@ RUN apt-get update && \
 RUN pip install vosk
 
 # Set the working directory inside the container
-WORKDIR /vosk
+WORKDIR /workdir
 
 # Copy your script (let's assume it's named your_script.py) into the container
-COPY vosk_asr.py /vosk/
+COPY vosk_asr.py /workdir/transcript.py
+COPY keep_alive.py /workdir/keep_alive.py
 
+RUN mkdir -p /media
 
-ENTRYPOINT ["python", "vosk_asr.py"]
+ENTRYPOINT ["python", "keep_alive.py"]

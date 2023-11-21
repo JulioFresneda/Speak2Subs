@@ -1,5 +1,6 @@
 from TranscriptionRevolver.Datasets import media_dataset
 from TranscriptionRevolver import transcription_revolver
+from TranscriptionRevolver import revolver
 
 dsloader = media_dataset.DatasetLoader('./datasets')
 
@@ -9,4 +10,4 @@ all = dsloader.getAll()
 
 print(random)
 
-transcription_revolver.transcript(random, VAD=True, split=True, max_speech_duration=30)
+transcription_revolver.transcript(random, ASR=revolver.ASRNames.VOSK, VAD=True, split=True, max_speech_duration=30)

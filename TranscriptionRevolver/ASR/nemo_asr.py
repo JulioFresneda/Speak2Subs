@@ -1,29 +1,26 @@
 import nemo
 import os
+import sys
 from omegaconf import OmegaConf, open_dict
-
+import logging
 # IMPORTANTE: Necesarias dependendias -dev de Python. Por ejemplo, python3.10-dev
 import nemo.collections.asr as nemo_asr
 
-def list_nemo_models():
-    return nemo_asr.models.EncDecCTCModel.list_available_models()
+logging.getLogger('nemo_logger').setLevel(logging.ERROR)
 
 
-def apply_nemo(media_path, model_name="stt_es_quartznet15x5"):
-    """
-    Apply NeMo ASR model for transcription and extract word-level timestamps.
+media_volume = "/nemo/media"
+#media_out_names = sys.argv[1:]
+media_out_names = ["mda_1_VAD_segment_0.wav", "mda_1_VAD_segment_1.wav"]
 
-    Args:
-    - media_path (str): Path to the audio file for transcription.
-    - model_name (str, optional): Name of the NeMo ASR model to use for transcription.
-                                  Defaults to "stt_es_quartznet15x5".
+complete_result = []
+model_name="stt_es_quartznet15x5"
 
-    Returns:
-    - None: Prints word-level timestamps with their corresponding start and end times.
-    """
+for media_name in media_out_names:
+    media_path = os.path.join(media_volume,media_name)
 
     # Load the NeMo ASR model using the specified model name or the default if not provided
-    nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name)
+    nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name, )
 
     # Retrieve the decoding configuration from the NeMo model and customize it
     decoding_cfg = nemo_model.cfg.decoding
@@ -44,16 +41,9 @@ def apply_nemo(media_path, model_name="stt_es_quartznet15x5"):
     timestamp_dict = hypotheses[0].timestep
     time_stride = 8 * nemo_model.cfg.preprocessor.window_stride
     word_timestamps = timestamp_dict['word']
-    """
-    for stamp in word_timestamps:
-        # Calculate start and end times for each word based on provided offsets
-        start = stamp['start_offset'] * time_stride
-        end = stamp['end_offset'] * time_stride
-        # Retrieve the word label from the transcription stamp
-        word = stamp['char'] if 'char' in stamp else stamp['word']
-        # Print out the word with its corresponding start and end times
-        print(f"Time : {start:0.2f} - {end:0.2f} - {word}")
-        
-    """
 
-    return hypotheses[0].text, timestamp_dict
+    result = {'media_name':media_name, 'text':hypotheses[0].text}
+    result['timestamps'] = timestamp_dict
+    complete_result.append(result)
+
+sys.stdout.write(str(complete_result))
