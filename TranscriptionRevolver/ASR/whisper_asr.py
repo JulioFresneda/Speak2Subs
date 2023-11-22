@@ -1,9 +1,24 @@
 import whisper
+import os
 
-def apply_whisper(media_path, model_name="large-v3"):
+media_volume = "/media"
+model_name = "base"
+complete_result = {}
+for media in sorted(os.listdir(media_volume)):
+
     model = whisper.load_model(model_name)
-    result = model.transcribe(media_path, language='es')
+    result = model.transcribe(media, language='es')
     sentence_ts = []
     for segment in result['segments']:
         sentence_ts.append({'start':segment['start'], 'end':segment['end'], 'text':segment['text']})
-    return result['text'], sentence_ts
+    final_result = {}
+    final_result['text'] = result['text']
+    final_result['timestamps'] = sentence_ts
+
+    complete_result[media] = final_result
+
+# Open a file in write mode ('w')
+with open('/media/result.txt', 'w') as file:
+    # Write a string to the file
+    file.write(str(complete_result))
+    file.close()

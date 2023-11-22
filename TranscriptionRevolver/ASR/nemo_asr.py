@@ -9,18 +9,16 @@ import nemo.collections.asr as nemo_asr
 logging.getLogger('nemo_logger').setLevel(logging.ERROR)
 
 
-media_volume = "/nemo/media"
-#media_out_names = sys.argv[1:]
-media_out_names = ["mda_1_VAD_segment_0.wav", "mda_1_VAD_segment_1.wav"]
+media_volume = "/media"
 
-complete_result = []
+complete_result = {}
 model_name="stt_es_quartznet15x5"
 
-for media_name in media_out_names:
-    media_path = os.path.join(media_volume,media_name)
+for media in sorted(os.listdir(media_volume)):
+    print(media)
 
     # Load the NeMo ASR model using the specified model name or the default if not provided
-    nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name, )
+    nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name)
 
     # Retrieve the decoding configuration from the NeMo model and customize it
     decoding_cfg = nemo_model.cfg.decoding
@@ -31,7 +29,7 @@ for media_name in media_out_names:
         nemo_model.change_decoding_strategy(decoding_cfg)
 
     # Transcribe the provided media file using the NeMo model
-    hypotheses = nemo_model.transcribe([media_path], return_hypotheses=True)
+    hypotheses = nemo_model.transcribe([os.path.join(media_volume,media)], return_hypotheses=True)
 
     # Process the transcription results
     if type(hypotheses) == tuple and len(hypotheses) == 2:
@@ -42,8 +40,13 @@ for media_name in media_out_names:
     time_stride = 8 * nemo_model.cfg.preprocessor.window_stride
     word_timestamps = timestamp_dict['word']
 
-    result = {'media_name':media_name, 'text':hypotheses[0].text}
-    result['timestamps'] = timestamp_dict
-    complete_result.append(result)
+    final_result = {'text':hypotheses[0].text, 'timestamps':word_timestamps}
+    final_result['segment_name'] = media
 
-sys.stdout.write(str(complete_result))
+    complete_result[media] = final_result
+
+# Open a file in write mode ('w')
+with open('/media/result.txt', 'w') as file:
+    # Write a string to the file
+    file.write(str(complete_result))
+    file.close()

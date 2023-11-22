@@ -8,3 +8,8 @@ COPY nemo_asr.py /workdir/transcript.py
 RUN apt-get update
 
 
+COPY keep_alive.py /workdir/keep_alive.py
+
+RUN mkdir -p /media
+
+ENTRYPOINT ["python", "keep_alive.py"]

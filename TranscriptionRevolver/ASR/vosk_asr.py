@@ -5,6 +5,11 @@ import json
 
 from vosk import Model, KaldiRecognizer, SetLogLevel
 
+import logging
+
+# Disable all logging from Vosk
+logging.getLogger('vosk').setLevel(logging.ERROR)
+
 #print("Hello from the vosk ASR image")
 
 # You can set log level to -1 to disable debug messages
@@ -12,9 +17,9 @@ SetLogLevel(-1)
 
 media_volume = "/media"
 
-complete_result = []
-for media in os.listdir(media_volume):
-
+complete_result = {}
+for media in sorted(os.listdir(media_volume)):
+    print(media)
     wf = wave.open(os.path.join(media_volume,media), "rb")
     if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != "NONE":
         print("Audio file must be WAV format mono PCM.")
@@ -40,6 +45,10 @@ for media in os.listdir(media_volume):
     final_result = rec.FinalResult()
     final_result = json.loads(final_result)
     final_result['segment_name'] = os.path.basename(media)
-    complete_result.append(final_result)
+    complete_result[media] = final_result
 
-sys.stdout.write(str(complete_result))
+# Open a file in write mode ('w')
+with open('/media/result.txt', 'w') as file:
+    # Write a string to the file
+    file.write(str(complete_result))
+    file.close()

@@ -37,11 +37,18 @@ class Revolver:
         for asr in self.asr_to_apply:
             for media in dataset.media:
                 self._copy_media_to_container_volume(media, self.host_volume_path)
-                self.container_manager.execute_in_container(asr, media.get_media_names()['VAD_segments'])
+                self.container_manager.execute_in_container(asr)
 
 
 
     def _copy_media_to_container_volume(self, media, host_volume_path):
+        files = os.listdir(host_volume_path)
+
+        # Iterate through the files and remove each one
+        for file_name in files:
+            file_path = os.path.join(host_volume_path, file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
 
         for file in media.vad_segments_paths:
             dest_file = os.path.join(host_volume_path, os.path.basename(file))

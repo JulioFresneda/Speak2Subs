@@ -41,7 +41,7 @@ class ContainerManager:
 
 
 
-    def execute_in_container(self, asr, media_names):
+    def execute_in_container(self, asr):
 
         container = self.containers[asr.value]
 
@@ -54,14 +54,16 @@ class ContainerManager:
         exec_command = f"ls {container_path}"
         exec_result = container.exec_run(exec_command)
 
-        exec_command = ["python", "/workdir/transcript.py"] + media_names
+        exec_command = ["python", "/workdir/transcript.py"]
         exec_result = container.exec_run(exec_command)
 
-        list_of_dicts_string = exec_result.decode('utf-8')  # Use the appropriate encoding
+        with open(os.path.join(self.host_volume_path, "result.txt"), 'r') as file:
+            list_of_dicts_string = file.read()
+
         list_of_dicts_string = ast.literal_eval(list_of_dicts_string)
 
-        exec_command = f"rm -r {container_path}/*"
-        exec_result = container.exec_run(exec_command)
+
+
 
         return list_of_dicts_string  # Print or process the logs as needed
 

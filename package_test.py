@@ -10,4 +10,5 @@ all = dsloader.getAll()
 
 print(random)
 
-transcription_revolver.transcript(random, ASR=revolver.ASRNames.VOSK, VAD=True, split=True, max_speech_duration=30)
+transcription_revolver.transcript(random, ASR=revolver.ASRNames.NEMO, VAD=True, split=True, max_speech_duration=30)
+  # Use the appropriate encoding
