@@ -9,7 +9,7 @@ import nemo.collections.asr as nemo_asr
 logging.getLogger('nemo_logger').setLevel(logging.ERROR)
 
 
-media_volume = "/media"
+media_volume = "/volume/media"
 
 complete_result = {}
 model_name="stt_es_quartznet15x5"
@@ -46,7 +46,7 @@ for media in sorted(os.listdir(media_volume)):
     complete_result[media] = final_result
 
 # Open a file in write mode ('w')
-with open('/media/result.txt', 'w') as file:
+with open('/volume/result.txt', 'w') as file:
     # Write a string to the file
     file.write(str(complete_result))
     file.close()

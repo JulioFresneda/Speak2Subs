@@ -17,6 +17,6 @@ WORKDIR /workdir
 COPY vosk_asr.py /workdir/transcript.py
 COPY keep_alive.py /workdir/keep_alive.py
 
-RUN mkdir -p /media
+RUN mkdir -p /volume
 
 ENTRYPOINT ["python", "keep_alive.py"]

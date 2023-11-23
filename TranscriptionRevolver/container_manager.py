@@ -1,17 +1,19 @@
 import docker
 import ast, os, io, tarfile
 class ContainerManager:
-    def __init__(self, ASR, host_volume_path, container_volume_path = '/media'):
+    def __init__(self, ASR, host_volume_path, image_names, container_volume_path = '/volume'):
         self.client = docker.from_env()
         self.host_volume_path = host_volume_path
         self.container_volume_path = container_volume_path
         self.ASR = ASR
+        self.image_names = image_names
         self._initialize_containers()
 
     def _initialize_containers(self):
         self.containers = {}
+
         for asr in self.ASR:
-            image_name = "juliofresneda/tr_" + asr.value + "_asr:latest"
+            image_name = self.image_names[asr.value]
             container_name = asr.value + "_container"
             self.containers[asr.value] = self._initialize_container(image_name, container_name)
 
@@ -57,8 +59,14 @@ class ContainerManager:
         exec_command = ["python", "/workdir/transcript.py"]
         exec_result = container.exec_run(exec_command)
 
-        with open(os.path.join(self.host_volume_path, "result.txt"), 'r') as file:
+        result_path = os.path.join(self.host_volume_path, "result.txt")
+
+
+        with open(result_path, 'r') as file:
             list_of_dicts_string = file.read()
+
+        if os.path.isfile(result_path):
+            os.remove(result_path)
 
         list_of_dicts_string = ast.literal_eval(list_of_dicts_string)
 

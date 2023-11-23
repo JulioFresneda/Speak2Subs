@@ -15,7 +15,7 @@ logging.getLogger('vosk').setLevel(logging.ERROR)
 # You can set log level to -1 to disable debug messages
 SetLogLevel(-1)
 
-media_volume = "/media"
+media_volume = "/volume/media"
 
 complete_result = {}
 for media in sorted(os.listdir(media_volume)):
@@ -48,7 +48,7 @@ for media in sorted(os.listdir(media_volume)):
     complete_result[media] = final_result
 
 # Open a file in write mode ('w')
-with open('/media/result.txt', 'w') as file:
+with open('/volume/result.txt', 'w') as file:
     # Write a string to the file
     file.write(str(complete_result))
     file.close()

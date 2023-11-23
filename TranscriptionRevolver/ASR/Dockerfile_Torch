@@ -1,17 +1,14 @@
-FROM python:3.10
+FROM pytorch:latest
 LABEL authors="juliofgx"
 
-RUN apt-get update && apt-get install -y ffmpeg
-RUN pip install setuptools-rust
+RUN apt-get update
 
-# Install Vosk and its dependencies
-RUN pip install -U openai-whisper
 
 # Set the working directory inside the container
 WORKDIR /workdir
 
 # Copy your script (let's assume it's named your_script.py) into the container
-COPY whisper_asr.py /workdir/transcript.py
+COPY torch_asr.py /workdir/transcript.py
 COPY keep_alive.py /workdir/keep_alive.py
 
 RUN mkdir -p /volume

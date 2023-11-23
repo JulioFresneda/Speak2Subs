@@ -1,6 +1,7 @@
 from TranscriptionRevolver.Datasets import media_dataset
 from TranscriptionRevolver import transcription_revolver
 from TranscriptionRevolver import revolver
+import json
 
 dsloader = media_dataset.DatasetLoader('./datasets')
 
@@ -10,5 +11,8 @@ all = dsloader.getAll()
 
 print(random)
 
-transcription_revolver.transcript(random, ASR=revolver.ASRNames.NEMO, VAD=True, split=True, max_speech_duration=30)
+with open('./configuration.json', 'r') as file:
+    config = json.load(file)
+
+transcription_revolver.transcript(random, config, ASR=revolver.ASRNames.WHISPER, VAD=True, split=True, max_speech_duration=30)
   # Use the appropriate encoding

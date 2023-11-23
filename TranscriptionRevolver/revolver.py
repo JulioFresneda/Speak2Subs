@@ -17,7 +17,7 @@ class ASRNames(Enum):
     WHISPER = 'whisper'
 
 class Revolver:
-    def __init__(self, ASR, dataset):
+    def __init__(self, ASR, dataset, config):
         if isinstance(ASR, str) and ASR == 'all':
             self.asr_to_apply = list(ASRNames)
         elif isinstance(ASR, list) and all(item.lower() in ASRNames for item in ASR):
@@ -25,11 +25,14 @@ class Revolver:
         elif isinstance(ASR, ASRNames):
             self.asr_to_apply = [ASR]
 
+
+        self.conf = config
+
         self.host_volume_path = os.path.join(os.path.dirname(dataset.parent_path), 'host_volume')
         if not os.path.exists(self.host_volume_path):
             os.mkdir(self.host_volume_path)
 
-        self.container_manager = ContainerManager(self.asr_to_apply, self.host_volume_path)
+        self.container_manager = ContainerManager(self.asr_to_apply, self.host_volume_path, self.conf['image_names'])
 
 
 
@@ -42,16 +45,20 @@ class Revolver:
 
 
     def _copy_media_to_container_volume(self, media, host_volume_path):
-        files = os.listdir(host_volume_path)
+
+        host_media_path = os.path.join(host_volume_path, 'media')
+        if not os.path.exists(host_media_path):
+            os.makedirs(host_media_path)
+        files = os.listdir(host_media_path)
 
         # Iterate through the files and remove each one
         for file_name in files:
-            file_path = os.path.join(host_volume_path, file_name)
+            file_path = os.path.join(host_media_path, file_name)
             if os.path.isfile(file_path):
                 os.remove(file_path)
 
         for file in media.vad_segments_paths:
-            dest_file = os.path.join(host_volume_path, os.path.basename(file))
+            dest_file = os.path.join(host_media_path, os.path.basename(file))
             shutil.copy2(file, dest_file)
 
 

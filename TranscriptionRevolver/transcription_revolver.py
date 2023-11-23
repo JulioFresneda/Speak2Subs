@@ -2,9 +2,9 @@ from .Datasets import media_dataset
 from . import revolver
 from .VAD import vad
 
-def transcript(dataset, ASR='all', VAD=True, max_speech_duration=float('inf'), split=False):
+def transcript(dataset, config, ASR='all', VAD=True, max_speech_duration=float('inf'), split=False):
 
-    rev = revolver.Revolver(ASR, dataset)
+    rev = revolver.Revolver(ASR, dataset, config)
     to_transcript = []
 
     if isinstance(dataset, media_dataset.Dataset):
