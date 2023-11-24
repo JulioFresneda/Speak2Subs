@@ -2,6 +2,8 @@
   "image_names": {
     "nemo": "juliofresneda/tr_nemo_asr_light:latest",
     "vosk": "juliofresneda/tr_vosk_asr:latest",
-    "whisper": "juliofresneda/tr_whisper_asr:latest"
+    "whisper": "juliofresneda/tr_whisper_asr:latest",
+    "speechbrain": "juliofresneda/tr_speechbrain_asr:latest",
+    "whisperx": "juliofresneda/tr_whisperx_asr:latest"
   }
 }
