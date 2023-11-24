@@ -1,5 +1,5 @@
-from Speak2Subs import transcription_revolver, media_dataset
-from Speak2Subs import revolver
+from Speak2Subs import media_dataset
+from Speak2Subs import speak2subs
 import json
 
 dsloader = media_dataset.DatasetLoader('./datasets')
@@ -24,7 +24,7 @@ with open('./configuration.json', 'r') as file:
 
 
 
-transcription_revolver.transcript(random, config, ASR=revolver.ASRNames.WHISPERX, VAD=True, split=True, max_speech_duration=30)
+speak2subs.transcript(random, config, ASR=speak2subs.ASRNames.VOSK, VAD=True, split=True, max_speech_duration=30)
   # Use the appropriate encoding
 
 

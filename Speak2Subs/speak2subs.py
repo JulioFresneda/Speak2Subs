@@ -2,9 +2,9 @@ from enum import Enum
 import os  # Importing the os module for operating system-related functionality
 import shutil
 
-from .container_manager import ContainerManager
-import vad
-import media_dataset
+from . import container_manager
+from . import vad
+from . import media_dataset
 
 class ASRNames(Enum):
     WHISPERX = 'whisperx'
@@ -16,10 +16,7 @@ class ASRNames(Enum):
 
 
 
-
-
-
-class Revolver:
+class Speak2Subs:
     def __init__(self, ASR, dataset, config):
         if isinstance(ASR, str) and ASR == 'all':
             self.asr_to_apply = list(ASRNames)
@@ -35,7 +32,7 @@ class Revolver:
         if not os.path.exists(self.host_volume_path):
             os.mkdir(self.host_volume_path)
 
-        self.container_manager = ContainerManager(self.asr_to_apply, self.host_volume_path, self.conf['image_names'])
+        self.container_manager = container_manager.ContainerManager(self.asr_to_apply, self.host_volume_path, self.conf['image_names'])
 
 
 
@@ -75,7 +72,7 @@ class Revolver:
 
 def transcript(dataset, config, ASR='all', VAD=True, max_speech_duration=float('inf'), split=False):
 
-    rev = Revolver(ASR, dataset, config)
+    rev = Speak2Subs(ASR, dataset, config)
     to_transcript = []
 
     if isinstance(dataset, media_dataset.Dataset):
