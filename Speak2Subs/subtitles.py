@@ -30,8 +30,8 @@ class Subtitle:
                 last_end = vts['end']
                 done = False
                 if(local['start'] >= speech and local['start'] <= end_speech):
-                    local['start'] = round(local['start'] + silence,2)
-                    local['end'] = round(local['end'] + silence, 2)
+                    local['start'] = round(local['start'] + silence,3)
+                    local['end'] = round(local['end'] + silence, 3)
                     done = True
                 if(done):
                     break
@@ -42,38 +42,6 @@ class Subtitle:
         return original
 
 
-
-
-
-
-
-
-
-
-
-
-
-    def _calculate_speech(self, vad_token, vad_ts):
-        speech = 0.0
-        for vts in vad_ts:
-            if(vts != vad_token):
-                speech += vts['end'] - vts['start']
-            else:
-                return speech
-        return speech
-
-
-    def _calculate_silence(self, token_starts, vad_ts):
-        silence = 0.0
-        last_end = 0.0
-        for vts in vad_ts:
-            new_silence = silence + vts['start'] - last_end
-            last_end = vts['end']
-            if(new_silence > token_starts):
-                return silence
-            else:
-                silence = new_silence
-        return silence
 
 
 
