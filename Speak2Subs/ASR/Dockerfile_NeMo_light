@@ -3,7 +3,7 @@ FROM python:3.10.12
 
 # Set working directory
 WORKDIR /workdir
-COPY nemo_asr.py /workdir/transcript.py
+
 # Update and install necessary packages
 
 RUN apt-get update
@@ -13,7 +13,7 @@ RUN pip install Cython
 RUN pip install nemo_toolkit['all']
 
 
-
+COPY nemo_asr.py /workdir/transcript.py
 COPY keep_alive.py /workdir/keep_alive.py
 
 RUN mkdir -p /volume

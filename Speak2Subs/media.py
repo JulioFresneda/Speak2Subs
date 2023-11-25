@@ -9,6 +9,8 @@ class Media:
         self.folder = os.path.dirname(os.path.abspath(path))
         self.name = os.path.basename(path)
         self.vad = None
+        self.subtitles = None
+        self.predicted_subtitles = None
 
 
 class VAD(Media):
@@ -16,8 +18,10 @@ class VAD(Media):
         self.original = original_media
         super().__init__(os.path.join(vad_config.vad_folder, original_media.name))
         original_media.vad = self
-        self.timestamps = timestamps
-        self.segments = []
+
+        # Timestamps of the original audio when there is a speech
+        self.original_timestamps = timestamps
+        self.segments = {}
 
 class Segment(Media):
     def __init__(self, vad_media, index, timestamps, vad_config):
@@ -25,8 +29,11 @@ class Segment(Media):
         name = name + vad_config.suffix_segments
         name = name + "_" + str(index) + "." + extension
         super().__init__(os.path.join(vad_config.segments_folder,name))
-        self.timestamps = timestamps
+
+        # Timestamps of the original audio when there is a speech
+        self.original_timestamps = timestamps
         self.segment_of = vad_media
+
 
 
 
@@ -42,6 +49,7 @@ class Dataset:
 
         self._load_media_folder(self.folder_path)
         self._order_media()
+
 
     def _order_media(self):
         try:

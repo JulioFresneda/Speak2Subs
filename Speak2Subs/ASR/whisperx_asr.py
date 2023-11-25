@@ -30,7 +30,8 @@ for media in sorted(os.listdir(media_volume)):
     # 2. Align whisper output
     model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
     result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
-    print(result)
+    result['sentences_ts'] = result.pop('segments')
+    result['words_ts'] = result.pop('word_segments')
     complete_result[media] = result
 
 # Open a file in write mode ('w')

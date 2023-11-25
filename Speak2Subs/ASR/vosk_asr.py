@@ -44,7 +44,9 @@ for media in sorted(os.listdir(media_volume)):
     # Get the final recognized result
     final_result = rec.FinalResult()
     final_result = json.loads(final_result)
-    final_result['segment_name'] = os.path.basename(media)
+    final_result['words_ts'] = final_result.pop('result')
+    for word in final_result['words_ts']:
+        word['score'] = word.pop('conf')
     complete_result[media] = final_result
 
 # Open a file in write mode ('w')

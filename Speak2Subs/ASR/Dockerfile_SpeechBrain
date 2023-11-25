@@ -4,6 +4,7 @@ LABEL authors="juliofgx"
 RUN apt-get update
 
 # Install Vosk and its dependencies
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 RUN pip install speechbrain
 
 # Set the working directory inside the container

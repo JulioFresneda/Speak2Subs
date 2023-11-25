@@ -13,7 +13,7 @@ for media in sorted(os.listdir(media_volume)):
         sentence_ts.append({'start':segment['start'], 'end':segment['end'], 'text':segment['text']})
     final_result = {}
     final_result['text'] = result['text']
-    final_result['timestamps'] = sentence_ts
+    final_result['sentences_ts'] = sentence_ts
 
     complete_result[media] = final_result
 
