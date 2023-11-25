@@ -1,22 +1,23 @@
 import docker
 import ast, os, io, tarfile
+
+
 class ContainerManager:
-    def __init__(self, ASR, host_volume_path, image_names, container_volume_path = '/volume'):
+    def __init__(self, asr, host_volume_path, image_names, container_volume_path='/volume'):
         self.client = docker.from_env()
         self.host_volume_path = host_volume_path
         self.container_volume_path = container_volume_path
-        self.ASR = ASR
+        self.asr = asr
         self.image_names = image_names
         self._initialize_containers()
 
     def _initialize_containers(self):
         self.containers = {}
 
-        for asr in self.ASR:
+        for asr in self.asr:
             image_name = self.image_names[asr.value]
             container_name = asr.value + "_container"
             self.containers[asr.value] = self._initialize_container(image_name, container_name)
-
 
     def _initialize_container(self, image_name, container_name):
 
@@ -29,7 +30,6 @@ class ContainerManager:
             }
         }
 
-
         # Run the Docker container with the mounted folder
         container = self.client.containers.run(
             image_name,
@@ -39,18 +39,12 @@ class ContainerManager:
         )
         return container
 
-
-
-
     def execute_in_container(self, asr):
 
         container = self.containers[asr.value]
 
-
         # Specify the local folder and its path inside the container
         container_path = self.container_volume_path  # Adjust as needed
-
-
 
         exec_command = f"ls {container_path}"
         exec_result = container.exec_run(exec_command)
@@ -60,7 +54,6 @@ class ContainerManager:
 
         result_path = os.path.join(self.host_volume_path, "result.txt")
 
-
         with open(result_path, 'r') as file:
             list_of_dicts_string = file.read()
 
@@ -68,9 +61,6 @@ class ContainerManager:
             os.remove(result_path)
 
         list_of_dicts_string = ast.literal_eval(list_of_dicts_string)
-
-
-
 
         return list_of_dicts_string  # Print or process the logs as needed
 

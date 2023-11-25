@@ -10,7 +10,7 @@ import logging
 # Disable all logging from Vosk
 logging.getLogger('vosk').setLevel(logging.ERROR)
 
-#print("Hello from the vosk ASR image")
+#print("Hello from the vosk asr image")
 
 # You can set log level to -1 to disable debug messages
 SetLogLevel(-1)

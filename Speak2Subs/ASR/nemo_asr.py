@@ -17,7 +17,7 @@ model_name="stt_es_quartznet15x5"
 for media in sorted(os.listdir(media_volume)):
     print(media)
 
-    # Load the NeMo ASR model using the specified model name or the default if not provided
+    # Load the NeMo asr model using the specified model name or the default if not provided
     nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name)
 
     # Retrieve the decoding configuration from the NeMo model and customize it

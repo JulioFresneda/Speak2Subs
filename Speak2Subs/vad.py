@@ -1,7 +1,28 @@
 import torch
 import os
 from pydub import AudioSegment
-def apply_vad(media, max_speech_duration=float('inf'), split=False):
+from . import media
+
+
+class VadConfig:
+    def __init__(self, vad_folder, segmented=False, folder_name='VAD', suffix_segments='_segment'):
+        self.suffix_segments = suffix_segments
+        self.vad_folder = os.path.join(vad_folder, folder_name)
+
+        if(not os.path.exists(self.vad_folder)):
+            os.mkdir(self.vad_folder)
+
+        self.segmented = segmented
+        if self.segmented:
+            self.segments_folder = os.path.join(self.vad_folder, 'segments')
+            if (not os.path.exists(self.segments_folder)):
+                os.mkdir(self.segments_folder)
+        else:
+            self.segments_folder = None
+
+
+
+def apply_vad(my_media: media.Media, vad_config, max_speech_duration=float('inf'), segments=False):
     sampling_rate = 16000
 
     model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
@@ -15,30 +36,30 @@ def apply_vad(media, max_speech_duration=float('inf'), split=False):
      VADIterator,
      collect_chunks) = utils
 
-    wav = read_audio(media.original_media_path, sampling_rate=sampling_rate)
+    wav = read_audio(my_media.path, sampling_rate=sampling_rate)
     # get speech timestamps from full audio file
-    speech_timestamps = get_speech_timestamps(wav, model, sampling_rate=sampling_rate, max_speech_duration_s=max_speech_duration)
+    speech_timestamps = get_speech_timestamps(wav, model, sampling_rate=sampling_rate,
+                                              max_speech_duration_s=max_speech_duration)
     print(speech_timestamps)
 
-    vad_path = _modify_path('_VAD', 'VAD', media.original_media_path)
-    save_audio(vad_path, collect_chunks(speech_timestamps, wav), sampling_rate=sampling_rate)
+    vad_audio_path = os.path.join(vad_config.vad_folder, my_media.name)
+    save_audio(vad_audio_path, collect_chunks(speech_timestamps, wav),
+               sampling_rate=sampling_rate)
 
-    media.add_vad(vad_path, speech_timestamps)
+    my_vad = media.VAD(my_media, speech_timestamps, vad_config)
 
-    if(split):
-
+    if segments:
         # Grouping timestamps
         vad_segments_ts = _split_timestamps_by_duration(speech_timestamps, max_speech_duration, sampling_rate)
-        vad_segments_paths = []
+
 
         for i, st in enumerate(vad_segments_ts, start=0):
-            segment_path = _modify_path('_segment_' + str(i), 'segments', vad_path)
-            save_audio(segment_path, collect_chunks(st, wav), sampling_rate=16000)
-            vad_segments_paths.append(segment_path)
+            my_segment = media.Segment(my_vad, i, vad_segments_ts, vad_config)
+            my_vad.segments.append(my_segment)
+            save_audio(my_segment.path, collect_chunks(st, wav), sampling_rate=16000)
 
-        media.add_vad_segments(vad_segments_paths=vad_segments_paths, vad_segments_ts=vad_segments_ts)
 
-    return vad_path, speech_timestamps
+    my_media.vad = my_vad
 
 
 def _split_timestamps_by_duration(timestamps, max_duration, sampling_rate):
@@ -62,7 +83,6 @@ def _split_timestamps_by_duration(timestamps, max_duration, sampling_rate):
     return result
 
 
-
 def _split_audio(file_path, timestamps):
     # Load your audio file using pydub
     audio = AudioSegment.from_file(file_path, format="wav")
@@ -80,9 +100,7 @@ def _split_audio(file_path, timestamps):
         segment.export(f"_segment_{i}.wav", format="wav")
 
 
-
 def _modify_path(suffix, new_folder_name, file_path):
-
     # Split the file path into directory, filename, and extension
     directory, filename_ext = os.path.split(file_path)
     filename, extension = os.path.splitext(filename_ext)
