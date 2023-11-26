@@ -9,7 +9,7 @@ class VadConfig:
         self.suffix_segments = suffix_segments
         self.vad_folder = os.path.join(vad_folder, folder_name)
 
-        if(not os.path.exists(self.vad_folder)):
+        if (not os.path.exists(self.vad_folder)):
             os.mkdir(self.vad_folder)
 
         self.segmented = segmented
@@ -19,7 +19,6 @@ class VadConfig:
                 os.mkdir(self.segments_folder)
         else:
             self.segments_folder = None
-
 
 
 def apply_vad(my_media: media.Media, vad_config, max_speech_duration=float('inf'), segments=False):
@@ -41,7 +40,6 @@ def apply_vad(my_media: media.Media, vad_config, max_speech_duration=float('inf'
     speech_timestamps = get_speech_timestamps(wav, model, sampling_rate=sampling_rate,
                                               max_speech_duration_s=max_speech_duration, return_seconds=False)
 
-
     vad_audio_path = os.path.join(vad_config.vad_folder, my_media.name)
     save_audio(vad_audio_path, collect_chunks(speech_timestamps, wav),
                sampling_rate=sampling_rate)
@@ -60,8 +58,8 @@ def apply_vad(my_media: media.Media, vad_config, max_speech_duration=float('inf'
 
             save_audio(my_segment.path, collect_chunks(st, wav), sampling_rate=16000)
 
-
     my_media.vad = my_vad
+
 
 def convert_samples_to_seconds(timestamp_dict_list, sampling_rate):
     new_timestamp_list = []
@@ -72,6 +70,8 @@ def convert_samples_to_seconds(timestamp_dict_list, sampling_rate):
         }
         new_timestamp_list.append(new_entry)
     return new_timestamp_list
+
+
 def _split_timestamps_by_duration(timestamps, max_duration, sampling_rate):
     max_duration *= sampling_rate  # Convert max_duration from seconds to samples (assuming 16kHz sampling rate)
     result = []
@@ -91,44 +91,3 @@ def _split_timestamps_by_duration(timestamps, max_duration, sampling_rate):
         result.append(current_list)
 
     return result
-
-
-def _split_audio(file_path, timestamps):
-    # Load your audio file using pydub
-    audio = AudioSegment.from_file(file_path, format="wav")
-
-    # Duration in milliseconds for each segment (30 seconds = 30,000 milliseconds)
-    segment_duration = 30 * 1000  # 30 seconds in milliseconds
-
-    _ts = []
-    for se in timestamps:
-        _ts.append((se['start'], se['end']))
-
-    # Split the audio using timestamps
-    for i, (start, end) in enumerate(_ts, start=1):
-        segment = audio[start:end]
-        segment.export(f"_segment_{i}.wav", format="wav")
-
-
-def _modify_path(suffix, new_folder_name, file_path):
-    # Split the file path into directory, filename, and extension
-    directory, filename_ext = os.path.split(file_path)
-    filename, extension = os.path.splitext(filename_ext)
-    extension = ".wav"
-
-    # New folder name
-    new_folder = new_folder_name
-
-    # Construct the path for the 'VAD' subfolder
-    vad_folder = os.path.join(directory, new_folder)
-
-    # Check if the 'VAD' subfolder exists, if not, create it
-    if not os.path.exists(vad_folder):
-        os.makedirs(vad_folder)
-
-    # Add the suffix to the filename
-    new_filename = f"{filename}{suffix}{extension}"
-
-    # Construct the new file path
-    new_file_path = os.path.join(vad_folder, new_filename)
-    return new_file_path
