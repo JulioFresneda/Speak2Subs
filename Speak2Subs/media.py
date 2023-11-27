@@ -37,10 +37,10 @@ class SegmentGroup:
 
 
 class Segment:
-    def __init__(self, start_ts, end_ts, timestamps, predicted_subtitle = None):
+    def __init__(self, start_ts, end_ts, timestamps):
         self.start = round(start_ts, 3)
         self.end = round(end_ts, 3)
-        self.predicted_subtitle = predicted_subtitle
+        self.predicted_subtitle = None
         self.ts_dict = timestamps
 
     def __str__(self):

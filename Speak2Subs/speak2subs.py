@@ -60,19 +60,22 @@ class Speak2Subs:
             group_starts = seg_group.start
 
 
-            for local_segment in result[seg_group.name]['words_ts']:
+            for token in result[seg_group.name]['words_ts']:
                 last_end = group_starts
                 silence = 0
-                for global_segment in seg_group:
-                    silence += global_segment.start - last_end
-                    last_end = global_segment.end
+                for segment in seg_group:
+                    silence += segment.start - last_end
+                    last_end = segment.end
 
-                    local_start_in_global = local_segment['start'] + group_starts + silence
-                    local_end_in_global = local_segment['end'] + group_starts + silence
+                    local_start_in_global = token['start'] + group_starts + silence
+                    local_end_in_global = token['end'] + group_starts + silence
 
-                    if(global_segment.start <= local_start_in_global <= global_segment.end):
-                        local_segment['start'] = local_start_in_global
-                        local_segment['end'] = local_end_in_global
+                    if(segment.start <= local_end_in_global <= segment.end):
+
+                        if(segment.predicted_subtitle == None):
+                            segment.predicted_subtitle = subtitle.Subtitle()
+                        word = subtitle.Token(local_start_in_global, local_end_in_global, token['word'] + " ")
+                        segment.predicted_subtitle.add_token(word)
                         break
 
 
