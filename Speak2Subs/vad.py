@@ -4,90 +4,79 @@ from pydub import AudioSegment
 from . import media
 
 
-class VadConfig:
-    def __init__(self, vad_folder, segmented=False, folder_name='VAD', suffix_segments='_segment'):
-        self.suffix_segments = suffix_segments
-        self.vad_folder = os.path.join(vad_folder, folder_name)
+class VAD:
+    def __init__(self, my_media, max_speech_duration=float('inf'), segment=True):
+        self.media = my_media
+        self.max_speech_duration = max_speech_duration
+        self.segment = segment
 
-        if (not os.path.exists(self.vad_folder)):
-            os.mkdir(self.vad_folder)
+    def apply_vad(self):
+        self.sampling_rate = 16000
 
-        self.segmented = segmented
-        if self.segmented:
-            self.segments_folder = os.path.join(self.vad_folder, 'segments')
-            if (not os.path.exists(self.segments_folder)):
-                os.mkdir(self.segments_folder)
-        else:
-            self.segments_folder = None
+        self._apply_model()
+        self._load_segments()
+        self._group_segments()
+        self._save_segments_to_file()
 
+    def _apply_model(self):
+        model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
+                                      model='silero_vad',
+                                      force_reload=False,
+                                      onnx=False)
 
-def apply_vad(my_media: media.Media, vad_config, max_speech_duration=float('inf'), segments=False):
-    sampling_rate = 16000
+        (get_speech_timestamps,
+         self.save_audio,
+         read_audio,
+         VADIterator,
+         self.collect_chunks) = utils
 
-    model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
-                                  model='silero_vad',
-                                  force_reload=False,
-                                  onnx=False)
+        self.wav = read_audio(self.media.path, sampling_rate=self.sampling_rate)
+        # get speech timestamps from full audio file
 
-    (get_speech_timestamps,
-     save_audio,
-     read_audio,
-     VADIterator,
-     collect_chunks) = utils
+        self.speech_timestamps = get_speech_timestamps(self.wav, model, sampling_rate=self.sampling_rate,
+                                                       max_speech_duration_s=self.max_speech_duration,
+                                                       return_seconds=False)
 
-    wav = read_audio(my_media.path, sampling_rate=sampling_rate)
-    # get speech timestamps from full audio file
-    speech_timestamps = get_speech_timestamps(wav, model, sampling_rate=sampling_rate,
-                                              max_speech_duration_s=max_speech_duration, return_seconds=False)
+    def _load_segments(self):
+        segments = []
+        for ts in self.speech_timestamps:
+            segments.append(media.Segment(ts['start'] / self.sampling_rate, ts['end'] / self.sampling_rate, ts))
+        self.segments = segments
 
-    vad_audio_path = os.path.join(vad_config.vad_folder, my_media.name)
-    save_audio(vad_audio_path, collect_chunks(speech_timestamps, wav),
-               sampling_rate=sampling_rate)
+    def _group_segments(self):
+        result = []
+        current_list = []
+        self.segment_groups = []
 
-    ts_in_seconds = convert_samples_to_seconds(speech_timestamps, sampling_rate)
-    my_vad = media.VAD(my_media, ts_in_seconds, vad_config)
+        for segment in self.segments:
+            duration_so_far = sum([sg.end - sg.start for sg in current_list])
+            segment_duration = segment.end - segment.start
 
-    if segments:
-        # Grouping timestamps
-        vad_segments_ts = _split_timestamps_by_duration(speech_timestamps, max_speech_duration, sampling_rate)
+            if duration_so_far + segment_duration <= self.max_speech_duration:
+                current_list.append(segment)
+            else:
+                result.append(current_list)
+                current_list = [segment]
 
-        for i, st in enumerate(vad_segments_ts, start=0):
-            st_in_seconds = convert_samples_to_seconds(st, sampling_rate)
-            my_segment = media.Segment(my_vad, i, st_in_seconds, vad_config)
-            my_vad.segments[my_segment.name] = my_segment
-
-            save_audio(my_segment.path, collect_chunks(st, wav), sampling_rate=16000)
-
-    my_media.vad = my_vad
-
-
-def convert_samples_to_seconds(timestamp_dict_list, sampling_rate):
-    new_timestamp_list = []
-    for entry in timestamp_dict_list:
-        new_entry = {
-            'start': entry['start'] / sampling_rate,
-            'end': entry['end'] / sampling_rate
-        }
-        new_timestamp_list.append(new_entry)
-    return new_timestamp_list
-
-
-def _split_timestamps_by_duration(timestamps, max_duration, sampling_rate):
-    max_duration *= sampling_rate  # Convert max_duration from seconds to samples (assuming 16kHz sampling rate)
-    result = []
-    current_list = []
-
-    for timestamp in timestamps:
-        duration_so_far = sum([ts['end'] - ts['start'] for ts in current_list])
-        timestamp_duration = timestamp['end'] - timestamp['start']
-
-        if duration_so_far + timestamp_duration <= max_duration:
-            current_list.append(timestamp)
-        else:
+        if current_list:
             result.append(current_list)
-            current_list = [timestamp]
 
-    if current_list:
-        result.append(current_list)
+        self.segment_groups_folder = os.path.join(self.media.folder, "segment_groups")
+        if (not os.path.exists(self.segment_groups_folder)):
+            os.mkdir(self.segment_groups_folder)
 
-    return result
+        for i, r in enumerate(result, start=0):
+            self.segment_groups.append(self._group_to_media_group(r, i))
+        self.media.segmentsGroups = self.segment_groups
+
+    def _group_to_media_group(self, group, index):
+        generated_path = os.path.join(self.segment_groups_folder,
+                                      self.media.name.split('.')[0] + "_segment_" + str(index) + ".wav")
+        return media.SegmentGroup(group, generated_path)
+
+    def _save_segments_to_file(self):
+        for i, st in enumerate(self.segment_groups, start=0):
+            ts_list = []
+            for seg in st:
+                ts_list.append(seg.ts_dict)
+            self.save_audio(st.path, self.collect_chunks(ts_list, self.wav), sampling_rate=16000)

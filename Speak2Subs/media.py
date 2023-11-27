@@ -9,36 +9,42 @@ class Media:
         self.path = path
         self.folder = os.path.dirname(os.path.abspath(path))
         self.name = os.path.basename(path)
-        self.vad = None
-        self.subtitles = None
-        self.predicted_subtitles = None
+        self.original_subtitles_path = None
+        self.segmentsGroups = []
+
+class SegmentGroup:
+    def __init__(self, segments, path):
+        self.segments = segments
+        self.group_duration = 0.0
+        for sg in segments:
+            self.group_duration += sg.end - sg.start
+        self.group_duration = round(self.group_duration, 3)
+
+        self.path = path
+        self.folder = os.path.dirname(os.path.abspath(path))
+        self.name = os.path.basename(path)
 
 
-    def get_predicted_subtitles(self):
-        pass
+
+    def __str__(self):
+        return "<Segment group. Has " + str(len(self.segments)) + ", total duration of " + str(self.group_duration) + " (without silences).>"
+
+    def __iter__(self):
+        return iter(self.segments)
 
 
-class VAD(Media):
-    def __init__(self, original_media, timestamps, vad_config):
-        self.original = original_media
-        super().__init__(os.path.join(vad_config.vad_folder, original_media.name))
-        original_media.vad = self
-
-        # Timestamps of the original audio when there is a speech
-        self.original_timestamps = timestamps
-        self.segments = {}
 
 
-class Segment(Media):
-    def __init__(self, vad_media, index, timestamps, vad_config):
-        name, extension = vad_media.name.split('.')
-        name = name + vad_config.suffix_segments
-        name = name + "_" + str(index) + "." + extension
-        super().__init__(os.path.join(vad_config.segments_folder, name))
+class Segment:
+    def __init__(self, start_ts, end_ts, timestamps, predicted_subtitle = None):
+        self.start = round(start_ts, 3)
+        self.end = round(end_ts, 3)
+        self.predicted_subtitle = predicted_subtitle
+        self.ts_dict = timestamps
 
-        # Timestamps of the original audio when there is a speech
-        self.original_timestamps = timestamps
-        self.segment_of = vad_media
+    def __str__(self):
+        return "<Segment. Starts at " + str(self.start) + ", ends at " + str(self.end) + ", duration of " + str(round(self.end-self.start),3) + ".>"
+
 
 
 class Dataset:
@@ -79,7 +85,7 @@ class Dataset:
         for vtt in vtt_files:
             vtt_waved = '.'.join(vtt.split('.')[:-1]) + '.wav'
             if vtt_waved in self.media.keys():
-                self.media[vtt_waved].subtitles = os.path.join(folder_path, vtt)
+                self.media[vtt_waved].original_subtitles_path = os.path.join(folder_path, vtt)
 
     def __str__(self):
         return "<Dataset named " + self.name + ", with " + str(

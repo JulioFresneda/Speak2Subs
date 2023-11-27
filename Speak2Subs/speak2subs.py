@@ -62,6 +62,7 @@ class Speak2Subs:
 
     def _cook_result(self, result, my_media):
         if(self.transcript_mode == TranscriptMode.VAD_AND_SEGMENTED_MODE):
+            last_global_end = 0
             for segment in result.keys():
                 text = result[segment]['text']
                 words_ts = None
@@ -72,8 +73,10 @@ class Speak2Subs:
                     seg_ts = result[segment]['segments_ts']
 
                 vad_ts = my_media.vad.original_timestamps
-                sub = subtitle.Subtitle(text, words_ts, seg_ts, vad_ts)
-                my_media.vad.segments[segment].predicted_subtitles = sub
+                sub = subtitle.Subtitle(text, words_ts, seg_ts, vad_ts, last_global_end)
+                my_media.add_segment_subtitle(sub, segment)
+                last_global_end = sub.last_global_end
+
 
 
 
@@ -101,12 +104,23 @@ class Speak2Subs:
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-    def export_subtitles_to_vtt(self):
+    def export_subtitles_to_vtt_eval(self):
         for my_media in self.dataset.media:
-            original_subs_path = self.dataset.media[my_media].subtitles
+            original_subs_path = self.dataset.media[my_media].original_subtitles_path
             original_subs = self._load_subs(original_subs_path)
+            predicted_subs = self.dataset.media[my_media].predicted_subtitles
 
-            predicted_subs = my_media.get_predicted_subtitles()
+            predicted_subs_adjusted = []
+            for original_sub in original_subs:
+                sub_adjusted = {'start':original_sub['start'], 'end':original_sub['end'], 'text':""}
+                for sub in predicted_subs:
+                    for word in sub.original_word_timestamps:
+                        if(original_sub['start'] <= word['start'] <= original_sub['end']):
+                            sub_adjusted['text'] += word['word'] + " "
+                predicted_subs_adjusted.append(sub_adjusted)
+
+
+            print(predicted_subs)
 
 
 
@@ -161,7 +175,11 @@ class Speak2Subs:
 
 
 
-def transcript(dataset, asr='all', use_vad=True, max_speech_duration=float('inf'), segments=False):
+def transcript(dataset, asr='all', use_vad=True, segment=True, max_speech_duration=float('inf'), eval_mode = False):
+    """
+
+    :type segment: object
+    """
     script_path = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(script_path, './configuration.json'), 'r') as file:
         config = json.load(file)
@@ -173,19 +191,12 @@ def transcript(dataset, asr='all', use_vad=True, max_speech_duration=float('inf'
 
 
 
-
-    if use_vad:
-        if(not segments):
-            transcript_mode = TranscriptMode.VAD_MODE
-        else:
-            transcript_mode = TranscriptMode.VAD_AND_SEGMENTED_MODE
-        s2s.transcript_mode = transcript_mode
-
-        vad_config = vad.VadConfig(dataset.folder_path, segmented=segments)
-        for m in dataset.media:
-            vad.apply_vad(dataset.media[m], vad_config, max_speech_duration, segments=segments)
+    for m in dataset.media:
+        mvad = vad.VAD(dataset.media[m], max_speech_duration, segment)
+        mvad.apply_vad()
 
     s2s.launch_asr()
-    s2s.export_subtitles_to_vtt()
+    if(eval_mode):
+        s2s.export_subtitles_to_vtt_eval()
 
 
