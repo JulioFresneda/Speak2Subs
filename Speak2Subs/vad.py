@@ -67,7 +67,7 @@ class VAD:
 
         for i, r in enumerate(result, start=0):
             self.segment_groups.append(self._group_to_media_group(r, i))
-        self.media.segmentsGroups = self.segment_groups
+        self.media.segments_groups = self.segment_groups
 
     def _group_to_media_group(self, group, index):
         generated_path = os.path.join(self.segment_groups_folder,

@@ -48,50 +48,51 @@ class Speak2Subs:
         for asr in self.asr_to_apply:
             for k in self.dataset.media:
                 my_media = self.dataset.media[k]
-                if (self.transcript_mode == TranscriptMode.ORIGINAL_MODE):
-                    self._copy_media_to_container_volume(my_media, self.host_volume_path)
-                elif (self.transcript_mode == TranscriptMode.VAD_MODE):
-                    self._copy_media_to_container_volume(my_media.vad, self.host_volume_path)
-                else:
-                    for segment in my_media.vad.segments.keys():
-                        self._copy_media_to_container_volume(my_media.vad.segments[segment], self.host_volume_path)
+                for segment_group in my_media.segments_groups:
+                    self._copy_segment_group_to_container_volume(segment_group, self.host_volume_path)
 
                 result = self.container_manager.execute_in_container(asr)
                 self._clean_volume()
-                self._cook_result(result, my_media)
+                self._local_to_global_timestamps(result, my_media)
 
-    def _cook_result(self, result, my_media):
-        if(self.transcript_mode == TranscriptMode.VAD_AND_SEGMENTED_MODE):
-            last_global_end = 0
-            for segment in result.keys():
-                text = result[segment]['text']
-                words_ts = None
-                if('words_ts' in result[segment].keys()):
-                    words_ts = result[segment]['words_ts']
-                seg_ts = None
-                if ('segments_ts' in result[segment].keys()):
-                    seg_ts = result[segment]['segments_ts']
-
-                vad_ts = my_media.vad.original_timestamps
-                sub = subtitle.Subtitle(text, words_ts, seg_ts, vad_ts, last_global_end)
-                my_media.add_segment_subtitle(sub, segment)
-                last_global_end = sub.last_global_end
+    def _local_to_global_timestamps(self, result, my_media):
+        for seg_group in my_media.segments_groups:
+            group_starts = seg_group.start
 
 
+            for local_segment in result[seg_group.name]['words_ts']:
+                last_end = group_starts
+                silence = 0
+                for global_segment in seg_group:
+                    silence += global_segment.start - last_end
+                    last_end = global_segment.end
 
+                    local_start_in_global = local_segment['start'] + group_starts + silence
+                    local_end_in_global = local_segment['end'] + group_starts + silence
 
-
+                    if(global_segment.start <= local_start_in_global <= global_segment.end):
+                        local_segment['start'] = local_start_in_global
+                        local_segment['end'] = local_end_in_global
+                        break
 
 
 
-    def _copy_media_to_container_volume(self, my_media, host_volume_path):
+
+
+
+
+
+
+
+
+    def _copy_segment_group_to_container_volume(self, segment_group, host_volume_path):
 
         host_media_path = os.path.join(host_volume_path, 'media')
         if not os.path.exists(host_media_path):
             os.makedirs(host_media_path)
 
-        dest_file = os.path.join(host_media_path, my_media.name)
-        shutil.copy2(my_media.path, dest_file)
+        dest_file = os.path.join(host_media_path, segment_group.name)
+        shutil.copy2(segment_group.path, dest_file)
 
     def _clean_volume(self):
         for filename in os.listdir(self.host_volume_path):
@@ -189,13 +190,12 @@ def transcript(dataset, asr='all', use_vad=True, segment=True, max_speech_durati
     if not isinstance(dataset, media.Dataset):
         raise ValueError("Unsupported input type")
 
-
-
     for m in dataset.media:
         mvad = vad.VAD(dataset.media[m], max_speech_duration, segment)
         mvad.apply_vad()
 
     s2s.launch_asr()
+
     if(eval_mode):
         s2s.export_subtitles_to_vtt_eval()
 

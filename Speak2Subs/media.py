@@ -10,11 +10,12 @@ class Media:
         self.folder = os.path.dirname(os.path.abspath(path))
         self.name = os.path.basename(path)
         self.original_subtitles_path = None
-        self.segmentsGroups = []
+        self.segments_groups = []
 
 class SegmentGroup:
     def __init__(self, segments, path):
         self.segments = segments
+        self.start = round(self.segments[0].start,3)
         self.group_duration = 0.0
         for sg in segments:
             self.group_duration += sg.end - sg.start
@@ -27,7 +28,7 @@ class SegmentGroup:
 
 
     def __str__(self):
-        return "<Segment group. Has " + str(len(self.segments)) + ", total duration of " + str(self.group_duration) + " (without silences).>"
+        return "<" + self.name + ". Has " + str(len(self.segments)) + ", total duration of " + str(self.group_duration) + " (without silences).>"
 
     def __iter__(self):
         return iter(self.segments)
