@@ -193,8 +193,12 @@ def transcript(dataset, asr='all', use_vad=True, segment=True, max_speech_durati
     if not isinstance(dataset, media.Dataset):
         raise ValueError("Unsupported input type")
 
+    msd = max_speech_duration
+    if(not segment):
+        msd = float('inf')
+
     for m in dataset.media:
-        mvad = vad.VAD(dataset.media[m], max_speech_duration, segment)
+        mvad = vad.VAD(dataset.media[m], msd, use_vad, segment)
         mvad.apply_vad()
 
     s2s.launch_asr()

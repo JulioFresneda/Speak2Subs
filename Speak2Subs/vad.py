@@ -5,9 +5,10 @@ from . import media
 
 
 class VAD:
-    def __init__(self, my_media, max_speech_duration=float('inf'), segment=True):
+    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True):
         self.media = my_media
         self.max_speech_duration = max_speech_duration
+        self.use_vad = use_vad
         self.segment = segment
 
     def apply_vad(self):
@@ -33,9 +34,22 @@ class VAD:
         self.wav = read_audio(self.media.path, sampling_rate=self.sampling_rate)
         # get speech timestamps from full audio file
 
-        self.speech_timestamps = get_speech_timestamps(self.wav, model, sampling_rate=self.sampling_rate,
+        if (self.use_vad):
+            self.speech_timestamps = get_speech_timestamps(self.wav, model, sampling_rate=self.sampling_rate,
                                                        max_speech_duration_s=self.max_speech_duration,
                                                        return_seconds=False)
+        else:
+            audio_len = self.wav.shape[0]
+            if(self.segment and self.max_speech_duration <= audio_len):
+                self.speech_timestamps = []
+                for i in range(0, int(audio_len/self.max_speech_duration)+1, self.sampling_rate):
+                    self.speech_timestamps.append({'start':int(i*self.max_speech_duration), 'end':int((i+self.sampling_rate)*self.max_speech_duration)})
+                self.speech_timestamps[-1]['end'] = audio_len
+
+
+            else:
+                self.speech_timestamps = [{'start':0, 'end':audio_len}]
+
 
     def _load_segments(self):
         segments = []
