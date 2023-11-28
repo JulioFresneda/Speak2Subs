@@ -54,6 +54,8 @@ class Speak2Subs:
                 result = self.container_manager.execute_in_container(asr)
                 self._clean_volume()
                 self._local_to_global_timestamps(result, my_media)
+                my_media.generate_subtitles()
+                my_media.predicted_subtitle.to_vtt(my_media.original_subtitles_path)
 
     def _local_to_global_timestamps(self, result, my_media):
         for seg_group in my_media.segments_groups:
@@ -77,6 +79,14 @@ class Speak2Subs:
                         word = subtitle.Token(local_start_in_global, local_end_in_global, token['word'] + " ")
                         segment.predicted_subtitle.add_token(word)
                         break
+
+    def evaluate(self):
+        for m in self.dataset.media:
+            self.evaluate_media(self.dataset.media[m])
+
+
+    def evaluate_media(self, my_media):
+        pass
 
 
 
@@ -108,68 +118,18 @@ class Speak2Subs:
             except Exception as e:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-    def export_subtitles_to_vtt_eval(self):
-        for my_media in self.dataset.media:
-            original_subs_path = self.dataset.media[my_media].original_subtitles_path
-            original_subs = self._load_subs(original_subs_path)
-            predicted_subs = self.dataset.media[my_media].predicted_subtitles
-
-            predicted_subs_adjusted = []
-            for original_sub in original_subs:
-                sub_adjusted = {'start':original_sub['start'], 'end':original_sub['end'], 'text':""}
-                for sub in predicted_subs:
-                    for word in sub.original_word_timestamps:
-                        if(original_sub['start'] <= word['start'] <= original_sub['end']):
-                            sub_adjusted['text'] += word['word'] + " "
-                predicted_subs_adjusted.append(sub_adjusted)
-
-
-            print(predicted_subs)
-
-
-
-
-    def _load_subs(self, subs_path):
-
-        subtitles_with_timestamps = []
-
-        with open(subs_path, 'r') as file:
-            lines = file.readlines()
-            line_type = "timestamp"
-            for line in lines[2:]:
-                if (line == '\n'):
-                    line_type = "linebreak"
-                    subtitles_with_timestamps.append(ts.copy())
-                    ts = {}
-                if(line_type == "linebreak"):
-                    line_type = "timestamp"
-                elif(line_type == "timestamp"):
-                    ts = self._load_subs_timestamps(line)
-                    line_type = "text"
-                elif(line_type == "text"):
-                    try:
-                        ts['text'] += line.replace("\n", " ")
-                    except:
-                        ts['text'] = line.replace("\n", " ")
-
-        return subtitles_with_timestamps
 
 
 
 
 
-    def _load_subs_timestamps(self, line):
-        start, end = line.split(" --> ")
-        start_h, start_m, start_s = map(float, start.split(":"))
-        end_h, end_m, end_s = map(float, end.split(":"))
 
-        start_seconds = start_h * 3600 + start_m * 60 + start_s
-        end_seconds = end_h * 3600 + end_m * 60 + end_s
 
-        return {
-            "start": round(start_seconds, 3),
-            "end": round(end_seconds, 3)
-        }
+
+
+
+
+
 
 
 
@@ -204,6 +164,6 @@ def transcript(dataset, asr='all', use_vad=True, segment=True, max_speech_durati
     s2s.launch_asr()
 
     if(eval_mode):
-        s2s.export_subtitles_to_vtt_eval()
+        s2s.evaluate()
 
 

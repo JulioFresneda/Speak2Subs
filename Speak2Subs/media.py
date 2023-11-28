@@ -2,6 +2,7 @@ import os.path
 import random
 from moviepy.editor import AudioFileClip
 import logging
+from . import subtitle
 
 
 class Media:
@@ -11,6 +12,17 @@ class Media:
         self.name = os.path.basename(path)
         self.original_subtitles_path = None
         self.segments_groups = []
+        self.predicted_subtitle = None
+
+    def generate_subtitles(self):
+        subs = []
+        for sg in self.segments_groups:
+            if(sg.predicted_subtitle == None):
+                sg.generate_subtitles()
+            subs.append(sg.predicted_subtitle)
+        self.predicted_subtitle = subtitle.Subtitle.merge_subtitles(subs)
+
+
 
 class SegmentGroup:
     def __init__(self, segments, path):
@@ -24,6 +36,7 @@ class SegmentGroup:
         self.path = path
         self.folder = os.path.dirname(os.path.abspath(path))
         self.name = os.path.basename(path)
+        self.predicted_subtitle = None
 
 
 
@@ -32,6 +45,14 @@ class SegmentGroup:
 
     def __iter__(self):
         return iter(self.segments)
+
+
+    def generate_subtitles(self):
+        subs = []
+        for seg in self.segments:
+            if(seg.predicted_subtitle != None):
+                subs.append(seg.predicted_subtitle)
+        self.predicted_subtitle = subtitle.Subtitle.merge_subtitles(subs)
 
 
 
