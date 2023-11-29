@@ -36,12 +36,13 @@ for media in sorted(os.listdir(media_volume)):
 
     # Extract word timestamps and process them to obtain start and end times for each word
     timestamp_dict = hypotheses[0].timestep
-    time_stride = 8 * nemo_model.cfg.preprocessor.window_stride
+    time_stride = 2 * nemo_model.cfg.preprocessor.window_stride
     word_timestamps = timestamp_dict['word']
 
     for word in word_timestamps:
-        word['start'] = word.pop('start_offset')
-        word['end'] = word.pop('end_offset')
+        word['start'] = word.pop('start_offset') * time_stride
+        word['end'] = word.pop('end_offset') * time_stride
+        word['token'] = word.pop('word')
 
     final_result = {'text':hypotheses[0].text, 'words_ts':word_timestamps}
 

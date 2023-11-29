@@ -99,20 +99,25 @@ class Subtitle:
         subtitles_with_timestamps = []
         with open(template_path, 'r') as file:
             lines = file.readlines()
-
-            for line in lines:
-                line = line.rstrip('\r\n')
-                if(line == 'WEBVTT'):
-                    break
-                elif(line == ''):
-                    break
-                elif('-->' in line):
-                    ts = self._load_subs_timestamps(line)
+            last_ts = None
+            for line in lines[1:]:
+                line = line.rstrip('\n')
+                if line is not '':
+                    if '-->' in line:
+                        ts = self._load_subs_timestamps(line)
+                    else:
+                        try:
+                            ts['text'] += line
+                            last_ts = ts
+                        except:
+                            ts['text'] = line
+                            last_ts = ts
                 else:
                     try:
-                        ts['text'] += line
+                        subtitles_with_timestamps.append(ts.copy())
                     except:
-                        ts['text'] = line
+                        pass
+            subtitles_with_timestamps.append(last_ts)
 
         return subtitles_with_timestamps
 
