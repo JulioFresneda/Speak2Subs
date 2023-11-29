@@ -13,4 +13,4 @@ dataset = media.Dataset('./datasets/mda')
 # TORCH - TODO
 
 
-speak2subs.transcript(dataset, asr=speak2subs.ASRNames.VOSK, use_vad=True, segment=True, max_speech_duration=30, eval_mode=True)
+speak2subs.transcript(dataset, asr=speak2subs.ASRNames.WHISPER, use_vad=True, segment=True, max_speech_duration=30, eval_mode=True)

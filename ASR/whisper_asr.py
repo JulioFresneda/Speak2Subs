@@ -10,7 +10,7 @@ for media in sorted(os.listdir(media_volume)):
     result = model.transcribe(os.path.join(media_volume, media), language='es')
     sentence_ts = []
     for segment in result['segments']:
-        sentence_ts.append({'start':segment['start'], 'end':segment['end'], 'text':segment['text']})
+        sentence_ts.append({'start':segment['start'], 'end':segment['end'], 'token':segment['text']})
     final_result = {}
     final_result['text'] = result['text']
     final_result['sentences_ts'] = sentence_ts

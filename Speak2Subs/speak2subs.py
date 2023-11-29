@@ -36,7 +36,7 @@ class Speak2Subs:
         self.conf = config
         self.dataset = dataset
         self.host_volume_path = os.path.abspath(os.path.join(os.path.dirname(dataset.folder_path), 'host_volume'))
-        self.transcript_mode = TranscriptMode.ORIGINAL_MODE
+
 
         if not os.path.exists(self.host_volume_path):
             os.mkdir(self.host_volume_path)
@@ -60,9 +60,14 @@ class Speak2Subs:
     def _local_to_global_timestamps(self, result, my_media):
         for seg_group in my_media.segments_groups:
             group_starts = seg_group.start
+            token_list = []
+            if ('words_ts' in result[seg_group.name].keys()):
+                token_list = result[seg_group.name]['words_ts']
+            elif ('sentences_ts' in result[seg_group.name].keys()):
+                token_list = result[seg_group.name]['sentences_ts']
 
 
-            for token in result[seg_group.name]['words_ts']:
+            for token in token_list:
                 last_end = group_starts
                 silence = 0
                 for segment in seg_group:
@@ -76,8 +81,8 @@ class Speak2Subs:
 
                         if(segment.predicted_subtitle == None):
                             segment.predicted_subtitle = subtitle.Subtitle()
-                        word = subtitle.Token(local_start_in_global, local_end_in_global, token['word'] + " ")
-                        segment.predicted_subtitle.add_token(word)
+                        tkn = subtitle.Token(local_start_in_global, local_end_in_global, token['token'] + " ")
+                        segment.predicted_subtitle.add_token(tkn)
                         break
 
     def evaluate(self):
