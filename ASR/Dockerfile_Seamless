@@ -1,0 +1,18 @@
+# Use a base Python image
+FROM python:3.10.12
+
+# Set working directory
+WORKDIR /workdir
+COPY seamless_asr.py /workdir/transcript.py
+# Update and install necessary packages
+RUN apt-get update
+RUN apt-get install libsndfile1 -y
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+RUN pip install git+https://github.com/facebookresearch/seamless_communication
+
+
+COPY keep_alive.py /workdir/keep_alive.py
+
+RUN mkdir -p /volume
+
+ENTRYPOINT ["python", "keep_alive.py"]

@@ -1,5 +1,7 @@
 import copy
 import os
+from . import gpt
+
 class Token:
     def __init__(self, start, end, text):
         self.start = start
@@ -46,14 +48,16 @@ class Subtitle:
 
 
 
-    def to_vtt(self, template_path = None):
-        if(template_path is not None):
-            self._to_vtt_based_on_template(template_path)
+    def to_vtt(self, my_media = None):
+        if(my_media is not None):
+            return self._to_vtt_based_on_template(my_media)
+        else:
+            return None
 
 
 
-    def _to_vtt_based_on_template(self, template_path):
-        template_ts = self._load_template(template_path)
+    def _to_vtt_based_on_template(self, my_media):
+        template_ts, _ = load_template(my_media.original_subtitles_path)
         predicted_ts_format = []
         for template_sub in template_ts:
             pred_sub = ""
@@ -67,9 +71,14 @@ class Subtitle:
 
             predicted_ts_format.append({'start':template_sub['start'], 'end':template_sub['end'], 'text':pred_sub})
 
-        name = os.path.basename(template_path).split('.')[0] + "_PRED_" + ".vtt"
-        export_path = os.path.join(os.path.dirname(template_path), name)
+        name = os.path.basename(my_media.original_subtitles_path).split('.')[0] + "_PRED_" + ".vtt"
+        export_path = os.path.join(os.path.dirname(my_media.original_subtitles_path), name)
+
+        predicted_gpt_fixed = ""
+
+        my_media.vtt_subtitles = {'reference':template_ts, 'predicted':predicted_ts_format}
         self._export_ts_to_vtt(predicted_ts_format, export_path)
+        return export_path
 
 
     def _export_ts_to_vtt(self, timestamps, export_path):
@@ -94,46 +103,50 @@ class Subtitle:
         return f"{hours:02d}:{minutes:02d}:{seconds:06.3f}"
 
 
-    def _load_template(self, template_path):
+def load_template(template_path):
 
-        subtitles_with_timestamps = []
-        with open(template_path, 'r') as file:
-            lines = file.readlines()
-            last_ts = None
-            for line in lines[1:]:
-                line = line.rstrip('\n')
-                if line is not '':
-                    if '-->' in line:
-                        ts = self._load_subs_timestamps(line)
-                    else:
-                        try:
-                            ts['text'] += line
-                            last_ts = ts
-                        except:
-                            ts['text'] = line
-                            last_ts = ts
+    subtitles_with_timestamps = []
+    subtitles = []
+    with open(template_path, 'r') as file:
+        lines = file.readlines()
+        last_ts = None
+        for line in lines[1:]:
+            line = line.rstrip('\n')
+            if line is not '':
+                if '-->' in line:
+                    ts = _load_subs_timestamps(line)
                 else:
                     try:
-                        subtitles_with_timestamps.append(ts.copy())
+                        ts['text'] += " " + line
+                        last_ts = ts
                     except:
-                        pass
+                        ts['text'] = line
+                        last_ts = ts
+            else:
+                try:
+                    subtitles_with_timestamps.append(ts.copy())
+                    subtitles.append(ts.copy()['text'])
+                except:
+                    pass
+        if(lines[-1].rstrip('\n') != ''):
             subtitles_with_timestamps.append(last_ts)
+            subtitles.append(last_ts['text'])
 
-        return subtitles_with_timestamps
+    return subtitles_with_timestamps, subtitles
 
 
-    def _load_subs_timestamps(self, line):
-        start, end = line.split(" --> ")
-        start_h, start_m, start_s = map(float, start.split(":"))
-        end_h, end_m, end_s = map(float, end.split(":"))
+def _load_subs_timestamps(line):
+    start, end = line.split(" --> ")
+    start_h, start_m, start_s = map(float, start.split(":"))
+    end_h, end_m, end_s = map(float, end.split(":"))
 
-        start_seconds = start_h * 3600 + start_m * 60 + start_s
-        end_seconds = end_h * 3600 + end_m * 60 + end_s
+    start_seconds = start_h * 3600 + start_m * 60 + start_s
+    end_seconds = end_h * 3600 + end_m * 60 + end_s
 
-        return {
-            "start": round(start_seconds, 3),
-            "end": round(end_seconds, 3)
-        }
+    return {
+        "start": round(start_seconds, 3),
+        "end": round(end_seconds, 3)
+    }
 
 
 

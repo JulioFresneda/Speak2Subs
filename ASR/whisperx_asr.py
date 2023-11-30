@@ -32,6 +32,21 @@ for media in sorted(os.listdir(media_volume)):
     result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
     result['sentences_ts'] = result.pop('segments')
     result['words_ts'] = result.pop('word_segments')
+    for r in result['words_ts']:
+        r['token'] = r.pop('word')
+
+    for i, token in enumerate(result['words_ts'], start=0):
+        if('start' not in token.keys()):
+            if(i==0):
+                token['start'] = 0
+            else:
+                token['start'] = result['words_ts'][i-1]['end']
+        if ('end' not in token.keys()):
+            token['end'] = token['start'] + 0.01
+
+        if('score' not in token.keys()):
+            token['score'] = 0
+
     complete_result[media] = result
 
 # Open a file in write mode ('w')

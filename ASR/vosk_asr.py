@@ -47,6 +47,7 @@ for media in sorted(os.listdir(media_volume)):
     final_result['words_ts'] = final_result.pop('result')
     for word in final_result['words_ts']:
         word['score'] = word.pop('conf')
+        word['token'] = word.pop('word')
     complete_result[media] = final_result
 
 # Open a file in write mode ('w')

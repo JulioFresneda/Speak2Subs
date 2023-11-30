@@ -7,6 +7,7 @@ from . import container_manager
 from . import vad
 from . import media
 from . import subtitle
+from . import eval
 
 
 class ASRNames(Enum):
@@ -16,11 +17,7 @@ class ASRNames(Enum):
     SPEECHBRAIN = 'speechbrain'
     TORCH = 'torch'
     WHISPER = 'whisper'
-
-class TranscriptMode(Enum):
-    ORIGINAL_MODE = 'original_mode'
-    VAD_MODE = 'vad_mode'
-    VAD_AND_SEGMENTED_MODE = 'vad_and_segmented_mode'
+    SEAMLESS = 'seamless'
 
 
 class Speak2Subs:
@@ -37,7 +34,6 @@ class Speak2Subs:
         self.dataset = dataset
         self.host_volume_path = os.path.abspath(os.path.join(os.path.dirname(dataset.folder_path), 'host_volume'))
 
-
         if not os.path.exists(self.host_volume_path):
             os.mkdir(self.host_volume_path)
 
@@ -45,7 +41,9 @@ class Speak2Subs:
                                                                     self.conf['image_names'])
 
     def launch_asr(self):
+        vtt_files = {}
         for asr in self.asr_to_apply:
+            vtt_files[asr.value] = {}
             for k in self.dataset.media:
                 my_media = self.dataset.media[k]
                 for segment_group in my_media.segments_groups:
@@ -55,17 +53,21 @@ class Speak2Subs:
                 self._clean_volume()
                 self._local_to_global_timestamps(result, my_media)
                 my_media.generate_subtitles()
-                my_media.predicted_subtitle.to_vtt(my_media.original_subtitles_path)
+                vtt_files[asr.value][k] = my_media.predicted_subtitles.to_vtt(my_media)
+
+        return vtt_files
+
 
     def _local_to_global_timestamps(self, result, my_media):
         for seg_group in my_media.segments_groups:
             group_starts = seg_group.start
             token_list = []
-            if ('words_ts' in result[seg_group.name].keys()):
+            if 'words_ts' in result[seg_group.name].keys():
                 token_list = result[seg_group.name]['words_ts']
-            elif ('sentences_ts' in result[seg_group.name].keys()):
+                mode = "words"
+            elif 'sentences_ts' in result[seg_group.name].keys():
                 token_list = result[seg_group.name]['sentences_ts']
-
+                mode = "sentences"
 
             for token in token_list:
                 last_end = group_starts
@@ -77,27 +79,17 @@ class Speak2Subs:
                     local_start_in_global = token['start'] + group_starts + silence
                     local_end_in_global = token['end'] + group_starts + silence
 
-                    if(segment.start <= local_end_in_global <= segment.end):
+                    if(mode == "words"):
+                        limit = local_end_in_global
+                    else:
+                        limit = local_start_in_global
+                    if segment.start <= limit <= segment.end:
 
-                        if(segment.predicted_subtitle == None):
-                            segment.predicted_subtitle = subtitle.Subtitle()
+                        if segment.predicted_subtitles is None:
+                            segment.predicted_subtitles = subtitle.Subtitle()
                         tkn = subtitle.Token(local_start_in_global, local_end_in_global, token['token'] + " ")
-                        segment.predicted_subtitle.add_token(tkn)
+                        segment.predicted_subtitles.add_token(tkn)
                         break
-
-    def evaluate(self):
-        for m in self.dataset.media:
-            self.evaluate_media(self.dataset.media[m])
-
-
-    def evaluate_media(self, my_media):
-        pass
-
-
-
-
-
-
 
 
 
@@ -124,29 +116,14 @@ class Speak2Subs:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def transcript(dataset, asr='all', use_vad=True, segment=True, max_speech_duration=float('inf'), eval_mode = False):
+def transcript(dataset, asr='all', use_vad=True, segment=True, sentences=False, max_speech_duration=float('inf'), eval_mode=False):
     """
 
+    :param eval_mode:
+    :param max_speech_duration:
+    :param use_vad:
+    :param asr:
+    :param dataset:
     :type segment: object
     """
     script_path = os.path.dirname(os.path.abspath(__file__))
@@ -159,16 +136,16 @@ def transcript(dataset, asr='all', use_vad=True, segment=True, max_speech_durati
         raise ValueError("Unsupported input type")
 
     msd = max_speech_duration
-    if(not segment):
+    if (not segment):
         msd = float('inf')
 
     for m in dataset.media:
-        mvad = vad.VAD(dataset.media[m], msd, use_vad, segment)
+        mvad = vad.VAD(dataset.media[m], msd, use_vad, segment, sentences)
         mvad.apply_vad()
 
-    s2s.launch_asr()
-
-    if(eval_mode):
-        s2s.evaluate()
+    return s2s.launch_asr()
 
 
+
+def evaluate(reference_vtt_path, predicted_vtt_path):
+    evaluator = eval.Evaluator(reference_vtt_path, predicted_vtt_path)

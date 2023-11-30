@@ -5,11 +5,12 @@ from . import media
 
 
 class VAD:
-    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True):
+    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True, sentences=False):
         self.media = my_media
         self.max_speech_duration = max_speech_duration
         self.use_vad = use_vad
         self.segment = segment
+        self.sentences = sentences
 
     def apply_vad(self):
         self.sampling_rate = 16000
@@ -36,8 +37,10 @@ class VAD:
 
         if (self.use_vad):
             self.speech_timestamps = get_speech_timestamps(self.wav, model, sampling_rate=self.sampling_rate,
-                                                       max_speech_duration_s=self.max_speech_duration,
-                                                       return_seconds=False)
+                                                   max_speech_duration_s=self.max_speech_duration,
+                                                   return_seconds=False)
+
+
         else:
             audio_len = self.wav.shape[0]
             if(self.segment and self.max_speech_duration <= audio_len):
@@ -59,21 +62,26 @@ class VAD:
 
     def _group_segments(self):
         result = []
-        current_list = []
         self.segment_groups = []
+        if(not self.sentences):
+            current_list = []
 
-        for segment in self.segments:
-            duration_so_far = sum([sg.end - sg.start for sg in current_list])
-            segment_duration = segment.end - segment.start
 
-            if duration_so_far + segment_duration <= self.max_speech_duration:
-                current_list.append(segment)
-            else:
+            for segment in self.segments:
+                duration_so_far = sum([sg.end - sg.start for sg in current_list])
+                segment_duration = segment.end - segment.start
+
+                if duration_so_far + segment_duration <= self.max_speech_duration:
+                    current_list.append(segment)
+                else:
+                    result.append(current_list)
+                    current_list = [segment]
+
+            if current_list:
                 result.append(current_list)
-                current_list = [segment]
-
-        if current_list:
-            result.append(current_list)
+        else:
+            for seg in self.segments:
+                result.append([seg])
 
         self.segment_groups_folder = os.path.join(self.media.folder, "segment_groups")
         if (not os.path.exists(self.segment_groups_folder)):

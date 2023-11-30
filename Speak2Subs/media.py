@@ -12,15 +12,15 @@ class Media:
         self.name = os.path.basename(path)
         self.original_subtitles_path = None
         self.segments_groups = []
-        self.predicted_subtitle = None
+        self.predicted_subtitles = None
 
     def generate_subtitles(self):
         subs = []
         for sg in self.segments_groups:
-            if(sg.predicted_subtitle == None):
+            if(sg.predicted_subtitles == None):
                 sg.generate_subtitles()
-            subs.append(sg.predicted_subtitle)
-        self.predicted_subtitle = subtitle.Subtitle.merge_subtitles(subs)
+            subs.append(sg.predicted_subtitles)
+        self.predicted_subtitles = subtitle.Subtitle.merge_subtitles(subs)
 
 
 
@@ -36,7 +36,7 @@ class SegmentGroup:
         self.path = path
         self.folder = os.path.dirname(os.path.abspath(path))
         self.name = os.path.basename(path)
-        self.predicted_subtitle = None
+        self.predicted_subtitles = None
 
 
 
@@ -50,9 +50,9 @@ class SegmentGroup:
     def generate_subtitles(self):
         subs = []
         for seg in self.segments:
-            if(seg.predicted_subtitle != None):
-                subs.append(seg.predicted_subtitle)
-        self.predicted_subtitle = subtitle.Subtitle.merge_subtitles(subs)
+            if(seg.predicted_subtitles != None):
+                subs.append(seg.predicted_subtitles)
+        self.predicted_subtitles = subtitle.Subtitle.merge_subtitles(subs)
 
 
 
@@ -61,7 +61,7 @@ class Segment:
     def __init__(self, start_ts, end_ts, timestamps):
         self.start = round(start_ts, 3)
         self.end = round(end_ts, 3)
-        self.predicted_subtitle = None
+        self.predicted_subtitles = None
         self.ts_dict = timestamps
 
     def __str__(self):
