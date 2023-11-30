@@ -13,9 +13,13 @@ compute_type = "int8" # change to "int8" if low on GPU mem (may reduce accuracy)
 complete_result = {}
 model = whisperx.load_model("base", device, compute_type=compute_type, language='es')
 
+def save_progress(string):
+    with open('/volume/progress.txt', 'w') as file:
+        # Write a string to the file
+        file.write(string)
+        file.close()
 
-
-for media in sorted(os.listdir(media_volume)):
+for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     gc.collect()
     torch.cuda.empty_cache()
     print(media)
@@ -48,9 +52,13 @@ for media in sorted(os.listdir(media_volume)):
             token['score'] = 0
 
     complete_result[media] = result
+    save_progress(str(i) + '/' + str(len(os.listdir(media_volume))))
+
 
 # Open a file in write mode ('w')
 with open('/volume/result.txt', 'w') as file:
     # Write a string to the file
     file.write(str(complete_result))
     file.close()
+
+save_progress("DONE")

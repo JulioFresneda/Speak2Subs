@@ -24,7 +24,8 @@ class VAD:
         model, utils = torch.hub.load(repo_or_dir='snakers4/silero-vad',
                                       model='silero_vad',
                                       force_reload=False,
-                                      onnx=False)
+                                      onnx=False,
+                                      verbose=False)
 
         (get_speech_timestamps,
          self.save_audio,
@@ -36,21 +37,27 @@ class VAD:
         # get speech timestamps from full audio file
 
         if (self.use_vad):
+            print(" ---> Voice Activity Detection - KO <--- ", end='\r', flush=True)
             self.speech_timestamps = get_speech_timestamps(self.wav, model, sampling_rate=self.sampling_rate,
                                                    max_speech_duration_s=self.max_speech_duration,
                                                    return_seconds=False)
+            print(" ---> Voice Activity Detection - OK <--- ")
 
 
         else:
+            print(" ---> Voice Activity Detection - NO <--- ")
             audio_len = self.wav.shape[0]
             if(self.segment and self.max_speech_duration <= audio_len):
+                print(" --->             Segmentation - KO <--- ", end='\r', flush=True)
                 self.speech_timestamps = []
                 for i in range(0, int(audio_len/self.max_speech_duration)+1, self.sampling_rate):
                     self.speech_timestamps.append({'start':int(i*self.max_speech_duration), 'end':int((i+self.sampling_rate)*self.max_speech_duration)})
                 self.speech_timestamps[-1]['end'] = audio_len
+                print(" --->             Segmentation - OK <--- ")
 
 
             else:
+                print(" --->             Segmentation - NO <--- ")
                 self.speech_timestamps = [{'start':0, 'end':audio_len}]
 
 
@@ -64,6 +71,7 @@ class VAD:
         result = []
         self.segment_groups = []
         if(not self.sentences):
+            print(" --->           Group segments - KO <--- ", end='\r', flush=True)
             current_list = []
 
 
@@ -79,7 +87,9 @@ class VAD:
 
             if current_list:
                 result.append(current_list)
+            print(" --->           Group segments - OK <--- ")
         else:
+            print(" --->           Group segments - NO <--- ")
             for seg in self.segments:
                 result.append([seg])
 
@@ -98,6 +108,7 @@ class VAD:
 
     def _save_segments_to_file(self):
         for i, st in enumerate(self.segment_groups, start=0):
+            print(" --->           Saving audios - " + str(i) + "/" + str(len(self.segment_groups)) + " <--- ", end='\r', flush=True)
             ts_list = []
             for seg in st:
                 ts_list.append(seg.ts_dict)

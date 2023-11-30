@@ -8,6 +8,8 @@ from . import vad
 from . import media
 from . import subtitle
 from . import eval
+from art import *
+
 
 
 class ASRNames(Enum):
@@ -22,6 +24,10 @@ class ASRNames(Enum):
 
 class Speak2Subs:
     def __init__(self, dataset, asr, config):
+        result = text2art("Speak2Subs")
+        print(result)
+        print("Let's sub that media! - Julio A. Fresneda -> github.com/JulioFresneda")
+        print("---------------------------------------------------------------------")
 
         if isinstance(asr, str) and asr == 'all':
             self.asr_to_apply = list(ASRNames)
@@ -41,20 +47,28 @@ class Speak2Subs:
                                                                     self.conf['image_names'])
 
     def launch_asr(self):
+        print(" ------------- Launching ASR ------------- ")
         vtt_files = {}
         for asr in self.asr_to_apply:
             vtt_files[asr.value] = {}
-            for k in self.dataset.media:
+            for i, k in enumerate(self.dataset.media, start=1):
+                print(" -- " + asr.value + " -> " + k + " (" + str(i) + "/" + str(len(self.dataset.media)) + ") -- ")
                 my_media = self.dataset.media[k]
+                print(" --->  Copying audio to container volume - KO <--- ", end='\r', flush=True)
                 for segment_group in my_media.segments_groups:
                     self._copy_segment_group_to_container_volume(segment_group, self.host_volume_path)
+                print(" --->  Copying audio to container volume - OK <--- ")
 
                 result = self.container_manager.execute_in_container(asr)
+                print(" ---> Running transcription in container - OK <--- ")
                 self._clean_volume()
                 self._local_to_global_timestamps(result, my_media)
+                print(" ------------- Generating VTT ------------- ")
                 my_media.generate_subtitles()
                 vtt_files[asr.value][k] = my_media.predicted_subtitles.to_vtt(my_media)
 
+        shutil.rmtree(self.host_volume_path)
+        shutil.rmtree(os.path.join(self.dataset.folder_path, "segment_groups"))
         return vtt_files
 
 
@@ -139,9 +153,14 @@ def transcript(dataset, asr='all', use_vad=True, segment=True, sentences=False, 
     if (not segment):
         msd = float('inf')
 
+    print(" ------------- Pre-processing media ------------- ")
     for m in dataset.media:
+        print(" -- " + m + " -- ")
         mvad = vad.VAD(dataset.media[m], msd, use_vad, segment, sentences)
         mvad.apply_vad()
+
+
+
 
     return s2s.launch_asr()
 

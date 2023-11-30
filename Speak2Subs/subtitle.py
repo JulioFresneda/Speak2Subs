@@ -63,7 +63,7 @@ class Subtitle:
             pred_sub = ""
             for token in self.tokens:
                 added = False
-                if (template_sub['start'] <= token.end <= template_sub['end']):
+                if (template_sub['start'] <= token.start <= template_sub['end']):
                     pred_sub += token.text
                     added = True
                 #if(not added and template_sub['start'] <= token.end <= template_sub['end']):

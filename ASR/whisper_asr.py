@@ -2,6 +2,13 @@ import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 import os
 
+
+def save_progress(string):
+    with open('/volume/progress.txt', 'w') as file:
+        # Write a string to the file
+        file.write(string)
+        file.close()
+
 media_volume = "/volume/media"
 complete_result = {}
 
@@ -31,7 +38,7 @@ pipe = pipeline(
 )
 
 
-for media in sorted(os.listdir(media_volume)):
+for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     result = pipe(os.path.join(media_volume, media), generate_kwargs={"language": "spanish"}, return_timestamps="word")
 
 
@@ -47,7 +54,11 @@ for media in sorted(os.listdir(media_volume)):
     complete_result[media] = final_result
     print(result["text"])
 
+    save_progress(str(i) + '/' + str(len(os.listdir(media_volume))))
+
 with open('/volume/result.txt', 'w') as file:
     # Write a string to the file
     file.write(str(complete_result))
     file.close()
+
+save_progress("DONE")

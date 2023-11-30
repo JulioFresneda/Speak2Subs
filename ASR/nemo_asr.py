@@ -6,7 +6,11 @@ from omegaconf import OmegaConf, open_dict
 # IMPORTANTE: Necesarias dependendias -dev de Python. Por ejemplo, python3.10-dev
 import nemo.collections.asr as nemo_asr
 
-
+def save_progress(string):
+    with open('/volume/progress.txt', 'w') as file:
+        # Write a string to the file
+        file.write(string)
+        file.close()
 
 media_volume = "/volume/media"
 
@@ -24,7 +28,7 @@ with open_dict(decoding_cfg):
     decoding_cfg.compute_timestamps = True
     nemo_model.change_decoding_strategy(decoding_cfg)
 
-for media in sorted(os.listdir(media_volume)):
+for i, media in enumerate(sorted(os.listdir(media_volume)), start=0):
     print(media)
 
     # Transcribe the provided media file using the NeMo model
@@ -48,9 +52,14 @@ for media in sorted(os.listdir(media_volume)):
 
     complete_result[media] = final_result
 
+    save_progress(str(i) + '/' + str(len(os.listdir(media_volume))))
+
+
 
 # Open a file in write mode ('w')
 with open('/volume/result.txt', 'w') as file:
     # Write a string to the file
     file.write(str(complete_result))
     file.close()
+
+save_progress("DONE")

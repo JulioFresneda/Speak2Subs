@@ -2,19 +2,9 @@ from Speak2Subs import media
 from Speak2Subs import speak2subs
 import json
 
+
 dataset = media.Dataset('./datasets/mda')
-
-
-# VOSK - OK
-# NEMO - OK
-# WHISPER - OK
-# SPEECHBRAIN - OK
-# WHISPERX - OK
-# TORCH - TODO
-# SEAMLESS - OK
-
-
-vtt_files = speak2subs.transcript(dataset, asr=speak2subs.ASRNames.WHISPERX, use_vad=True, segment=True, sentences=False, max_speech_duration=30, eval_mode=True)
+vtt_files = speak2subs.transcript(dataset, asr=speak2subs.ASRNames.VOSK, use_vad=True, segment=True, sentences=False, max_speech_duration=60, eval_mode=True)
 
 # Test
 ref_vtt = "/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/mda_1.vtt"

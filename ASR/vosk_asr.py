@@ -7,6 +7,14 @@ from vosk import Model, KaldiRecognizer, SetLogLevel
 
 import logging
 
+
+def save_progress(string):
+    with open('/volume/progress.txt', 'w') as file:
+        # Write a string to the file
+        file.write(string)
+        file.close()
+
+
 # Disable all logging from Vosk
 logging.getLogger('vosk').setLevel(logging.ERROR)
 
@@ -18,7 +26,8 @@ SetLogLevel(-1)
 media_volume = "/volume/media"
 
 complete_result = {}
-for media in sorted(os.listdir(media_volume)):
+os.environ['SCRIPT_PROGRESS'] = '0/' + str(len(os.listdir(media_volume)))
+for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     print(media)
     wf = wave.open(os.path.join(media_volume,media), "rb")
     if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != "NONE":
@@ -49,9 +58,14 @@ for media in sorted(os.listdir(media_volume)):
         word['score'] = word.pop('conf')
         word['token'] = word.pop('word')
     complete_result[media] = final_result
+    save_progress(str(i) + '/' + str(len(os.listdir(media_volume))))
 
 # Open a file in write mode ('w')
 with open('/volume/result.txt', 'w') as file:
     # Write a string to the file
     file.write(str(complete_result))
     file.close()
+
+save_progress("DONE")
+
+

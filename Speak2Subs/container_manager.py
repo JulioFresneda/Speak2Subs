@@ -1,6 +1,6 @@
 import docker
 import ast, os, io, tarfile
-
+import time
 
 class ContainerManager:
     def __init__(self, asr, host_volume_path, image_names, container_volume_path='/volume'):
@@ -12,12 +12,15 @@ class ContainerManager:
         self._initialize_containers()
 
     def _initialize_containers(self):
+        print(" - Initializing containers - ")
         self.containers = {}
 
         for asr in self.asr:
+            print(" --> " + asr.value + " - KO <--", end='\r', flush=True)
             image_name = self.image_names[asr.value]
             container_name = asr.value + "_container"
             self.containers[asr.value] = self._initialize_container(image_name, container_name)
+            print(" --> " + asr.value + " - OK <--")
 
     def _initialize_container(self, image_name, container_name):
 
@@ -41,16 +44,21 @@ class ContainerManager:
 
     def execute_in_container(self, asr):
 
-        container = self.containers[asr.value]
+        self.container = self.containers[asr.value]
 
         # Specify the local folder and its path inside the container
         container_path = self.container_volume_path  # Adjust as needed
 
         exec_command = f"ls {container_path}"
-        exec_result = container.exec_run(exec_command)
+        exec_result = self.container.exec_run(exec_command)
 
+
+
+        print(" ---> Running transcription in container - KO <--- ", end='\r', flush=True)
         exec_command = ["python", "/workdir/transcript.py"]
-        exec_result = container.exec_run(exec_command)
+        exec_result = self.container.exec_run(exec_command, detach=True)
+
+        self._check_variable()
 
         result_path = os.path.join(self.host_volume_path, "result.txt")
 
@@ -71,6 +79,19 @@ class ContainerManager:
             # If the container exists, stop and remove it
             existing_container.stop()
             existing_container.remove()
-            print(f"Container '{container_name}' exists, but now it is stopped and removed.")
+            #print(f"Container '{container_name}' exists, but now it is stopped and removed.")
         except docker.errors.NotFound:
             pass
+
+
+    def _check_variable(self):
+        result_path = os.path.join(self.host_volume_path, "progress.txt")
+        string = 0
+        while(string != 'DONE'):
+            if(os.path.exists(result_path)):
+                with open(result_path, 'r') as file:
+                    # Write a string to the file
+                    string = file.readline()
+                    file.close()
+                print(" ---> Running transcription in container - " + str(string) + " <--- ", end='\r', flush=True)
+            time.sleep(2)
