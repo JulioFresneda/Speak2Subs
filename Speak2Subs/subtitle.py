@@ -63,7 +63,7 @@ class Subtitle:
             pred_sub = ""
             for token in self.tokens:
                 added = False
-                if (template_sub['start'] <= token.start <= template_sub['end']):
+                if (template_sub['start'] <= token.end <= template_sub['end']):
                     pred_sub += token.text
                     added = True
                 #if(not added and template_sub['start'] <= token.end <= template_sub['end']):
@@ -74,7 +74,11 @@ class Subtitle:
         name = os.path.basename(my_media.original_subtitles_path).split('.')[0] + "_PRED_" + ".vtt"
         export_path = os.path.join(os.path.dirname(my_media.original_subtitles_path), name)
 
-        predicted_gpt_fixed = ""
+        """
+        gpt_fixer = gpt.GPT()
+        for pred in predicted_ts_format:
+            pred['text'] = gpt_fixer.fix_sentence(pred['text'])
+        """
 
         my_media.vtt_subtitles = {'reference':template_ts, 'predicted':predicted_ts_format}
         self._export_ts_to_vtt(predicted_ts_format, export_path)
@@ -117,10 +121,10 @@ def load_template(template_path):
                     ts = _load_subs_timestamps(line)
                 else:
                     try:
-                        ts['text'] += " " + line
+                        ts['text'] += " " + line.replace("- ", "")
                         last_ts = ts
                     except:
-                        ts['text'] = line
+                        ts['text'] = line.replace("- ", "")
                         last_ts = ts
             else:
                 try:
