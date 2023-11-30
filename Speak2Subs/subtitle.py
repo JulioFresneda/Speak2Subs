@@ -1,6 +1,7 @@
 import copy
 import os
 from . import gpt
+from . import post_processing
 
 class Token:
     def __init__(self, start, end, text):
@@ -74,11 +75,11 @@ class Subtitle:
         name = os.path.basename(my_media.original_subtitles_path).split('.')[0] + "_PRED_" + ".vtt"
         export_path = os.path.join(os.path.dirname(my_media.original_subtitles_path), name)
 
-        """
-        gpt_fixer = gpt.GPT()
+
+
         for pred in predicted_ts_format:
-            pred['text'] = gpt_fixer.fix_sentence(pred['text'])
-        """
+            pred['text'] = post_processing.powerup_with_llama(pred['text'])
+
 
         my_media.vtt_subtitles = {'reference':template_ts, 'predicted':predicted_ts_format}
         self._export_ts_to_vtt(predicted_ts_format, export_path)
