@@ -1,7 +1,8 @@
 import torch
 import os
 from pydub import AudioSegment
-from . import media
+
+from Speak2Subs import media
 
 
 class VAD:
@@ -113,3 +114,16 @@ class VAD:
             for seg in st:
                 ts_list.append(seg.ts_dict)
             self.save_audio(st.path, self.collect_chunks(ts_list, self.wav), sampling_rate=16000)
+
+    def _collect_chunks_with_silence(self, tss,
+                       wav: torch.Tensor):
+        chunks = []
+        five_seconds_length = int(self.sampling_rate * 3)
+        first_5_seconds_tensor = wav[:five_seconds_length]
+        silence_tensor = torch.zeros_like(first_5_seconds_tensor)
+        for i in tss:
+            wav_with_sil = wav[i['start']: i['end']]
+            result_tensor = torch.cat([wav_with_sil, silence_tensor])
+
+            chunks.append(result_tensor)
+        return torch.cat(chunks)

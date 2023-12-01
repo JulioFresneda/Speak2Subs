@@ -1,7 +1,7 @@
 import copy
 import os
-from . import gpt
-from . import post_processing
+from Speak2Subs import post_processing
+
 
 class Token:
     def __init__(self, start, end, text):
@@ -12,12 +12,13 @@ class Token:
     def __str__(self):
         return self.text
 
+
 class Subtitle:
     def __init__(self):
         self.tokens = []
         self.text = ""
 
-        if(len(self.tokens) > 0):
+        if len(self.tokens) > 0:
             self.start = self.tokens[0].start
             self.end = self.tokens[-1].end
         else:
@@ -25,16 +26,19 @@ class Subtitle:
             self.end = 0
 
     def add_token(self, token):
-        if(len(self.tokens) == 0):
+        if len(self.tokens) == 0:
             self.start = token.start
         self.tokens.append(token)
         self.text += token.text
         self.end = token.end
 
     def join_subtitle(self, subtitle):
-        self.end = subtitle.end
-        self.tokens += subtitle.tokens
-        self.text += subtitle.text
+        try:
+            self.end = subtitle.end
+            self.tokens += subtitle.tokens
+            self.text += subtitle.text
+        except:
+            print(subtitle)
 
     @staticmethod
     def merge_subtitles(subtitles: list):
@@ -43,51 +47,44 @@ class Subtitle:
             sub.join_subtitle(s)
         return sub
 
-
     def __str__(self):
         return self.text
 
+    def to_vtt(self, my_media, asr_value):
+        if my_media.original_subtitles_path is not None:
+            self._to_vtt_based_on_template(my_media, asr_value)
 
-
-    def to_vtt(self, my_media = None):
-        if(my_media is not None):
-            return self._to_vtt_based_on_template(my_media)
-        else:
-            return None
-
-
-
-    def _to_vtt_based_on_template(self, my_media):
+    def _to_vtt_based_on_template(self, my_media, asr_value):
         template_ts, _ = load_template(my_media.original_subtitles_path)
         predicted_ts_format = []
         for template_sub in template_ts:
             pred_sub = ""
             for token in self.tokens:
                 added = False
-                if (template_sub['start'] <= token.start <= template_sub['end']):
+                if template_sub['start'] <= token.end <= template_sub['end']:
                     pred_sub += token.text
                     added = True
-                #if(not added and template_sub['start'] <= token.end <= template_sub['end']):
+                # if(not added and template_sub['start'] <= token.end <= template_sub['end']):
                 #    pred_sub += token.text
 
-            predicted_ts_format.append({'start':template_sub['start'], 'end':template_sub['end'], 'text':pred_sub})
+            predicted_ts_format.append({'start': template_sub['start'], 'end': template_sub['end'], 'text': pred_sub})
 
         name = os.path.basename(my_media.original_subtitles_path).split('.')[0] + "_PRED_" + ".vtt"
-        export_path = os.path.join(os.path.dirname(my_media.original_subtitles_path), name)
+        export_folder = os.path.join(os.path.dirname(my_media.original_subtitles_path), asr_value + "_VTT")
+        if not os.path.exists(export_folder):
+            os.mkdir(export_folder)
+        export_path = os.path.join(export_folder, name)
 
-
-
-        for pred in predicted_ts_format:
-            pred['text'] = post_processing.powerup_with_llama(pred['text'])
-
-
-        my_media.vtt_subtitles = {'reference':template_ts, 'predicted':predicted_ts_format}
+        # my_media.vtt_subtitles = {'reference':template_ts, 'predicted':predicted_ts_format}
         self._export_ts_to_vtt(predicted_ts_format, export_path)
-        return export_path
-
+        try:
+            my_media.predicted_subtitles_vtt_path[asr_value] = export_path
+        except:
+            my_media.predicted_subtitles_vtt_path = {}
+            my_media.predicted_subtitles_vtt_path[asr_value] = export_path
 
     def _export_ts_to_vtt(self, timestamps, export_path):
-        if(os.path.exists(export_path)):
+        if os.path.exists(export_path):
             os.remove(export_path)
 
         with open(export_path, 'w') as file:
@@ -109,7 +106,6 @@ class Subtitle:
 
 
 def load_template(template_path):
-
     subtitles_with_timestamps = []
     subtitles = []
     with open(template_path, 'r') as file:
@@ -133,7 +129,7 @@ def load_template(template_path):
                     subtitles.append(ts.copy()['text'])
                 except:
                     pass
-        if(lines[-1].rstrip('\n') != ''):
+        if lines[-1].rstrip('\n') != '':
             subtitles_with_timestamps.append(last_ts)
             subtitles.append(last_ts['text'])
 
@@ -152,11 +148,3 @@ def _load_subs_timestamps(line):
         "start": round(start_seconds, 3),
         "end": round(end_seconds, 3)
     }
-
-
-
-
-
-
-
-

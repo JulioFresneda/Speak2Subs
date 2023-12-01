@@ -2,7 +2,7 @@ import os.path
 import random
 from moviepy.editor import AudioFileClip
 import logging
-from . import subtitle
+from Speak2Subs import subtitle
 
 
 class Media:
@@ -17,11 +17,14 @@ class Media:
     def generate_subtitles(self):
         subs = []
         for sg in self.segments_groups:
-            if(sg.predicted_subtitles == None):
-                sg.generate_subtitles()
+            sg.generate_subtitles()
             subs.append(sg.predicted_subtitles)
         self.predicted_subtitles = subtitle.Subtitle.merge_subtitles(subs)
 
+    def reset_subtitles(self):
+        self.predicted_subtitles = []
+        for sg in self.segments_groups:
+            sg.reset_subtitles()
 
 
 class SegmentGroup:
@@ -50,9 +53,13 @@ class SegmentGroup:
     def generate_subtitles(self):
         subs = []
         for seg in self.segments:
-            if(seg.predicted_subtitles != None):
-                subs.append(seg.predicted_subtitles)
+            subs.append(seg.predicted_subtitles)
         self.predicted_subtitles = subtitle.Subtitle.merge_subtitles(subs)
+
+    def reset_subtitles(self):
+        self.predicted_subtitles = []
+        for s in self.segments:
+            s.predicted_subtitles = None
 
 
 
@@ -70,9 +77,10 @@ class Segment:
 
 
 class Dataset:
-    def __init__(self, folder_path, name=None):
+    def __init__(self, folder_path, name=None, use_vtt = True):
         if (name != None):
             self.name = name
+        self.use_vtt = use_vtt
 
         # Always keep order
         self.media = {}
@@ -103,11 +111,12 @@ class Dataset:
                 _mp42wav(os.path.join(folder_path, mp4), os.path.join(folder_path, mp4_waved))
                 self.media[mp4_waved] = Media(os.path.join(folder_path, mp4_waved))
 
-        vtt_files = [vtt for vtt in os.listdir(folder_path) if vtt.split('.')[-1] == 'vtt']
-        for vtt in vtt_files:
-            vtt_waved = '.'.join(vtt.split('.')[:-1]) + '.wav'
-            if vtt_waved in self.media.keys():
-                self.media[vtt_waved].original_subtitles_path = os.path.join(folder_path, vtt)
+        if self.use_vtt:
+            vtt_files = [vtt for vtt in os.listdir(folder_path) if vtt.split('.')[-1] == 'vtt']
+            for vtt in vtt_files:
+                vtt_waved = '.'.join(vtt.split('.')[:-1]) + '.wav'
+                if vtt_waved in self.media.keys():
+                    self.media[vtt_waved].original_subtitles_path = os.path.join(folder_path, vtt)
 
     def __str__(self):
         return "<Dataset named " + self.name + ", with " + str(

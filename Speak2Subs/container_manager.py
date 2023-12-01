@@ -1,14 +1,14 @@
 import docker
 import ast, os, io, tarfile
 import time
+from Speak2Subs import speak2subs
 
 class ContainerManager:
-    def __init__(self, asr, host_volume_path, image_names, container_volume_path='/volume'):
+    def __init__(self, asr, host_volume_path, container_volume_path='/volume'):
         self.client = docker.from_env()
         self.host_volume_path = host_volume_path
         self.container_volume_path = container_volume_path
         self.asr = asr
-        self.image_names = image_names
         self._initialize_containers()
 
     def _initialize_containers(self):
@@ -17,7 +17,7 @@ class ContainerManager:
 
         for asr in self.asr:
             print(" --> " + asr.value + " - KO <--", end='\r', flush=True)
-            image_name = self.image_names[asr.value]
+            image_name = speak2subs.ASR.image(asr)
             container_name = asr.value + "_container"
             self.containers[asr.value] = self._initialize_container(image_name, container_name)
             print(" --> " + asr.value + " - OK <--")
@@ -46,18 +46,9 @@ class ContainerManager:
 
         self.container = self.containers[asr.value]
 
-        # Specify the local folder and its path inside the container
-        container_path = self.container_volume_path  # Adjust as needed
-
-        exec_command = f"ls {container_path}"
-        exec_result = self.container.exec_run(exec_command)
-
-
-
         print(" ---> Running transcription in container - KO <--- ", end='\r', flush=True)
         exec_command = ["python", "/workdir/transcript.py"]
-        exec_result = self.container.exec_run(exec_command, detach=True)
-
+        self.container.exec_run(exec_command, detach=True)
         self._check_variable()
 
         result_path = os.path.join(self.host_volume_path, "result.txt")
@@ -69,7 +60,6 @@ class ContainerManager:
             os.remove(result_path)
 
         list_of_dicts_string = ast.literal_eval(list_of_dicts_string)
-
         return list_of_dicts_string  # Print or process the logs as needed
 
     def _remove_container_if_exists(self, container_name):
@@ -80,7 +70,7 @@ class ContainerManager:
             existing_container.stop()
             existing_container.remove()
             #print(f"Container '{container_name}' exists, but now it is stopped and removed.")
-        except docker.errors.NotFound:
+        except:
             pass
 
 
