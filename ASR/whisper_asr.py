@@ -47,6 +47,8 @@ for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     for chunk in result['chunks']:
         word = {}
         word['token'] = chunk['text']
+        if(len(word['token']) > 0 and word['token'][0] == ' '):
+            word['token'] = word['token'][1:]
         word['start'] = chunk['timestamp'][0]
         word['end'] = chunk['timestamp'][1]
         final_result['words_ts'].append(word)
