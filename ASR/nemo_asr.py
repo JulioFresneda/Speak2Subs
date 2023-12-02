@@ -15,10 +15,10 @@ def save_progress(string):
 media_volume = "/volume/media"
 
 complete_result = {}
-model_name="stt_es_quartznet15x5"
+model_name="stt_es_conformer_ctc_large"
 
 # Load the NeMo asr model using the specified model name or the default if not provided
-nemo_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name=model_name)
+nemo_model = nemo_asr.models.EncDecCTCModelBPE.from_pretrained(model_name=model_name)
 
 # Retrieve the decoding configuration from the NeMo model and customize it
 decoding_cfg = nemo_model.cfg.decoding
@@ -40,7 +40,7 @@ for i, media in enumerate(sorted(os.listdir(media_volume)), start=0):
 
     # Extract word timestamps and process them to obtain start and end times for each word
     timestamp_dict = hypotheses[0].timestep
-    time_stride = 2 * nemo_model.cfg.preprocessor.window_stride
+    time_stride = 4 * nemo_model.cfg.preprocessor.window_stride
     word_timestamps = timestamp_dict['word']
 
     for word in word_timestamps:

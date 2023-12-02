@@ -26,7 +26,7 @@ SetLogLevel(-1)
 media_volume = "/volume/media"
 
 complete_result = {}
-os.environ['SCRIPT_PROGRESS'] = '0/' + str(len(os.listdir(media_volume)))
+
 for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     print(media)
     wf = wave.open(os.path.join(media_volume,media), "rb")

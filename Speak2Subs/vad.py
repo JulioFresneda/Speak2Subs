@@ -13,6 +13,9 @@ class VAD:
         self.segment = segment
         self.sentences = sentences
 
+        if not self.segment:
+            self.max_speech_duration = float('inf')
+
     def apply_vad(self):
         self.sampling_rate = 16000
 

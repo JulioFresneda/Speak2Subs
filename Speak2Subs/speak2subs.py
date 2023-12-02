@@ -101,7 +101,7 @@ class Speak2Subs:
                 token_list = result[seg_group.name]['words_ts']
                 mode = "words"
             elif 'sentences_ts' in result[seg_group.name].keys():
-                token_list = result[seg_group.name]['sentences_ts']
+                token_list = self._sentences_to_words(result[seg_group.name]['sentences_ts'], seg_group.group_duration)
                 mode = "sentences"
 
             for token in token_list:
@@ -122,7 +122,7 @@ class Speak2Subs:
 
                         if segment.predicted_subtitles is None:
                             segment.predicted_subtitles = subtitle.Subtitle()
-                        tkn = subtitle.Token(local_start_in_global, local_end_in_global, token['token'])
+                        tkn = subtitle.Token(local_start_in_global, local_end_in_global, token['token'] + " ")
                         segment.predicted_subtitles.add_token(tkn)
                         break
             to_remove = []
@@ -132,6 +132,31 @@ class Speak2Subs:
             for item in to_remove:
                 seg_group.segments.remove(item)
 
+
+    def _sentences_to_words(self, sentence, duration):
+
+        len_weighted = len(sentence) + sentence.count(',') + 2*sentence.count('.')
+        ratio = duration / len_weighted
+
+        tokenlist = sentence.split(" ")
+        words = []
+        for i, token in enumerate(tokenlist, start=0):
+            weight = 1
+            if (token[-1] == ','):
+                weight = 2
+            elif (token[-1] == '.'):
+                weight = 3
+
+            if(i == 0):
+                start = 0
+                end = ratio * (len(token) + weight)
+            else:
+                start = words[i-1]['end']
+                end = words[i-1]['end'] + ratio * (len(token) + weight)
+
+            words.append({'token':token, 'start':start, 'end':end})
+
+        return words
 
 
     def _copy_segment_group_to_container_volume(self, segment_group, host_volume_path):

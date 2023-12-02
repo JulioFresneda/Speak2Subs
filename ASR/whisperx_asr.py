@@ -39,12 +39,12 @@ for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     for r in result['words_ts']:
         r['token'] = r.pop('word')
 
-    for i, token in enumerate(result['words_ts'], start=0):
+    for j, token in enumerate(result['words_ts'], start=0):
         if('start' not in token.keys()):
-            if(i==0):
+            if(j==0):
                 token['start'] = 0
             else:
-                token['start'] = result['words_ts'][i-1]['end']
+                token['start'] = result['words_ts'][j-1]['end']
         if ('end' not in token.keys()):
             token['end'] = token['start'] + 0.01
 

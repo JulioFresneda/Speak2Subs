@@ -6,10 +6,12 @@ WORKDIR /workdir
 COPY seamless_asr.py /workdir/transcript.py
 # Update and install necessary packages
 RUN apt-get update
-RUN apt-get install libsndfile1 -y
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-RUN pip install git+https://github.com/facebookresearch/seamless_communication
-
+RUN pip install --quiet git+https://github.com/huggingface/transformers sentencepiece
+RUN pip install --quiet datasets
+RUN pip install protobuf
+RUN pip install soundfile
+RUN pip install librosa
 
 COPY keep_alive.py /workdir/keep_alive.py
 
