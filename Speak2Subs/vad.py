@@ -16,7 +16,8 @@ class VAD:
         if not self.segment:
             self.max_speech_duration = float('inf')
 
-    def apply_vad(self):
+    def apply_vad(self, cache_path):
+        self.cache_path = cache_path
         self.sampling_rate = 16000
 
         self._apply_model()
@@ -41,27 +42,27 @@ class VAD:
         # get speech timestamps from full audio file
 
         if (self.use_vad):
-            print(" ---> Voice Activity Detection - KO <--- ", end='\r', flush=True)
+            print(" ------> Voice Activity Detection - KO", end='\r', flush=True)
             self.speech_timestamps = get_speech_timestamps(self.wav, model, sampling_rate=self.sampling_rate,
                                                    max_speech_duration_s=self.max_speech_duration,
                                                    return_seconds=False)
-            print(" ---> Voice Activity Detection - OK <--- ")
+            print(" ------> Voice Activity Detection - OK")
 
 
         else:
-            print(" ---> Voice Activity Detection - NO <--- ")
+            print(" ------> Voice Activity Detection - NO")
             audio_len = self.wav.shape[0]
             if(self.segment and self.max_speech_duration <= audio_len):
-                print(" --->             Segmentation - KO <--- ", end='\r', flush=True)
+                print(" ------> Segmentation - KO", end='\r', flush=True)
                 self.speech_timestamps = []
                 for i in range(0, int(audio_len/self.max_speech_duration)+1, self.sampling_rate):
                     self.speech_timestamps.append({'start':int(i*self.max_speech_duration), 'end':int((i+self.sampling_rate)*self.max_speech_duration)})
                 self.speech_timestamps[-1]['end'] = audio_len
-                print(" --->             Segmentation - OK <--- ")
+                print(" ------> Segmentation - OK")
 
 
             else:
-                print(" --->             Segmentation - NO <--- ")
+                print(" ------> Segmentation - NO")
                 self.speech_timestamps = [{'start':0, 'end':audio_len}]
 
 
@@ -75,7 +76,7 @@ class VAD:
         result = []
         self.segment_groups = []
         if(not self.sentences):
-            print(" --->           Group segments - KO <--- ", end='\r', flush=True)
+            print(" ------> Group segments - KO", end='\r', flush=True)
             current_list = []
 
 
@@ -91,13 +92,13 @@ class VAD:
 
             if current_list:
                 result.append(current_list)
-            print(" --->           Group segments - OK <--- ")
+            print(" ------> Group segments - OK")
         else:
-            print(" --->           Group segments - NO <--- ")
+            print(" ------> Group segments - NO")
             for seg in self.segments:
                 result.append([seg])
 
-        self.segment_groups_folder = os.path.join(self.media.folder, "segment_groups")
+        self.segment_groups_folder = os.path.join(self.cache_path, "segment_groups")
         if (not os.path.exists(self.segment_groups_folder)):
             os.mkdir(self.segment_groups_folder)
 
@@ -112,7 +113,7 @@ class VAD:
 
     def _save_segments_to_file(self):
         for i, st in enumerate(self.segment_groups, start=0):
-            print(" --->           Saving audios - " + str(i) + "/" + str(len(self.segment_groups)) + " <--- ", end='\r', flush=True)
+            print(" ------> Saving audios - " + str(i) + "/" + str(len(self.segment_groups)) + "   ", end='\r', flush=True)
             ts_list = []
             for seg in st:
                 ts_list.append(seg.ts_dict)

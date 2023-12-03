@@ -83,45 +83,44 @@ def evaluate_compliance(vtt_path):
     # Reglas
     vtt_ts, vtt = subtitle.load_template(vtt_path)
 
-    # 4.3 - Numero lineas de texto
-    vtt_eval_4_3 = _eval_une_4_3(vtt)
+    comply_4_3 = 0
+    comply_4_6 = 0
+    comply_5_1 = 0
 
-    # 4.6 - Maximo de caracteres por linea - 37
-    vtt_eval_4_6 = _eval_une_4_6(vtt)
-
-    # 5.1 - 15 caracteres por segundo max
-    vtt_eval_5_1 = _eval_une_5_1(vtt_ts)
-
-    return {"4_3":vtt_eval_4_3, "4_6":vtt_eval_4_6, "5_1":vtt_eval_5_1}
-
-
-def _eval_une_4_3(sentences):
-    comply = 0
-    for s in sentences:
-        if s.count('\n') <= 3:
-            comply += 1
-    total = len(sentences)
-    return {'comply': comply, 'total': total}
+    for sentence_ts, sentence in zip(vtt_ts, vtt):
+        if eval_une_4_3(sentence):
+            comply_4_3 += 1
+        if eval_une_4_6(sentence):
+            comply_4_6 += 1
+        if eval_une_5_1(sentence, sentence_ts['end'] - sentence_ts['start']):
+            comply_5_1 += 1
 
 
-def _eval_une_4_6(sentences):
-    comply = 0
-    for s in sentences:
-        if len(s) <= 37:
-            comply += 1
-    total = len(sentences)
-    return {'comply': comply, 'total': total}
+    eval = {"4_3":comply_4_3, "4_6":comply_4_6, "5_1":comply_5_1, "total":len(vtt)}
+    print(eval)
+    return eval
 
 
-def _eval_une_5_1(sentences_ts):
-    comply = 0
-    for s in sentences_ts:
-        sen_len = len(s['text'])
-        sen_sec = s['end'] - s['start']
-        vel = sen_len / sen_sec
-        if vel <= 15:
-            comply += 1
-    total = len(sentences_ts)
-    return {'comply': comply, 'total': total}
 
-# evaluator = Evaluator("../datasets/mda")
+# No more than 3 lines
+def eval_une_4_3(sentence):
+    return sentence.count('\n') <= 2
+
+# No more than 37 char per line
+def eval_une_4_6(sentence):
+    comply_bool = True
+    for sub_s in sentence.split('\n'):
+        if len(sub_s) > 37:
+            comply_bool = False
+    return comply_bool
+
+# No more than 15 char/s
+def eval_une_5_1(sentence, duration):
+    sen_len = len(sentence)
+    sen_sec = duration
+    vel = sen_len / sen_sec
+    return vel <= 15
+
+
+#evaluator = Evaluator("../datasets/mda")
+#evaluate_compliance("/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/mda_1.vtt")

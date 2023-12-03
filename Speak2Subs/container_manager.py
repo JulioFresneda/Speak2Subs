@@ -12,15 +12,15 @@ class ContainerManager:
         self._initialize_containers()
 
     def _initialize_containers(self):
-        print(" - Initializing containers - ")
+        print(" ------- Initializing containers")
         self.containers = {}
 
         for asr in self.asr:
-            print(" --> " + asr.value + " - KO <--", end='\r', flush=True)
+            print(" ------> " + asr.value + " - KO", end='\r', flush=True)
             image_name = speak2subs.ASR.image(asr)
             container_name = asr.value + "_container"
             self.containers[asr.value] = self._initialize_container(image_name, container_name)
-            print(" --> " + asr.value + " - OK <--")
+            print(" ------> " + asr.value + " - OK")
 
     def _initialize_container(self, image_name, container_name):
 
@@ -46,7 +46,7 @@ class ContainerManager:
 
         self.container = self.containers[asr.value]
 
-        print(" ---> Running transcription in container - KO <--- ", end='\r', flush=True)
+        print(" ------> Running transcription in container - KO", end='\r', flush=True)
         exec_command = ["python", "/workdir/transcript.py"]
         self.container.exec_run(exec_command, detach=True)
         self._check_variable()
@@ -83,5 +83,5 @@ class ContainerManager:
                     # Write a string to the file
                     string = file.readline()
                     file.close()
-                print(" ---> Running transcription in container - " + str(string) + " <--- ", end='\r', flush=True)
+                print(" ------> Running transcription in container - " + str(string), end='\r', flush=True)
             time.sleep(2)

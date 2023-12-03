@@ -6,11 +6,19 @@ asr_list = list(speak2subs.ASR)
 print(asr_list)
 
 
-speak2subs.transcript('./datasets/mda', asr=['seamless'], use_vad=True, segment=True, sentences=False, max_speech_duration=30, use_vtt_template=True)
+speak2subs.transcript('./datasets/mda',
+                      export_path = './results',
+                      asr=['whisperx'],
+                      use_vad=True,
+                      segment=True,
+                      sentences=False,
+                      max_speech_duration=30,
+                      use_vtt_template=True,
+                      use_templates=False)
 
 
 
-ref = "/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/mda_1.vtt"
-pred = "/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/seamless_VTT/mda_1_PRED_.vtt"
+#ref = "/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/mda_1.vtt"
+#pred = "/home/juliofgx/PycharmProjects/Speak2Subs/results/vosk_VTT/mda_1_PRED_.vtt"
 
-speak2subs.eval(ref, pred)
+#speak2subs.eval(ref, pred)

@@ -40,27 +40,35 @@ class ASR(Enum):
 
 
 class Speak2Subs:
-    def __init__(self, dataset, asr):
+    def __init__(self, dataset, asr, export_path, use_templates):
         result = text2art("Speak2Subs")
         print(result)
         print("Let's sub that media! - Julio A. Fresneda -> github.com/JulioFresneda")
         print("---------------------------------------------------------------------")
 
-        self._load_variables(dataset, asr)
-
+        self._load_variables(dataset, asr, export_path, use_templates)
         self.container_manager = container_manager.ContainerManager(self.asr_to_apply, self.host_volume_path)
 
-    def _load_variables(self, dataset, asr):
+    def _load_variables(self, dataset, asr, export_path, use_templates):
         self.asr_to_apply = asr
+        self.use_templates = use_templates
 
         self.dataset = dataset
-        self.host_volume_path = os.path.abspath(os.path.join(os.path.dirname(dataset.folder_path), 'host_volume'))
+        self.cache_path = os.path.join(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir), "__cache__")
+        self.export_path = os.path.abspath(export_path)
+        self.host_volume_path = os.path.join(self.cache_path, "host_volume")
+
+        if not os.path.exists(self.cache_path):
+            os.mkdir(self.cache_path)
+            
+        if not os.path.exists(self.export_path):
+            os.mkdir(self.export_path)
 
         if not os.path.exists(self.host_volume_path):
             os.mkdir(self.host_volume_path)
 
     def apply_processing(self):
-        print(" ------------- Launching ASR ------------- ")
+        print(" --------------------------- Launching ASR --------------------------- ")
         times = {"execution_time":{}}
         for asr in self.asr_to_apply:
             times["execution_time"][asr.value] = {}
@@ -69,27 +77,28 @@ class Speak2Subs:
                 self._apply_asr_in_media(self.dataset.media[m], asr, index=i)
                 execution_time = time.time() - start_timer
                 times["execution_time"][asr.value][m] = execution_time
-                print(" ------- Execution completed: " + str(int(execution_time)) + " seconds ------- ")
-                print(" ------------- Generating VTT with " + asr.value + " ------------- ")
+                print(" ------- Execution completed: " + str(int(execution_time)) + " seconds")
+                print(" ------- Generating VTT with " + asr.value)
                 self.dataset.media[m].generate_subtitles()
-                self.dataset.media[m].predicted_subtitles.to_vtt(self.dataset.media[m], asr.value)
+                self.dataset.media[m].predicted_subtitles.to_vtt(self.dataset.media[m], asr.value, self.export_path, self.use_templates)
                 self.dataset.media[m].reset_subtitles()
+        print(" ------------------------------- Done -------------------------------- ")
 
         shutil.rmtree(self.host_volume_path)
-        shutil.rmtree(os.path.join(self.dataset.folder_path, "segment_groups"))
-        with open(os.path.join(self.dataset.folder_path, "execution_times_" + self.dataset.name + ".json"), 'w') as json_file:
+        shutil.rmtree(self.cache_path)
+        with open(os.path.join(self.export_path, "execution_times_" + self.dataset.name + ".json"), 'w') as json_file:
             json.dump(times, json_file)
 
     def _apply_asr_in_media(self, my_media, asr, index):
-        print(" -- " + asr.value + " -> " + my_media.name + " (" + str(index) + "/" + str(
-            len(self.dataset.media)) + ") -- ")
-        print(" --->  Copying audio to container volume - KO <--- ", end='\r', flush=True)
+        print(" ------- " + asr.value + " -> " + my_media.name + " (" + str(index) + "/" + str(
+            len(self.dataset.media)) + ")")
+        print(" ------>  Copying audio to container volume - KO", end='\r', flush=True)
         for segment_group in my_media.segments_groups:
             self._copy_segment_group_to_container_volume(segment_group, self.host_volume_path)
-        print(" --->  Copying audio to container volume - OK <--- ")
+        print(" ------>  Copying audio to container volume - OK")
 
         result = self.container_manager.execute_in_container(asr)
-        print(" ---> Running transcription in container - OK <--- ")
+        print(" ------> Running transcription in container - OK")
         self._clean_volume()
         self._local_to_global_timestamps(result, my_media)
 
@@ -180,16 +189,16 @@ class Speak2Subs:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-def transcript(media_folder, asr='all', use_vad=True, segment=True, sentences=False, max_speech_duration=float('inf'),
-               use_vtt_template=False):
+def transcript(media_folder, export_path, asr='all', use_vad=True, segment=True, sentences=False, max_speech_duration=float('inf'),
+               use_vtt_template=False, use_templates=False):
     # Load dataset
     dataset = media.Dataset(media_folder, os.path.basename(media_folder), use_vtt_template)
 
     # Load asr
     asr_list = _load_asr(asr)
-    s2s = Speak2Subs(dataset, asr_list)
+    s2s = Speak2Subs(dataset, asr_list, export_path, use_templates)
 
-    _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences)
+    _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, s2s.cache_path)
     _processing(s2s)
     _post_processing(dataset)
 
@@ -210,12 +219,12 @@ def _load_asr(asr):
     return _asr
 
 
-def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences):
-    print(" ------------- Pre-processing media ------------- ")
+def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, cache_path):
+    print(" ------- Pre-processing media")
     for m in dataset.media:
-        print(" -- " + m + " -- ")
+        print(" ------- " + m)
         mvad = vad.VAD(dataset.media[m], max_speech_duration, use_vad, segment, sentences)
-        mvad.apply_vad()
+        mvad.apply_vad(cache_path)
 
 
 def _processing(s2s: Speak2Subs):

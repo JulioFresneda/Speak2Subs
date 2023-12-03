@@ -1,7 +1,7 @@
 import copy
 import os
 from Speak2Subs import post_processing
-
+from Speak2Subs.evaluate import eval_une_4_3, eval_une_4_6, eval_une_5_1
 
 class Token:
     def __init__(self, start, end, text):
@@ -50,11 +50,64 @@ class Subtitle:
     def __str__(self):
         return self.text
 
-    def to_vtt(self, my_media, asr_value):
-        if my_media.original_subtitles_path is not None:
-            self._to_vtt_based_on_template(my_media, asr_value)
+    def to_vtt(self, my_media, asr_value, export_path, use_template):
+        if my_media.original_subtitles_path is not None and use_template:
+            self._to_vtt_based_on_template(my_media, asr_value, export_path)
+        else:
+            self._to_vtt_blind(my_media, asr_value, export_path)
 
-    def _to_vtt_based_on_template(self, my_media, asr_value):
+    def _to_vtt_blind(self, my_media, asr_value, export_path):
+        predicted_ts_format = []
+        subtitle = ""
+        last_end = 0
+        for token in self.tokens:
+            if subtitle == "":
+                start = token.start
+
+            if start < last_end:
+                start = last_end + 0.01
+
+
+            if eval_une_4_6(subtitle + token.text) and eval_une_5_1(subtitle + token.text, token.end):
+                subtitle = subtitle + token.text
+                if self._end_of_sentence(subtitle):
+                    predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
+                    subtitle = ""
+                    last_end = token.end
+            elif eval_une_4_3(subtitle + "\n newline"):
+                subtitle += "\n" + token.text
+                if self._end_of_sentence(subtitle):
+                    predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
+                    subtitle = ""
+                    last_end = token.end
+            else:
+                predicted_ts_format.append({'text':subtitle, 'start':start, 'end':token.end})
+                subtitle = token.text
+                start = token.start
+                last_end = token.end
+                if self._end_of_sentence(subtitle):
+                    if start < last_end and last_end + 0.1 < token.end:
+                        start = last_end + 0.1
+                    predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
+                    subtitle = ""
+                    last_end = token.end
+
+
+
+
+
+        self._to_vtt_complete_export(my_media, asr_value, export_path, predicted_ts_format)
+
+    def _end_of_sentence(self, sentence):
+        is_end = False
+        is_end = sentence[-1] == ',' or sentence[-1] == '.' or sentence[-1] == ';'
+        if len(sentence) > 1:
+            is_end = sentence[-2:] == ', ' or sentence[-2:] == '. ' or sentence[-2:] == '; ' or is_end
+        return is_end
+
+
+
+    def _to_vtt_based_on_template(self, my_media, asr_value, export_path):
         template_ts, _ = load_template(my_media.original_subtitles_path)
         predicted_ts_format = []
         for template_sub in template_ts:
@@ -69,19 +122,21 @@ class Subtitle:
 
             predicted_ts_format.append({'start': template_sub['start'], 'end': template_sub['end'], 'text': pred_sub})
 
+        self._to_vtt_complete_export(my_media, asr_value, export_path, predicted_ts_format)
+    def _to_vtt_complete_export(self, my_media, asr_value, export_path, predicted_ts_format):
         name = os.path.basename(my_media.original_subtitles_path).split('.')[0] + "_PRED_" + ".vtt"
-        export_folder = os.path.join(os.path.dirname(my_media.original_subtitles_path), asr_value + "_VTT")
+        export_folder = os.path.join(export_path, asr_value + "_VTT")
         if not os.path.exists(export_folder):
             os.mkdir(export_folder)
-        export_path = os.path.join(export_folder, name)
+        file_export_path = os.path.join(export_folder, name)
 
         # my_media.vtt_subtitles = {'reference':template_ts, 'predicted':predicted_ts_format}
-        self._export_ts_to_vtt(predicted_ts_format, export_path)
+        self._export_ts_to_vtt(predicted_ts_format, file_export_path)
         try:
-            my_media.predicted_subtitles_vtt_path[asr_value] = export_path
+            my_media.predicted_subtitles_vtt_path[asr_value] = file_export_path
         except:
             my_media.predicted_subtitles_vtt_path = {}
-            my_media.predicted_subtitles_vtt_path[asr_value] = export_path
+            my_media.predicted_subtitles_vtt_path[asr_value] = file_export_path
 
     def _export_ts_to_vtt(self, timestamps, export_path):
         if os.path.exists(export_path):
