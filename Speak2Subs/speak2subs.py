@@ -60,6 +60,9 @@ class Speak2Subs:
 
         if not os.path.exists(self.cache_path):
             os.mkdir(self.cache_path)
+        else:
+            shutil.rmtree(self.cache_path)
+            os.mkdir(self.cache_path)
             
         if not os.path.exists(self.export_path):
             os.mkdir(self.export_path)
@@ -82,6 +85,9 @@ class Speak2Subs:
                 self.dataset.media[m].generate_subtitles()
                 self.dataset.media[m].predicted_subtitles.to_vtt(self.dataset.media[m], asr.value, self.export_path, self.use_templates)
                 self.dataset.media[m].reset_subtitles()
+
+            self.container_manager.containers[asr.value].stop()
+            self.container_manager.containers[asr.value].remove()
         print(" ------------------------------- Done -------------------------------- ")
 
         shutil.rmtree(self.host_volume_path)
@@ -236,4 +242,4 @@ def _post_processing(dataset):
 
 
 def eval(reference, predicted):
-    evaluate.evaluate_wer(reference, predicted)
+    evaluate.evaluate_classics(reference, predicted)

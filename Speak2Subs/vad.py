@@ -1,17 +1,19 @@
 import torch
 import os
 from pydub import AudioSegment
+import noisereduce as nr
 
 from Speak2Subs import media
 
 
 class VAD:
-    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True, sentences=False):
+    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True, sentences=False, reduce_noise = True):
         self.media = my_media
         self.max_speech_duration = max_speech_duration
         self.use_vad = use_vad
         self.segment = segment
         self.sentences = sentences
+        self.reduce_noise = reduce_noise
 
         if not self.segment:
             self.max_speech_duration = float('inf')
@@ -39,6 +41,10 @@ class VAD:
          self.collect_chunks) = utils
 
         self.wav = read_audio(self.media.path, sampling_rate=self.sampling_rate)
+        if self.reduce_noise:
+            self.wav = reduce_noise(self.wav)
+
+
         # get speech timestamps from full audio file
 
         if (self.use_vad):
@@ -131,3 +137,14 @@ class VAD:
 
             chunks.append(result_tensor)
         return torch.cat(chunks)
+
+
+def reduce_noise(waveform):
+    # Convert PyTorch tensor to NumPy array
+    audio_array = waveform.numpy()
+    # Perform noise reduction
+    reduced_audio = nr.reduce_noise(audio_array, 16000)
+    # Convert back to PyTorch tensor
+    waveform = torch.from_numpy(reduced_audio)
+
+    return waveform

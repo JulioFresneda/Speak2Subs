@@ -61,7 +61,7 @@ class MediaMetrics:
         self.compliance_metrics = {}
 
         for asr in self.pred_vtt.keys():
-            metrics = evaluate_wer(self.ref_vtt, self.pred_vtt[asr])
+            metrics = evaluate_classics(self.ref_vtt, self.pred_vtt[asr])
             self.metrics[asr] = metrics
 
             self.compliance_metrics[asr] = evaluate_compliance(self.pred_vtt[asr])
@@ -70,7 +70,7 @@ class MediaMetrics:
 
 
 
-def evaluate_wer(reference, predicted):
+def evaluate_classics(reference, predicted):
     _, reference = subtitle.load_template(reference)
     _, predicted = subtitle.load_template(predicted)
 
@@ -92,7 +92,7 @@ def evaluate_compliance(vtt_path):
             comply_4_3 += 1
         if eval_une_4_6(sentence):
             comply_4_6 += 1
-        if eval_une_5_1(sentence, sentence_ts['end'] - sentence_ts['start']):
+        if eval_une_5_1(sentence, sentence_ts['end'] - sentence_ts['start'])[0]:
             comply_5_1 += 1
 
 
@@ -124,4 +124,4 @@ def eval_une_5_1(sentence, duration):
 
 
 #evaluator = Evaluator("../datasets/mda")
-#evaluate_compliance("/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/mda_1.vtt")
+evaluate_compliance("/home/juliofgx/PycharmProjects/Speak2Subs/datasets/mda/mda_1.vtt")

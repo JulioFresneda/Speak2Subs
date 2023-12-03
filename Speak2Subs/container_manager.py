@@ -1,3 +1,5 @@
+import sys
+
 import docker
 import ast, os, io, tarfile
 import time
@@ -48,8 +50,8 @@ class ContainerManager:
 
         print(" ------> Running transcription in container - KO", end='\r', flush=True)
         exec_command = ["python", "/workdir/transcript.py"]
-        self.container.exec_run(exec_command, detach=True)
-        self._check_variable()
+        exit_result = self.container.exec_run(exec_command, detach=True)
+        self._check_variable(exit_result)
 
         result_path = os.path.join(self.host_volume_path, "result.txt")
 
@@ -74,14 +76,33 @@ class ContainerManager:
             pass
 
 
-    def _check_variable(self):
+    def _check_variable(self, exit_result):
         result_path = os.path.join(self.host_volume_path, "progress.txt")
         string = 0
+        clock = "--"
         while(string != 'DONE'):
+            if exit_result.exit_code is not None and exit_result.exit_code is not 0:
+                print("ASR failed, probably because OOM.")
+                sys.exit(1)
+            container_logs = self.container.logs().decode("utf-8")
+            if container_logs != "":
+                print(container_logs)
             if(os.path.exists(result_path)):
                 with open(result_path, 'r') as file:
                     # Write a string to the file
                     string = file.readline()
                     file.close()
-                print(" ------> Running transcription in container - " + str(string), end='\r', flush=True)
-            time.sleep(2)
+                clock = self._clock(clock)
+                print(" ------> Running transcription in container - " + str(string) + " " + clock, end='\r', flush=True)
+            time.sleep(1)
+
+    def _clock(self, clock):
+        if(clock == '--'):
+            clock = "\\"
+        elif clock == "\\":
+            clock = "|"
+        elif clock == "|":
+            clock = "/"
+        elif clock == "/":
+            clock = "--"
+        return clock
