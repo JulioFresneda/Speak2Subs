@@ -11,3 +11,4 @@
 # Bug espacios - OK
 # Revisar imagenes, algunas no estan actualizadas - OK
 # Seamless - OK
+# TODO - controlar cuando un contendor mata un proceso

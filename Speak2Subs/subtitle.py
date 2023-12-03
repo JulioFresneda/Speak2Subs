@@ -60,37 +60,38 @@ class Subtitle:
         predicted_ts_format = []
         subtitle = ""
         last_end = 0
-        for token in self.tokens:
+        for i, token in enumerate(self.tokens, start=0):
             if subtitle == "":
                 start = token.start
 
-            if start < last_end:
-                start = last_end + 0.01
+            if eval_une_4_6(subtitle + token.text) or eval_une_4_3(subtitle + "\n newline"):
+                if eval_une_4_6(subtitle + token.text):
+                    subtitle = subtitle + token.text
+                elif eval_une_4_3(subtitle + "\n newline"):
+                    subtitle += "\n" + token.text
 
-
-            if eval_une_4_6(subtitle + token.text) and eval_une_5_1(subtitle + token.text, token.end):
-                subtitle = subtitle + token.text
                 if self._end_of_sentence(subtitle):
+                    comply, duration_comply = eval_une_5_1(subtitle, token.end - start)
+                    if not comply and i < len(self.tokens)-1 and self.tokens[i+1].start - start > duration_comply:
+                        token.end = start + duration_comply
+
                     predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
                     subtitle = ""
-                    last_end = token.end
-            elif eval_une_4_3(subtitle + "\n newline"):
-                subtitle += "\n" + token.text
-                if self._end_of_sentence(subtitle):
-                    predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
-                    subtitle = ""
-                    last_end = token.end
             else:
-                predicted_ts_format.append({'text':subtitle, 'start':start, 'end':token.end})
+                predicted_ts_format.append({'text':subtitle, 'start':start, 'end':last_end})
                 subtitle = token.text
                 start = token.start
-                last_end = token.end
+
                 if self._end_of_sentence(subtitle):
-                    if start < last_end and last_end + 0.1 < token.end:
-                        start = last_end + 0.1
+                    #if start < last_end and last_end + 0.1 < token.end:
+                    #    start = last_end + 0.1
+                    comply, duration_comply = eval_une_5_1(subtitle, token.end - start)
+                    if not comply and i < len(self.tokens)-1 and self.tokens[i+1].start - start > duration_comply:
+                        token.end = start + duration_comply
                     predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
                     subtitle = ""
-                    last_end = token.end
+
+            last_end = token.end
 
 
 

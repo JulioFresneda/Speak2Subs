@@ -119,7 +119,8 @@ def eval_une_5_1(sentence, duration):
     sen_len = len(sentence)
     sen_sec = duration
     vel = sen_len / sen_sec
-    return vel <= 15
+    duration_comply = sen_len / 15
+    return vel <= 15, duration_comply
 
 
 #evaluator = Evaluator("../datasets/mda")
