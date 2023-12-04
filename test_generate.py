@@ -8,13 +8,13 @@ print(asr_list)
 
 speak2subs.transcript('./datasets/mda',
                       export_path = './results',
-                      asr=['whisperx'],
+                      asr=['vosk', 'whisper', 'whisperx'],
                       use_vad=True,
                       segment=True,
                       sentences=False,
                       max_speech_duration=30,
                       use_vtt_template=True,
-                      use_templates=False)
+                      reduce_noise=False)
 
 
 

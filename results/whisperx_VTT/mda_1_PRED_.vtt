@@ -1,0 +1,527 @@
+WEBVTT
+
+00:00:05.600 --> 00:00:08.040
+Hola, mi nombre es Alejandro Rodríguez Caso 
+
+00:00:08.120 --> 00:00:12.080
+soy profesor del Departamento de Inteligencia Artificial de la UNED. 
+
+00:00:12.360 --> 00:00:13.680
+Este vídeo se titula 
+
+00:00:13.760 --> 00:00:17.320
+Accesibilidad de los textos digitales, primera parte. 
+
+00:00:18.200 --> 00:00:21.680
+El texto está compuesto por una serie de símbolos ortográficos, 
+
+00:00:21.760 --> 00:00:26.040
+numéricos de otros tipos que representan el lenguaje natural. 
+
+00:00:26.440 --> 00:00:28.160
+Para empezar, estaremos de acuerdo 
+
+00:00:28.240 --> 00:00:30.800
+que una característica fundamental del texto 
+
+00:00:30.880 --> 00:00:33.720
+es el idioma en el que está escrito. 
+
+00:00:33.800 --> 00:00:37.200
+A veces todo el documento está escrito en un idioma. 
+
+00:00:37.280 --> 00:00:41.400
+En otras ocasiones, contiene algunos fragmentos en otro. 
+
+00:00:41.600 --> 00:00:43.240
+Por ejemplo, en la frase, 
+
+00:00:43.320 --> 00:00:48.800
+los Rolling Stones publicaron en 1971 su álbum Sticky Fingers. 
+
+00:00:49.280 --> 00:00:52.040
+Para que un lector de pantalla pronuncie correctamente, 
+
+00:00:52.120 --> 00:00:54.680
+debemos etiquetar qué partes están en español y 
+
+00:00:54.760 --> 00:00:57.440
+qué partes están en inglés. 
+
+00:00:58.240 --> 00:01:02.680
+En HTML usamos la etiqueta lang para indicar el idioma, 
+
+00:01:02.760 --> 00:01:05.160
+ya sea para el documento general 
+
+00:01:05.240 --> 00:01:07.440
+o en aquellos fragmentos que lo necesiten, 
+
+00:01:07.520 --> 00:01:11.360
+utilizando, por ejemplo, la etiqueta span. 
+
+00:01:11.800 --> 00:01:14.000
+De una manera similar, en un procesador 
+
+00:01:14.080 --> 00:01:18.520
+debemos marcar el idioma de cada parte del texto. 
+
+00:01:18.880 --> 00:01:20.320
+Depende del programa que usemos, 
+
+00:01:20.400 --> 00:01:25.280
+pero en general esta opción aparece en el menú herramientas. 
+
+00:01:25.360 --> 00:01:29.480
+Primeramente seleccionaremos el idioma de todo el documento. 
+
+00:01:29.560 --> 00:01:32.800
+y posteriormente seleccionaremos los fragmentos de texto 
+
+00:01:32.880 --> 00:01:37.320
+para los que haya que indicar otro idioma. 
+
+00:01:37.920 --> 00:01:40.560
+Nadie nace aprendido, que dicen en mi tierra. 
+
+00:01:40.640 --> 00:01:41.920
+Todos, en algún momento, 
+
+00:01:42.000 --> 00:01:46.080
+nos encontramos con un tema que nos resulta nuevo y desconocido. 
+
+00:01:46.160 --> 00:01:47.400
+Por eso es tan importante 
+
+00:01:47.480 --> 00:01:50.640
+nuestro texto cuente con un glosario determinado, 
+
+00:01:50.720 --> 00:01:52.840
+en el que se pueda consultar el 
+
+00:01:52.920 --> 00:01:58.800
+de aquellos que resulten nuevos, incluidos los acrónimos. 
+
+00:02:00.080 --> 00:02:04.480
+Contar con un glosario es útil para cualquier persona. 
+
+00:02:04.560 --> 00:02:05.720
+pues muy especialmente lo 
+
+00:02:05.800 --> 00:02:09.080
+para aquellas con dificultad para comprender el texto escrito, 
+
+00:02:09.160 --> 00:02:11.200
+como es el caso de algunas personas sordas 
+
+00:02:11.280 --> 00:02:17.240
+o de quienes tienen problemas en general para comprender o recordar. 
+
+00:02:17.320 --> 00:02:18.880
+Otro asunto. 
+
+00:02:18.960 --> 00:02:21.160
+En ocasiones queremos que el texto aparezca 
+
+00:02:21.240 --> 00:02:24.120
+con una estructura determinada. 
+
+00:02:25.160 --> 00:02:29.760
+Por ejemplo, con esta tabla los estudiantes de un curso pueden saber 
+
+00:02:29.840 --> 00:02:32.920
+para cada semana del curso, primera columna, 
+
+00:02:33.000 --> 00:02:35.680
+la tarea que deben realizar, segunda columna, y 
+
+00:02:35.760 --> 00:02:39.160
+la fecha de entrega de esa tarea, tercera columna. 
+
+00:02:40.120 --> 00:02:42.200
+Para que una persona que utiliza lector de 
+
+00:02:42.280 --> 00:02:46.520
+pueda manejarse bien en una tabla, es importante que ésta sea regular, 
+
+00:02:46.600 --> 00:02:50.280
+es decir, que una celda quede definida únicamente 
+
+00:02:50.360 --> 00:02:55.080
+por un número de columna y un número de fila. 
+
+00:02:55.720 --> 00:02:57.040
+Los procesadores de texto 
+
+00:02:57.120 --> 00:03:00.720
+suelen ofrecernos las herramientas dibujar y borrar, 
+
+00:03:00.800 --> 00:03:04.720
+habitualmente representadas con un lápiz y una goma de borrar, 
+
+00:03:04.800 --> 00:03:08.600
+que permiten unir o dividir celdas de una tabla. 
+
+00:03:08.680 --> 00:03:12.520
+Son herramientas muy golosas para modificar la estructura de una tabla, 
+
+00:03:12.600 --> 00:03:14.680
+pero desde el punto de vista de la accesibilidad, 
+
+00:03:14.760 --> 00:03:19.120
+para mí que son más bien amistades peligrosas. 
+
+00:03:19.200 --> 00:03:21.200
+Si con la goma borramos la separación 
+
+00:03:21.280 --> 00:03:24.480
+entre dos celdas contiguas para unirlas en una sola, 
+
+00:03:24.560 --> 00:03:27.440
+aprovechando que la fecha de entrega es la misma, 
+
+00:03:27.520 --> 00:03:30.840
+el resultado será una tabla irregular, en la que, por ejemplo, 
+
+00:03:30.920 --> 00:03:34.280
+una celda se corresponde con dos filas al mismo 
+
+00:03:34.760 --> 00:03:36.240
+tiempo. Mal rollo. 
+
+00:03:36.720 --> 00:03:39.920
+Al recorrer una tabla con un lector de pantalla, 
+
+00:03:40.000 --> 00:03:41.720
+también es una ayuda conocer 
+
+00:03:41.800 --> 00:03:46.320
+cuáles son las celdas que se utilizan como encabezado. 
+
+00:03:46.400 --> 00:03:51.280
+En este caso, las celdas de la primera fila son el encabezado. 
+
+00:03:51.360 --> 00:03:54.200
+La forma de indicarlo en un procesador de texto 
+
+00:03:54.280 --> 00:03:56.200
+no es muy evidente, la verdad. 
+
+00:03:56.280 --> 00:03:59.440
+debemos, en primer lugar, seleccionar esa fila de la tabla e 
+
+00:03:59.520 --> 00:04:04.080
+indicar que debe repetirse en cada 
+
+00:04:04.680 --> 00:04:07.640
+página. Si, en cambio, estamos editando en HTML, 
+
+00:04:07.720 --> 00:04:13.520
+ese objetivo lo conseguimos mediante las etiquetas TH. 
+
+00:04:13.600 --> 00:04:14.800
+Otra recomendación 
+
+00:04:14.880 --> 00:04:18.360
+especialmente útil en aquellas tablas que tengan cierta complejidad y 
+
+00:04:18.440 --> 00:04:21.120
+para quienes tengan dificultad para comprender 
+
+00:04:21.200 --> 00:04:25.240
+es dar instrucciones sobre cómo usar la tabla. 
+
+00:04:25.320 --> 00:04:28.920
+En nuestro caso, que es bastante simple, habría que decir, 
+
+00:04:29.000 --> 00:04:31.440
+elige una semana en la primera columna 
+
+00:04:31.520 --> 00:04:34.680
+y en la misma fila encontrarás qué tarea debes entregar y 
+
+00:04:34.760 --> 00:04:37.400
+la fecha límite para entregarla. 
+
+00:04:37.480 --> 00:04:39.880
+En la tabla, hay tantas filas por semana 
+
+00:04:39.960 --> 00:04:44.160
+como tarea deba entregar en esa semana. 
+
+00:04:45.400 --> 00:04:48.840
+Otra forma de estructurar texto es utilizar listas, 
+
+00:04:48.920 --> 00:04:51.880
+ya sean numeradas o no numeradas. 
+
+00:04:51.960 --> 00:04:54.320
+Las listas deben etiquetarse adecuadamente 
+
+00:04:54.400 --> 00:04:56.840
+para que un usuario del lector de pantalla 
+
+00:04:56.920 --> 00:04:59.320
+cuándo empiezan, cuándo terminan 
+
+00:04:59.400 --> 00:05:02.080
+y para que pueda conocer el orden que un elemento ocupa 
+
+00:05:02.160 --> 00:05:04.640
+en una lista ordenada. 
+
+00:05:06.920 --> 00:05:08.600
+Y los procesadores de texto 
+
+00:05:08.680 --> 00:05:12.800
+lo conseguimos utilizando los estilos disponibles para ello. 
+
+00:05:12.880 --> 00:05:15.200
+Aparte de contribuir a la accesibilidad, 
+
+00:05:15.280 --> 00:05:17.680
+usar estos estilos nos ayuda como autores 
+
+00:05:17.760 --> 00:05:19.560
+porque podremos cambiar de una sola vez 
+
+00:05:19.640 --> 00:05:21.440
+la forma de las viñetas de la lista, 
+
+00:05:21.520 --> 00:05:24.320
+por ejemplo, cambiar los puntos por guiones. 
+
+00:05:24.400 --> 00:05:27.200
+Otra ventaja más, al añadir un nuevo elemento, 
+
+00:05:27.280 --> 00:05:31.000
+la lista numerada se reordenará automáticamente. 
+
+00:05:32.320 --> 00:05:37.520
+En HTML existen etiquetas para crear una lista numerada, OL, 
+
+00:05:37.600 --> 00:05:40.920
+o una lista no numerada, UL, 
+
+00:05:41.000 --> 00:05:45.280
+y para etiquetar cada elemento de la lista, LI. 
+
+00:05:45.840 --> 00:05:50.480
+Vamos a hablar ahora de qué fuente utilizar en nuestro 
+
+00:05:50.560 --> 00:05:52.480
+texto. Se recomiendan fuentes sin serifa, 
+
+00:05:52.560 --> 00:05:57.720
+es decir, sin el remate que tienen fuentes como Times New 
+
+00:05:57.800 --> 00:06:01.680
+Roman. Algunas fuentes sin serifa también tienen problemas de elegibilidad. 
+
+00:06:01.760 --> 00:06:03.360
+Es el caso de la fuente arial, en 
+
+00:06:03.440 --> 00:06:06.160
+la que no es posible diferenciar visualmente 
+
+00:06:06.240 --> 00:06:10.320
+entre la I mayúscula y la L minúscula. 
+
+00:06:11.160 --> 00:06:12.480
+Un tipo de fuente 
+
+00:06:12.560 --> 00:06:16.000
+recomendable desde el punto de vista de la accesibilidad es la verdana. 
+
+00:06:16.080 --> 00:06:20.400
+Además, en cuanto a la fuente, se recomienda evitar, en lo posible, 
+
+00:06:20.480 --> 00:06:23.560
+el uso de negritas y cursivas. 
+
+00:06:23.640 --> 00:06:28.000
+También es importante garantizar un tamaño de la fuente suficiente, 
+
+00:06:28.080 --> 00:06:31.080
+aunque, lógicamente, esto dependerá del dispositivo y 
+
+00:06:31.160 --> 00:06:36.080
+de las condiciones en las que se leerá el texto. 
+
+00:06:36.160 --> 00:06:37.880
+Otro aspecto muy importante. 
+
+00:06:37.960 --> 00:06:42.000
+el contraste entre los colores de la fuente y de fondo. 
+
+00:06:42.080 --> 00:06:45.080
+Debe ser tan grande como sea posible. 
+
+00:06:45.160 --> 00:06:47.160
+Una solución clásica, 
+
+00:06:47.240 --> 00:06:51.720
+fuente de color negro sobre fondo blanco, siempre 
+
+00:06:51.800 --> 00:06:53.760
+funciona. Si utilizamos otras combinaciones de color, 
+
+00:06:53.840 --> 00:06:58.600
+debemos comprobar siempre que cumplimos el criterio 1.4.3 de 
+
+00:06:58.680 --> 00:07:01.840
+las pautas para la accesibilidad del contenido web, 
+
+00:07:01.920 --> 00:07:06.720
+que establece un contraste de al menos 4.5 sobre 1. 
+
+00:07:07.640 --> 00:07:10.560
+Hay muchas herramientas gratuitas en la web que nos permiten saber 
+
+00:07:10.640 --> 00:07:15.320
+si nuestra combinación de colores satisface este criterio. 
+
+00:07:15.920 --> 00:07:16.920
+Por otra parte, 
+
+00:07:17.000 --> 00:07:20.160
+recomienda utilizar la justificación a la izquierda, 
+
+00:07:20.240 --> 00:07:22.000
+pues la justificación centrada 
+
+00:07:22.080 --> 00:07:26.520
+puede generar espacios en blanco demasiado grandes entre palabras, 
+
+00:07:26.600 --> 00:07:31.960
+que dificultan la lectura a algunas personas con baja visión. 
+
+00:07:32.040 --> 00:07:34.160
+Qué bueno poder elegir para nuestro texto el 
+
+00:07:34.240 --> 00:07:37.280
+tipo de fuente, el tamaño, el contraste. 
+
+00:07:37.360 --> 00:07:38.640
+Precisamente por eso 
+
+00:07:38.720 --> 00:07:42.160
+se desaconseja el uso de imágenes para presentar texto. 
+
+00:07:42.240 --> 00:07:44.920
+En las imágenes no podemos modificar esas propiedades y 
+
+00:07:45.000 --> 00:07:47.640
+estamos dificultando la accesibilidad. 
+
+00:07:47.720 --> 00:07:51.160
+El texto, texto es, recordadlo, 
+
+00:07:51.240 --> 00:07:55.200
+aunque a veces estamos tentados a utilizar imágenes. 
+
+00:07:55.280 --> 00:07:58.560
+Os pongo un ejemplo. los textos matemáticos. 
+
+00:07:58.640 --> 00:08:01.040
+No son lineales, sino que son bidimensionales, 
+
+00:08:01.120 --> 00:08:04.440
+como la solución de la ecuación de segundo grado. 
+
+00:08:04.520 --> 00:08:06.480
+Si incluimos el texto como imágenes, 
+
+00:08:06.560 --> 00:08:10.000
+estaremos impidiendo que muchos usuarios puedan leerlo, 
+
+00:08:10.080 --> 00:08:12.880
+como los usuarios del lector de pantalla, o 
+
+00:08:12.960 --> 00:08:16.880
+que otros tengan graves dificultades, 
+
+00:08:16.960 --> 00:08:21.880
+como quienes necesitan ampliar mucho la imagen de la pantalla. 
+
+00:08:21.960 --> 00:08:26.760
+En nuestro texto debemos incluir las matemáticas como más ML. 
+
+00:08:26.840 --> 00:08:29.280
+¿Significa que debemos conocer ese lenguaje? 
+
+00:08:29.360 --> 00:08:30.960
+Por suerte, no. 
+
+00:08:31.040 --> 00:08:34.160
+Solo tenemos que hacer uso de un editor de ecuaciones matemáticas que 
+
+00:08:34.240 --> 00:08:36.960
+los genere automáticamente. 
+
+00:08:37.040 --> 00:08:39.680
+prácticamente todos los procesadores de texto 
+
+00:08:39.760 --> 00:08:44.440
+cuentan con un editor de fórmulas matemáticas. Usadlo. 
+
+00:08:45.120 --> 00:08:49.240
+Por otra parte, cada vez más editores de contenido HTML 
+
+00:08:49.320 --> 00:08:52.120
+cuentan con editor matemático con 
+
+00:08:52.200 --> 00:08:54.600
+MathML. Algunos de ellos son gratuitos. 
+
+00:08:54.680 --> 00:08:57.680
+Os recomendamos que si en vuestro colegio o universidad 
+
+00:08:57.760 --> 00:09:00.560
+no disponéis de uno, habléis con la dirección o 
+
+00:09:00.640 --> 00:09:05.680
+con la persona que administre los sistemas para que los proporcionen. 
+
+00:09:05.760 --> 00:09:07.120
+En resumen, en este vídeo 
+
+00:09:07.200 --> 00:09:09.440
+sobre la accesibilidad de los textos digitales 
+
+00:09:09.520 --> 00:09:12.520
+hemos tratado estos asuntos. 
+
+00:09:12.600 --> 00:09:16.680
+Hemos definido el contenido tipo texto, 
+
+00:09:16.760 --> 00:09:20.080
+la importancia de etiquetar el idioma, 
+
+00:09:20.160 --> 00:09:21.960
+de incluir un glosario, 
+
+00:09:22.040 --> 00:09:24.760
+de hacer tablas y listas accesibles, 
+
+00:09:24.840 --> 00:09:28.080
+el tipo de fuente, su tamaño, el contraste con el fondo y la 
+
+00:09:28.160 --> 00:09:31.080
+alineación del 
+
+00:09:31.160 --> 00:09:33.760
+texto, no utilizar imágenes para transmitir texto, 
+
+00:09:33.840 --> 00:09:36.440
+cómo incluir texto 
+
+00:09:36.800 --> 00:09:39.280
+matemático. Hay otros aspectos de accesibilidad a los textos digitales 
+
+00:09:39.360 --> 00:09:40.640
+que debemos atender. 
+
+00:09:40.720 --> 00:09:43.960
+Los tratamos en otro vídeo. Hasta pronto. 
+

@@ -7,8 +7,8 @@ import time
 from Speak2Subs import container_manager
 from Speak2Subs import vad
 from Speak2Subs import media
-from Speak2Subs import subtitle
-from Speak2Subs import evaluate
+from Speak2Subs import subtitle_tokens
+from Speak2Subs import vtt_evaluator
 from art import *
 
 
@@ -74,12 +74,14 @@ class Speak2Subs:
         print(" --------------------------- Launching ASR --------------------------- ")
         times = {"execution_time":{}}
         for asr in self.asr_to_apply:
-            times["execution_time"][asr.value] = {}
+
             for i, m in enumerate(self.dataset.media, start=1):
+                if m not in times["execution_time"].keys():
+                    times["execution_time"][m] = {}
                 start_timer = time.time()
                 self._apply_asr_in_media(self.dataset.media[m], asr, index=i)
                 execution_time = time.time() - start_timer
-                times["execution_time"][asr.value][m] = execution_time
+                times["execution_time"][m][asr.value] = execution_time
                 print(" ------- Execution completed: " + str(int(execution_time)) + " seconds")
                 print(" ------- Generating VTT with " + asr.value)
                 self.dataset.media[m].generate_subtitles()
@@ -136,8 +138,8 @@ class Speak2Subs:
                     if segment.start <= limit <= segment.end:
 
                         if segment.predicted_subtitles is None:
-                            segment.predicted_subtitles = subtitle.Subtitle()
-                        tkn = subtitle.Token(local_start_in_global, local_end_in_global, token['token'] + " ")
+                            segment.predicted_subtitles = subtitle_tokens.Subtitle()
+                        tkn = subtitle_tokens.Token(local_start_in_global, local_end_in_global, token['token'] + " ")
                         segment.predicted_subtitles.add_token(tkn)
                         break
             to_remove = []
@@ -196,15 +198,15 @@ class Speak2Subs:
 
 
 def transcript(media_folder, export_path, asr='all', use_vad=True, segment=True, sentences=False, max_speech_duration=float('inf'),
-               use_vtt_template=False, use_templates=False):
+               use_vtt_template=False, reduce_noise=False):
     # Load dataset
     dataset = media.Dataset(media_folder, os.path.basename(media_folder), use_vtt_template)
 
     # Load asr
     asr_list = _load_asr(asr)
-    s2s = Speak2Subs(dataset, asr_list, export_path, use_templates)
+    s2s = Speak2Subs(dataset, asr_list, export_path, use_vtt_template)
 
-    _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, s2s.cache_path)
+    _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, s2s.cache_path, reduce_noise)
     _processing(s2s)
     _post_processing(dataset)
 
@@ -225,11 +227,11 @@ def _load_asr(asr):
     return _asr
 
 
-def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, cache_path):
+def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, cache_path, reduce_noise):
     print(" ------- Pre-processing media")
     for m in dataset.media:
         print(" ------- " + m)
-        mvad = vad.VAD(dataset.media[m], max_speech_duration, use_vad, segment, sentences)
+        mvad = vad.VAD(dataset.media[m], max_speech_duration, use_vad, segment, sentences, reduce_noise)
         mvad.apply_vad(cache_path)
 
 
@@ -242,4 +244,4 @@ def _post_processing(dataset):
 
 
 def eval(reference, predicted):
-    evaluate.evaluate_classics(reference, predicted)
+    vtt_evaluator.evaluate_error_metrics(reference, predicted)

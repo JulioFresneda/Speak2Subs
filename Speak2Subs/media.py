@@ -2,7 +2,7 @@ import os.path
 import random
 from moviepy.editor import AudioFileClip
 import logging
-from Speak2Subs import subtitle
+from Speak2Subs import subtitle_tokens
 
 
 class Media:
@@ -19,7 +19,7 @@ class Media:
         for sg in self.segments_groups:
             sg.generate_subtitles()
             subs.append(sg.predicted_subtitles)
-        self.predicted_subtitles = subtitle.Subtitle.merge_subtitles(subs)
+        self.predicted_subtitles = subtitle_tokens.Subtitle.merge_subtitles(subs)
 
     def reset_subtitles(self):
         self.predicted_subtitles = []
@@ -54,7 +54,7 @@ class SegmentGroup:
         subs = []
         for seg in self.segments:
             subs.append(seg.predicted_subtitles)
-        self.predicted_subtitles = subtitle.Subtitle.merge_subtitles(subs)
+        self.predicted_subtitles = subtitle_tokens.Subtitle.merge_subtitles(subs)
 
     def reset_subtitles(self):
         self.predicted_subtitles = []

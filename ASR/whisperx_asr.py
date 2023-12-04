@@ -11,7 +11,7 @@ batch_size = 16 # reduce if low on GPU mem
 compute_type = "int8" # change to "int8" if low on GPU mem (may reduce accuracy)
 
 complete_result = {}
-model = whisperx.load_model("base", device, compute_type=compute_type, language='es')
+model = whisperx.load_model("large-v2", device, compute_type=compute_type, language='es')
 
 def save_progress(string):
     with open('/volume/progress.txt', 'w') as file:

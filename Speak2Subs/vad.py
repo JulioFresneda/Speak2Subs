@@ -143,7 +143,7 @@ def reduce_noise(waveform):
     # Convert PyTorch tensor to NumPy array
     audio_array = waveform.numpy()
     # Perform noise reduction
-    reduced_audio = nr.reduce_noise(audio_array, 16000)
+    reduced_audio = nr.reduce_noise(audio_array, 16000, device="cpu")
     # Convert back to PyTorch tensor
     waveform = torch.from_numpy(reduced_audio)
 

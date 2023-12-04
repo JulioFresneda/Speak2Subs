@@ -1,0 +1,305 @@
+WEBVTT
+
+00:00:05.320 --> 00:00:07.680
+hola mi nombre alejandro rodríguez 
+
+00:00:07.760 --> 00:00:12.160
+y soy profesor del departamento de inteligencia artificial de la únete 
+
+00:00:12.600 --> 00:00:14.000
+este video se titula 
+
+00:00:14.080 --> 00:00:18.440
+accesibilidad de los textos digitales segunda parte 
+
+00:00:18.760 --> 00:00:20.200
+en un vida anterior hemos 
+
+00:00:20.280 --> 00:00:23.800
+de característica importantes para la accesibilidad de nuestro texto 
+
+00:00:23.880 --> 00:00:28.440
+tipo de fuente tamaño contraste con el fondo etcétera 
+
+00:00:28.520 --> 00:00:31.280
+entonces estas características de formato son muy importante 
+
+00:00:31.360 --> 00:00:33.840
+pero también lo es que debemos 
+
+00:00:33.920 --> 00:00:36.800
+de manera separada de nuestro contenido 
+
+00:00:36.880 --> 00:00:39.400
+es decir si utilizamos hace temer 
+
+00:00:39.480 --> 00:00:44.360
+el formato debe ser definido el la hoja de estilo en cascada ceses 
+
+00:00:44.440 --> 00:00:46.400
+si utilizamos un procesador de texto 
+
+00:00:46.480 --> 00:00:48.640
+debemos utilizarlo estilo disponible 
+
+00:00:48.720 --> 00:00:51.240
+y modificarlos como consideremos oportuno 
+
+00:00:51.320 --> 00:00:54.400
+para asegurar que se cumplen los requisitos de accesibilidad 
+
+00:00:54.480 --> 00:00:57.760
+que ante hemos mencionado 
+
+00:00:57.840 --> 00:01:02.800
+separando contenido y formato habremos ganado mucho 
+
+00:01:02.880 --> 00:01:04.800
+desde el punto de vista de la accesibilidad 
+
+00:01:04.880 --> 00:01:07.120
+nuestros lectores lo tendrán mucho más 
+
+00:01:07.200 --> 00:01:12.960
+fácil para optar el estilo al que mejor satisface sus necesidades 
+
+00:01:13.040 --> 00:01:18.480
+vamos a contar ahora un caso claro de éxito lo estilo de encabezado 
+
+00:01:19.240 --> 00:01:22.880
+debemos seleccionar el texto que corresponda al título 
+
+00:01:22.960 --> 00:01:27.440
+de aplicamos por ejemplo el estilo título 
+
+00:01:27.520 --> 00:01:31.560
+si utilizamos lo still lo estilo de título con su diferentes niveles 
+
+00:01:31.640 --> 00:01:34.880
+conseguimos generar y actualizar automáticamente 
+
+00:01:34.960 --> 00:01:38.680
+la tabla de contenido de nuestro documento 
+
+00:01:38.760 --> 00:01:42.240
+esta tabla de contenido puede incluso darnos acceso directo 
+
+00:01:42.320 --> 00:01:45.960
+mediante un simple clic a cualquier excepción del 
+
+00:01:46.040 --> 00:01:48.040
+documento que ayuda a cualquier usuario 
+
+00:01:48.120 --> 00:01:52.320
+y especialmente a quienes tengan problemas de movilidad 
+
+00:01:52.400 --> 00:01:55.920
+adema así permitimos que el usuario de lector de pantalla 
+
+00:01:56.000 --> 00:01:59.760
+conozca la estructura del documento y puedan navegar por ella 
+
+00:01:59.840 --> 00:02:02.640
+como ocurre en el siguiente video 
+
+00:02:02.720 --> 00:02:04.960
+normalmente en documentos largos 
+
+00:02:05.040 --> 00:02:08.480
+pues es muy aconsejable puedes navegar por la estructura 
+
+00:02:08.560 --> 00:02:11.360
+para elegir concretamente lo que lo que 
+
+00:02:11.440 --> 00:02:13.000
+quieras el ordenador muestra en la 
+
+00:02:13.080 --> 00:02:15.240
+de encabezados de esquiando el documento 
+
+00:02:15.320 --> 00:02:17.640
+interfaz de usuario dos 
+
+00:02:17.720 --> 00:02:20.720
+evolución histórica que los interfaces de usuario estos 
+
+00:02:20.800 --> 00:02:25.520
+productos son algunas técnicas tierra estos 
+
+00:02:25.600 --> 00:02:27.160
+me interesa lo que hacemos puntos de 
+
+00:02:27.240 --> 00:02:30.000
+apoyo entonces ya como estoy que me interesa 
+
+00:02:30.080 --> 00:02:34.280
+impresión sobre estos cuarenta y 
+
+00:02:34.360 --> 00:02:38.200
+dos ayudas técnicas tierra 
+
+00:02:39.120 --> 00:02:41.520
+en este temer la estructura 
+
+00:02:41.600 --> 00:02:46.160
+se consigue con la etiqueta hace uno dos etcétera 
+
+00:02:46.240 --> 00:02:52.080
+y ofrece ventajas similares a las que acabamos de contar 
+
+00:02:52.600 --> 00:02:55.080
+hay quien prefiere estudiar escuchando los texto 
+
+00:02:55.160 --> 00:02:59.720
+para ello el estandarte y si es un gran invento 
+
+00:02:59.800 --> 00:03:04.040
+a la hora de leer libros el formato que se 
+
+00:03:04.120 --> 00:03:07.080
+la persona que tiene una deficiencia visual 
+
+00:03:07.160 --> 00:03:08.960
+es el de los libros de y 
+
+00:03:09.040 --> 00:03:12.400
+son libros grabados en voz humana 
+
+00:03:12.480 --> 00:03:17.360
+en mi caso la labor la hace once también 
+
+00:03:17.440 --> 00:03:21.200
+y consisten en una serie de archivos 
+
+00:03:21.280 --> 00:03:24.640
+que te permiten la navegación por niveles 
+
+00:03:24.720 --> 00:03:28.600
+para poder localizar la en formación de forma más rápida 
+
+00:03:28.680 --> 00:03:32.400
+se puede hacer o bien a través de un reproductor de y si estándar 
+
+00:03:32.480 --> 00:03:34.800
+o bien a través del ordenador 
+
+00:03:34.880 --> 00:03:40.640
+que puedes insertar el disco en el 
+
+00:03:40.720 --> 00:03:43.160
+ordenador y hay una serie de reproductores que te lo 
+
+00:03:43.240 --> 00:03:46.440
+carlos saúl atajo de teclado para iniciar el de y si 
+
+00:03:46.520 --> 00:03:49.160
+navega por la tabla de contenidos del libro 
+
+00:03:49.240 --> 00:03:54.320
+pero una autoridad de conducta psicología clínica de cirugía contenida 
+
+00:03:54.400 --> 00:03:57.120
+en este capítulo se pretende abarcar 
+
+00:03:57.200 --> 00:04:01.000
+de también sirve para leer escuchar texto al mismo tiempo 
+
+00:04:01.080 --> 00:04:05.680
+que es muy útil por ejemplo para la persona la exijas 
+
+00:04:05.760 --> 00:04:08.040
+la pregunta que ahora no hacemos es 
+
+00:04:08.120 --> 00:04:11.240
+podemos como autores general nuestro propio libro daisy 
+
+00:04:11.320 --> 00:04:14.200
+si hay aplicaciones que lo permite 
+
+00:04:14.280 --> 00:04:16.240
+pero seamos nosotros u otras 
+
+00:04:16.320 --> 00:04:19.880
+quieren generen el libro de y si a partir de nuestros texto 
+
+00:04:19.960 --> 00:04:22.600
+lo más importante es que los creemos cumpliendo 
+
+00:04:22.680 --> 00:04:26.920
+con los requisitos de accesibilidad que hemos visto hasta ahora 
+
+00:04:27.000 --> 00:04:28.320
+en resumen en este 
+
+00:04:28.400 --> 00:04:30.480
+sobre la accesibilidad de los textos digitales 
+
+00:04:30.560 --> 00:04:32.640
+hemos tratado acerca de 
+
+00:04:32.720 --> 00:04:35.280
+la separación de contenidos 
+
+00:04:35.360 --> 00:04:37.800
+formato el uso de los stilo te encabezado 
+
+00:04:37.880 --> 00:04:40.480
+la utilidad de de 
+
+00:04:42.440 --> 00:04:46.760
+recordemos que en otro video tratamos recomendaciones sobre 
+
+00:04:46.840 --> 00:04:48.080
+etiqueta el idioma 
+
+00:04:48.160 --> 00:04:49.400
+incluir un glosario 
+
+00:04:49.480 --> 00:04:51.520
+ser tabla y lista accesible 
+
+00:04:51.600 --> 00:04:54.520
+el tipo de fuentes su tamaño el contraste con el fondo 
+
+00:04:54.600 --> 00:04:56.480
+y la alineación del texto 
+
+00:04:56.560 --> 00:04:59.240
+no utilizar imágenes para transmitir texto 
+
+00:04:59.320 --> 00:05:02.680
+y como incluir texto máteme 
+
+00:05:03.520 --> 00:05:06.240
+otras recomendaciones importantes de accesibilidad 
+
+00:05:06.320 --> 00:05:09.120
+que no vamos a abordar ahora son 
+
+00:05:09.200 --> 00:05:11.320
+el uso de la técnica de lectura fácil 
+
+00:05:11.400 --> 00:05:13.240
+para hacerlo documento más 
+
+00:05:13.320 --> 00:05:15.120
+para aquellas personas que tienen 
+
+00:05:15.200 --> 00:05:17.840
+para comprender recordar 
+
+00:05:17.920 --> 00:05:19.480
+y que algunas personas tienen 
+
+00:05:19.560 --> 00:05:23.200
+problemas para comprender el texto por sí mismo 
+
+00:05:23.280 --> 00:05:26.400
+y necesitan y formación gráfica adicional 
+
+00:05:26.480 --> 00:05:29.080
+para ella se utilizan las pictogramas 
+
+00:05:29.160 --> 00:05:32.200
+aprovechamos este para decir o sea la próxima 
+
