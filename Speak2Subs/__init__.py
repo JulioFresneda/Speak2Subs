@@ -13,5 +13,6 @@
 # Seamless - OK
 # OK i think - controlar cuando un contendor mata un proceso
 
-# TODO - Exportar metricas correctamente, fusion de metricas, etc
+# OK - Exportar metricas correctamente, fusion de metricas, etc
 # TODO - especificar requerimientos para el paquete
+# TODO - Palabras flotantes, meter donde esté más cerca :)

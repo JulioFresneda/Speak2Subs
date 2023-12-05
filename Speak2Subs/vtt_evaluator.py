@@ -2,7 +2,7 @@ import os.path
 import json
 import jiwer
 from Speak2Subs.vtt_loader import load_vtt_template
-
+import pandas as pd
 
 # https://github.com/jitsi/jiwer
 class Evaluator:
@@ -16,13 +16,24 @@ class Evaluator:
 
         self.detect_vtt_files()
         self._generate_metrics()
+        self._export_to_excel()
 
+    def _export_to_excel(self):
+        self.metrics_df.to_excel(os.path.join(self.results_folder, "metrics.xlsx"), index=False)
     def _generate_metrics(self):
+        self.metrics_df_list = []
         for media_name in self.media_names:
             mf = self.media_files[media_name]
             all_asr_mm = self.load_metrics(self.results_folder, mf, self.asr_files[media_name], self.dataset_name)
             for asr_name in self.asr_names:
-                mm = MediaMetrics(media_name, asr_name, metrics)
+                error_m = all_asr_mm['error_metrics'][asr_name]
+                comp_m = all_asr_mm['compliance_metrics'][asr_name]
+                exec_m = all_asr_mm['execution_metrics']['execution_time'][media_name + ".wav"][asr_name]
+
+
+
+                self.metrics_df_list.append(MediaMetrics(self.dataset_name, media_name, asr_name, error_m, comp_m, exec_m))
+                self.metrics_df = MediaMetrics.vstack_metrics(self.metrics_df_list)
 
 
 
@@ -70,24 +81,83 @@ class Evaluator:
 
     def load_metrics(self, results_folder, media_file, asr_files, dataset_name):
 
-        metrics = {}
+        error_metrics = {}
         compliance_metrics = {}
 
         for asr in asr_files.keys():
-            metrics = evaluate_error_metrics(media_file, asr_files[asr])
-            metrics[asr] = metrics
+            error_metrics[asr] = evaluate_error_metrics(media_file, asr_files[asr])
 
             compliance_metrics[asr] = evaluate_compliance(asr_files[asr])
         compliance_metrics['reference'] = evaluate_compliance(media_file)
 
         execution_metrics = load_execution_times(results_folder, dataset_name)
 
-        return {'error_metrics': metrics, 'compliance_metrics': compliance_metrics, 'execution_metrics':execution_metrics}
+        return {'error_metrics': error_metrics, 'compliance_metrics': compliance_metrics, 'execution_metrics':execution_metrics}
 
 
 class MediaMetrics:
-    def __init__(self, media_name, asr_name, metrics):
-        pass
+    def __init__(self, dataset_name, media_name, asr_name, error_metrics, compliance_metrics, execution_metrics):
+        self.media_name = media_name
+        self.asr_name = asr_name
+        self.metrics = {'dataset':dataset_name, 'media':media_name, 'ASR':asr_name}
+        self._load_error_metrics(error_metrics)
+        self._load_execution_metrics(execution_metrics)
+        self._load_compliance_metrics(compliance_metrics)
+
+
+        self.metrics_df = pd.DataFrame.from_dict(self.metrics)
+
+
+    @staticmethod
+    def vstack_metrics(metrics: list):
+        mlist = []
+        for m in metrics:
+            mlist.append(m.metrics_df)
+        return pd.concat(mlist, axis=0, ignore_index=True)
+
+
+
+    def _load_execution_metrics(self, execution_metrics):
+        self.metrics['exec_time'] = [execution_metrics]
+    def _load_compliance_metrics(self, compliance_metrics):
+        self.metrics['une_4_3'] = [compliance_metrics['4_3']]
+        self.metrics['une_4_6'] = [compliance_metrics['4_6']]
+        self.metrics['une_5_1'] = [compliance_metrics['5_1']]
+        self.metrics['une_total'] = [compliance_metrics['total']]
+    def _load_error_metrics(self, error_metrics):
+        # Not normalized
+        self.metrics['wer'] = [error_metrics['not_normalized']['wer']]
+        self.metrics['mer'] = [error_metrics['not_normalized']['mer']]
+        self.metrics['wil'] = [error_metrics['not_normalized']['wil']]
+        self.metrics['wip'] = [error_metrics['not_normalized']['wip']]
+        self.metrics['wwer'] = [error_metrics['not_normalized']['wwer']]
+        self.metrics['wmer'] = [error_metrics['not_normalized']['wmer']]
+
+        # Normalized
+        self.metrics['nwer'] = [error_metrics['normalized']['nwer']]
+        self.metrics['nmer'] = [error_metrics['normalized']['nmer']]
+        self.metrics['nwil'] = [error_metrics['normalized']['nwil']]
+        self.metrics['nwip'] = [error_metrics['normalized']['nwip']]
+        self.metrics['nwwer'] = [error_metrics['normalized']['nwwer']]
+        self.metrics['nwmer'] = [error_metrics['normalized']['nwmer']]
+
+        # Mislocations
+        self.metrics['mislocation_rate'] = [error_metrics['mislocated']['mislocated_rate']]
+        self.metrics['mislocations'] = [error_metrics['mislocated']['mislocated']]
+        self.metrics['mislocations_and_not'] = [error_metrics['mislocated']['total']]
+
+        # NER
+        self.metrics['ner'] = [error_metrics['ner']['ner']]
+        self.metrics['ner_N'] = [error_metrics['ner']['N']]
+        self.metrics['ner_E'] = [error_metrics['ner']['E']]
+        self.metrics['ner_R'] = [error_metrics['ner']['R']]
+
+
+
+
+
+
+
 
 
 def load_execution_times(folder, dataset_name):
