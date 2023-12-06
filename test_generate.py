@@ -1,13 +1,7 @@
-from Speak2Subs import media
 from Speak2Subs import speak2subs
-import json
-
-asr_list = list(speak2subs.ASR)
-print(asr_list)
-
 
 speak2subs.transcript('./datasets/mda',
-                      export_path = './results',
+                      export_path='./results',
                       asr='all',
                       use_vad=False,
                       segment=True,
@@ -15,4 +9,5 @@ speak2subs.transcript('./datasets/mda',
                       max_speech_duration=30,
                       use_vtt_template=True,
                       reduce_noise=False)
+
 
