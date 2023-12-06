@@ -1,12 +1,17 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='transcription_revolver',
-    version='0.1',
+    name='Speak2Subs',
+    version='1.0',
     packages=find_packages(),
     install_requires=[
 
     ],
+    entry_points={
+        'console_scripts': [
+            'speak2subs = Speak2Subs.cli:transcript',
+        ],
+    },
 
     author='Julio Antonio Fresneda Garcia',
     author_email='julioantonio.fresnedagarcia@gmail.com',

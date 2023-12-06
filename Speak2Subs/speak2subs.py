@@ -13,13 +13,12 @@ from art import *
 
 
 class ASR(Enum):
+    SEAMLESS = 'seamless'
     WHISPERX = 'whisperx'
     NEMO = 'nemo'
     VOSK = 'vosk'
-    SPEECHBRAIN = 'speechbrain'
-    TORCH = 'torch'
     WHISPER = 'whisper'
-    SEAMLESS = 'seamless'
+
 
     @staticmethod
     def image(asr):
@@ -27,7 +26,6 @@ class ASR(Enum):
             "nemo": "juliofresneda/s2s_nemo_asr_light:latest",
             "vosk": "juliofresneda/s2s_vosk_asr:latest",
             "whisper": "juliofresneda/s2s_whisper_asr:latest",
-            "speechbrain": "juliofresneda/s2s_speechbrain_asr:latest",
             "whisperx": "juliofresneda/s2s_whisperx_asr:latest",
             "seamless": "juliofresneda/s2s_seamless_asr:latest"
         }
@@ -135,7 +133,7 @@ class Speak2Subs:
                         limit = local_end_in_global
                     else:
                         limit = local_start_in_global
-                    if segment.start <= limit <= segment.end:
+                    if segment.start <= local_start_in_global <= segment.end:
 
                         if segment.predicted_subtitles is None:
                             segment.predicted_subtitles = subtitle_tokens.Subtitle()
@@ -243,5 +241,6 @@ def _post_processing(dataset):
     pass
 
 
-def eval(reference, predicted):
-    vtt_evaluator.evaluate_error_metrics(reference, predicted)
+def evaluate(dataset_name, dataset_folder_path, results_folder_path):
+    evaluator = vtt_evaluator.Evaluator(dataset_name, os.path.abspath(dataset_folder_path), os.path.abspath(results_folder_path))
+

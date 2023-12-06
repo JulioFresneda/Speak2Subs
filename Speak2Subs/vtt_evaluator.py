@@ -28,7 +28,10 @@ class Evaluator:
             for asr_name in self.asr_names:
                 error_m = all_asr_mm['error_metrics'][asr_name]
                 comp_m = all_asr_mm['compliance_metrics'][asr_name]
-                exec_m = all_asr_mm['execution_metrics']['execution_time'][media_name + ".wav"][asr_name]
+                if asr_name in all_asr_mm['execution_metrics']['execution_time'][media_name + ".wav"].keys():
+                    exec_m = all_asr_mm['execution_metrics']['execution_time'][media_name + ".wav"][asr_name]
+                else:
+                    exec_m = 0
 
 
 
@@ -181,6 +184,7 @@ def evaluate_error_metrics(reference, predicted):
 def not_normalized_error_metrics(reference, predicted):
     try:
         output = jiwer.process_words(reference, predicted)
+        print(jiwer.visualize_alignment(output))
     except:
         print(3)
     wwer, wmer = _wwer_wmer(output.substitutions, output.deletions, output.insertions, output.hits)
@@ -256,9 +260,14 @@ def evaluate_mislocated_words(reference, prediction):
     total = len(reference)
 
     for i in range(1, total - 1):
-        if _normalize_string(reference[i - 1].split(" ")[-1]) == _normalize_string(prediction[i].split(" ")[0]):
+        last_word_ref = _normalize_string(reference[i - 1].split(" ")[-1])
+        current_word_pred = _normalize_string(prediction[i].split(" ")[0])
+        if last_word_ref == current_word_pred:
             mislocated += 1
-        if _normalize_string(prediction[i - 1].split(" ")[-1]) == _normalize_string(reference[i].split(" ")[0]):
+
+        last_word_pred = _normalize_string(prediction[i - 1].split(" ")[-1])
+        current_word_ref = _normalize_string(reference[i].split(" ")[0])
+        if  last_word_pred == current_word_ref:
             mislocated += 1
 
     return {'mislocated_rate': mislocated / total, 'mislocated': mislocated, 'total': total}

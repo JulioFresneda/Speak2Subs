@@ -7,6 +7,10 @@ def load_vtt_template(template_path):
         last_ts = None
         for line in lines[1:]:
             line = line.rstrip('\n')
+            while len(line) > 1 and line[0] == ' ':
+                line = line[1:]
+            while len(line) > 1 and line[-1] == ' ':
+                line = line[:-1]
             if line != '':
                 if '-->' in line:
                     ts = _load_subs_timestamps(line)
