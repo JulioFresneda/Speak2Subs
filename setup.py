@@ -5,11 +5,14 @@ setup(
     version='1.0',
     packages=find_packages(),
     install_requires=[
-
+        "moviepy",
+        "jiwer",
+        "pandas",
+        "pydub"
     ],
     entry_points={
         'console_scripts': [
-            'speak2subs = Speak2Subs.cli:transcript',
+            'speak2subs = Speak2Subs.cli:main',
         ],
     },
 

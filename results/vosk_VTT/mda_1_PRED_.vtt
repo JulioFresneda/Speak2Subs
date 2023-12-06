@@ -4,28 +4,28 @@ WEBVTT
 hola mi nombre alejandro rodríguez 
 
 00:00:08.120 --> 00:00:12.080
-y su profesor del departamento de inteligencia artificial de la únete 
+caso y su profesor del departamento de inteligencia artificial de la únete 
 
 00:00:12.360 --> 00:00:13.680
-este video se titula 
+este video se 
 
 00:00:13.760 --> 00:00:17.320
-accesibilidad de los textos digitales primera parte 
+titula accesibilidad de los textos digitales primera parte 
 
 00:00:18.200 --> 00:00:21.680
-el techo está compuesto por una serie de símbolo ortográfico 
+el techo está compuesto por una serie de símbolo 
 
 00:00:21.760 --> 00:00:26.040
-numérico de otros tipo que representan el lenguaje natural 
+ortográfico numérico de otros tipo que representan el lenguaje natural 
 
 00:00:26.440 --> 00:00:28.160
-para empezar estaremos de 
+para empezar estaremos 
 
 00:00:28.240 --> 00:00:30.800
-en que una característica fundamental del texto 
+acuerdo en que una característica fundamental del 
 
 00:00:30.880 --> 00:00:33.720
-el idioma en el que está escrito 
+texto el idioma en el que está escrito 
 
 00:00:33.800 --> 00:00:37.200
 a veces todo el documento está escrito en un idioma 
@@ -70,40 +70,40 @@ de aún marcar el idioma de cada parte del texto
 depende del programa que usemos 
 
 00:01:20.400 --> 00:01:25.280
-pero en general esta opción aparece en el menú herramientas 
+pero en general esta opción aparece en el menú herramientas primeramente 
 
 00:01:25.360 --> 00:01:29.480
-primeramente selección haremos el idioma de todo el documento 
+selección haremos el idioma de todo el documento 
 
 00:01:29.560 --> 00:01:32.800
 y posteriormente selección haremos lo fragmento de texto 
 
 00:01:32.880 --> 00:01:37.320
-para los que haya que indicar otro idioma 
+para los que haya que indicar otro idioma nadie 
 
 00:01:37.920 --> 00:01:40.560
-nadie nace aprendido que dicen en mi tierra 
+nace aprendido que dicen en mi tierra 
 
 00:01:40.640 --> 00:01:41.920
-todo en algún momento 
+en algún momento 
 
 00:01:42.000 --> 00:01:46.080
-no encontramos con un tema que nos resulta nuevo y desconocido 
+no encontramos con un tema que nos resulta nuevo y desconocido por 
 
 00:01:46.160 --> 00:01:47.400
-por eso es tan 
+eso es tan 
 
 00:01:47.480 --> 00:01:50.640
-que nuestro texto cuente con un glosario de determinó 
+que nuestro texto cuente con un glosario de determinó en 
 
 00:01:50.720 --> 00:01:52.840
-en el que se pueda consultar el 
+el que se pueda consultar el 
 
 00:01:52.920 --> 00:01:58.800
-significado de aquello que resulte nuevo incluido lo acrónimo 
+significado de aquello que resulte nuevo incluido lo acrónimo contar 
 
 00:02:00.080 --> 00:02:04.480
-contar con un glosario útil para cualquier persona 
+con un glosario útil para cualquier persona 
 
 00:02:04.560 --> 00:02:05.720
 pero muy especialmente las 
@@ -115,22 +115,22 @@ para que con dificultad para comprender el texto escrito
 como el caso de algunas personas sorda 
 
 00:02:11.280 --> 00:02:17.240
-o de que quienes tienen problemas en general para comprender por recordar 
+o de que quienes tienen problemas en general para comprender por recordar otro 
 
 00:02:17.320 --> 00:02:18.880
-otro asunto 
+asunto 
 
 00:02:18.960 --> 00:02:21.160
 en ocasiones queremos que el texto 
 
 00:02:21.240 --> 00:02:24.120
-con una estructura determinada 
+con una estructura determinada por 
 
 00:02:25.160 --> 00:02:29.760
-por ejemplo con esta tabla los estudiantes de un curso pueden saber 
+ejemplo con esta tabla los estudiantes de un curso pueden saber para 
 
 00:02:29.840 --> 00:02:32.920
-para cada semana del curso primera columna 
+cada semana del curso primera columna 
 
 00:02:33.000 --> 00:02:35.680
 la tarea que deben realizar segunda columna 
@@ -157,16 +157,16 @@ los procesadores de
 suelen ofrecer no la herramienta dibujar y borrar 
 
 00:03:00.800 --> 00:03:04.720
-habitualmente representada con un lápiz y una goma de borrar 
+representada con un lápiz y una goma de borrar 
 
 00:03:04.800 --> 00:03:08.600
 que permiten un o dividir celda de una tabla 
 
 00:03:08.680 --> 00:03:12.520
-son herramientas muy golosas para modificar la estructura una tabla 
+son herramientas muy golosas para modificar la estructura una tabla pero 
 
 00:03:12.600 --> 00:03:14.680
-pero desde el punto de vista de la 
+desde el punto de vista de la 
 
 00:03:14.760 --> 00:03:19.120
 para mí que son más bien amistades peligrosas 
@@ -184,10 +184,10 @@ aprovechando que la fecha de entrega es la misma
 el resultado será una tabla irregular en la que por ejemplo 
 
 00:03:30.920 --> 00:03:34.280
-una celda se corresponde con dos filas al mismo 
+una celda se corresponde con dos filas al mismo tiempo 
 
 00:03:34.760 --> 00:03:36.240
-tiempo mal rollo 
+mal rollo 
 
 00:03:36.720 --> 00:03:39.920
 al reconocer al recorrer una tabla con un lector de pantalla 
@@ -211,16 +211,16 @@ no es muy evidente la verdad
 debemos en primer lugar seleccionar esa fila de la tabla 
 
 00:03:59.520 --> 00:04:04.080
-indicar que debe repetirse en cada página 
+indicar que debe repetirse en cada página si 
 
 00:04:04.680 --> 00:04:07.640
-si en cambio estamos editando en este tema le 
+en cambio estamos editando en este tema le 
 
 00:04:07.720 --> 00:04:13.520
-ese objetivo lo conseguimos mediante la etiquetas teach 
+ese objetivo lo conseguimos mediante la etiquetas teach otra 
 
 00:04:13.600 --> 00:04:14.800
-otra recomendación 
+recomendación 
 
 00:04:14.880 --> 00:04:18.360
 precisamente útil en aquellas tablas que tengan cierta complejidad 
@@ -229,10 +229,10 @@ precisamente útil en aquellas tablas que tengan cierta complejidad
 y para quienes tengan dificultad para comprender 
 
 00:04:21.200 --> 00:04:25.240
-en dar instrucciones sobre cómo usar la 
+en dar instrucciones sobre cómo usar la tabla 
 
 00:04:25.320 --> 00:04:28.920
-tabla nuestro caso que bastante simple habría que decir 
+nuestro caso que bastante simple habría que decir 
 
 00:04:29.000 --> 00:04:31.440
 elige una semana en la primera columna 
@@ -241,16 +241,16 @@ elige una semana en la primera columna
 y la misma fila encontrarás que tarea debes entregar 
 
 00:04:34.760 --> 00:04:37.400
-y la fecha límite para 
+y la fecha límite para entregarla 
 
 00:04:37.480 --> 00:04:39.880
-entregarla en la tabla hay tanta filas por semana 
+en la tabla hay tanta filas por semana 
 
 00:04:39.960 --> 00:04:44.160
-como tarea de entregar en esa semana 
+tarea de entregar en esa semana otra 
 
 00:04:45.400 --> 00:04:48.840
-otra forma de estructurar texto utilizar listas 
+forma de estructurar texto utilizar listas 
 
 00:04:48.920 --> 00:04:51.880
 ya sea numeradas o numeradas 
@@ -274,13 +274,13 @@ en una lista ordenada
 y los procesadores de esto 
 
 00:05:08.680 --> 00:05:12.800
-lo conseguimos utilizándolo estilo disponibles para ello 
+lo conseguimos utilizándolo estilo disponibles para ello aparte 
 
 00:05:12.880 --> 00:05:15.200
-aparte de contribuir a la accesibilidad 
+de contribuir a la accesibilidad usar 
 
 00:05:15.280 --> 00:05:17.680
-usar estos estilo no ayuda como autores 
+estos estilo no ayuda como autores 
 
 00:05:17.760 --> 00:05:19.560
 porque podremos cambiar de una sola 
@@ -289,34 +289,34 @@ porque podremos cambiar de una sola
 la forma de la viñetas de la lista 
 
 00:05:21.520 --> 00:05:24.320
-por ejemplo cambiar los puntos por guiones 
+ejemplo cambiar los puntos por guiones otra 
 
 00:05:24.400 --> 00:05:27.200
-otra ventaja al añadir un nuevo 
+ventaja al añadir un nuevo 
 
 00:05:27.280 --> 00:05:31.000
-lista numerada cierre ordenará 
+lista numerada cierre ordenará automáticamente 
 
 00:05:32.320 --> 00:05:37.520
-automáticamente nace teme le existen etiquetas para crear una lista numerada o ele 
+nace teme le existen etiquetas para crear una lista numerada 
 
 00:05:37.600 --> 00:05:40.920
-unan lista no numerada huele 
+o ele unan lista no numerada 
 
 00:05:41.000 --> 00:05:45.280
-y para etiquetar cada elemento de la lista el y 
+huele y para etiquetar cada elemento de 
 
 00:05:45.840 --> 00:05:50.480
-vamos a hablar ahora de que fuente utilizar en nuestro 
+la lista el y vamos a hablar ahora de que fuente utilizar 
 
 00:05:50.560 --> 00:05:52.480
-se recomienda fuentes sin ser 
+en nuestro se recomienda 
 
 00:05:52.560 --> 00:05:57.720
-es decir sin el remate que tienen fuentes como times new roman 
+fuentes sin ser ifa es decir sin el remate que tienen fuentes como times 
 
 00:05:57.800 --> 00:06:01.680
-algunas fuentes sin ser ifa también tienen problemas de elegibilidad 
+new roman algunas fuentes también tienen problemas de elegibilidad 
 
 00:06:01.760 --> 00:06:03.360
 es el caso de la fuente harían 
@@ -331,37 +331,37 @@ entre la y mayúscula y minúscula
 un tipo de fuente 
 
 00:06:12.560 --> 00:06:16.000
-recomendable desde el punto de vista de la accesibilidad es la verdad 
+recomendable desde el punto de vista de la accesibilidad es la verdad además 
 
 00:06:16.080 --> 00:06:20.400
-además en cuanto a la fuente se recomienda evitar en lo 
+en cuanto a la fuente se recomienda evitar en 
 
 00:06:20.480 --> 00:06:23.560
-el uso de negritas cursivas 
+posible el uso de negritas cursivas 
 
 00:06:23.640 --> 00:06:28.000
-también es importante garantizar un tamaño de la fuente suficiente 
+también es importante garantizar un tamaño de la fuente 
 
 00:06:28.080 --> 00:06:31.080
-aunque lógicamente esto dependerá del dispositivo 
+aunque lógicamente esto dependerá del 
 
 00:06:31.160 --> 00:06:36.080
-de las condiciones en las que se le era el texto 
+dispositivo de las condiciones en las que se le era 
 
 00:06:36.160 --> 00:06:37.880
-otro aspecto muy 
+el texto otro aspecto muy 
 
 00:06:37.960 --> 00:06:42.000
-el contraste entre los colores de la fuente y de fondo 
+importante el contraste entre los colores de la fuente y de fondo 
 
 00:06:42.080 --> 00:06:45.080
 debe ser tan grande como sea posible 
 
 00:06:45.160 --> 00:06:47.160
-una solución clásica 
+una solución clásica fuente 
 
 00:06:47.240 --> 00:06:51.720
-fuente de color negro sobre fondo blanco siempre funciona 
+de color negro sobre fondo blanco siempre funciona 
 
 00:06:51.800 --> 00:06:53.760
 si utilizamos otras combinaciones de color 
@@ -370,10 +370,10 @@ si utilizamos otras combinaciones de color
 debemos comprobar siempre que cumplimos el criterio uno cuatro tres 
 
 00:06:58.680 --> 00:07:01.840
-de las pautas para la accesibilidad el contenido web 
+de las pautas para la accesibilidad el contenido web que 
 
 00:07:01.920 --> 00:07:06.720
-que establece un contraste de al menos cuarenta y cinco sobre 
+establece un contraste de al menos cuarenta y cinco sobre 
 
 00:07:07.640 --> 00:07:10.560
 hay mucha herramienta gratuita en la web que nos permiten 
@@ -385,25 +385,25 @@ si nuestra combinación de colores satisface este criterio
 por otra parte 
 
 00:07:17.000 --> 00:07:20.160
-se recomienda utilizar la justificación a la izquierda 
+se recomienda utilizar la justificación a la izquierda pues 
 
 00:07:20.240 --> 00:07:22.000
-pues la justificación centrada 
+la justificación centrada 
 
 00:07:22.080 --> 00:07:26.520
-puede generar espacios en blanco demasiado grande entre palabra 
+generar espacios en blanco demasiado grande entre palabra 
 
 00:07:26.600 --> 00:07:31.960
-que dificultan la lectura algunas personas con baja visión 
+que dificultan la lectura algunas personas con baja visión que 
 
 00:07:32.040 --> 00:07:34.160
-que bueno poder elegir para nuestros de 
+bueno poder elegir para nuestros de 
 
 00:07:34.240 --> 00:07:37.280
-el tipo de fuente del tamaño el contraste 
+el tipo de fuente del tamaño el contraste precisamente 
 
 00:07:37.360 --> 00:07:38.640
-precisamente por eso 
+por eso 
 
 00:07:38.720 --> 00:07:42.160
 sí es aconseja el uso de imágenes para presentar texto 
@@ -418,13 +418,13 @@ y estamos dificultando la accesibilidad
 el texto texto recordando 
 
 00:07:51.240 --> 00:07:55.200
-aunque a veces estamos tentado a utilizar imagen 
+aunque a veces estamos tentado a utilizar 
 
 00:07:55.280 --> 00:07:58.560
-os pongo un ejemplo los textos 
+imagen os pongo los textos matemático 
 
 00:07:58.640 --> 00:08:01.040
-matemático no son lineales sino que son bidimensionales 
+no son lineales sino que son bidimensionales 
 
 00:08:01.120 --> 00:08:04.440
 como la solución de la ecuación de segundo grado 
@@ -433,10 +433,10 @@ como la solución de la ecuación de segundo grado
 si incluimos el texto como imágenes 
 
 00:08:06.560 --> 00:08:10.000
-estaremos impidiendo que mucho usuarios puedan leerlo 
+estaremos impidiendo que mucho usuarios puedan leerlo como 
 
 00:08:10.080 --> 00:08:12.880
-como los usuarios de lector de pantalla 
+los usuarios de lector de pantalla 
 
 00:08:12.960 --> 00:08:16.880
 o que otro tengan graves dificultades 
@@ -445,16 +445,16 @@ o que otro tengan graves dificultades
 como quienes necesitan ampliar mucho la imagen de la pantalla 
 
 00:08:21.960 --> 00:08:26.760
-en nuestro texto debemos incluir las matemáticas como más el 
+en nuestro texto debemos incluir las matemáticas como más el significa 
 
 00:08:26.840 --> 00:08:29.280
-significa que debemos conocer ese lenguaje 
+que debemos conocer ese lenguaje 
 
 00:08:29.360 --> 00:08:30.960
-por suerte no 
+suerte no solo 
 
 00:08:31.040 --> 00:08:34.160
-solo tenemos que hacer uso de un editor de ecuación matemática 
+tenemos que hacer uso de un editor de ecuación matemática 
 
 00:08:34.240 --> 00:08:36.960
 que lo genere automáticamente 
@@ -463,46 +463,46 @@ que lo genere automáticamente
 prácticamente todos los procesadores de texto 
 
 00:08:39.760 --> 00:08:44.440
-cuentan con un editor de fórmulas matemáticas los 
+cuentan con un editor de fórmulas matemáticas 
 
 00:08:45.120 --> 00:08:49.240
-por otra parte cada vez más editores de contenido hace teme le 
+los por otra parte cada vez más editores de contenido hace teme 
 
 00:08:49.320 --> 00:08:52.120
-cuentan con editor matemático con mace el 
+le cuentan con editor matemático con mace 
 
 00:08:52.200 --> 00:08:54.600
-algunos de ellos son gratuitos 
+el algunos de ellos son gratuitos 
 
 00:08:54.680 --> 00:08:57.680
-o recomendamos que si en vuestro colegio universidad 
+o recomendamos que si en vuestro 
 
 00:08:57.760 --> 00:09:00.560
-no dispone de uno habléis con la 
+colegio universidad no dispone de 
 
 00:09:00.640 --> 00:09:05.680
-okay la persona que administre la sistema para que los proporcionen 
+habléis con la dirección okay la persona que administre la sistema 
 
 00:09:05.760 --> 00:09:07.120
-en resumen en este 
+para que los proporcionen en 
 
 00:09:07.200 --> 00:09:09.440
-sobre la accesibilidad de las textos digitales 
+resumen en este vídeo sobre la accesibilidad 
 
 00:09:09.520 --> 00:09:12.520
-hemos tratado esto asunto 
+de las textos digitales hemos tratado 
 
 00:09:12.600 --> 00:09:16.680
-hemos definido el contenido tipo test 
+esto asunto hemos definido el contenido 
 
 00:09:16.760 --> 00:09:20.080
-la importancia de etiquetar el idioma 
+tipo test la importancia 
 
 00:09:20.160 --> 00:09:21.960
-de incluir un glosario 
+de incluir un glosario de 
 
 00:09:22.040 --> 00:09:24.760
-de hacer tablas y lista accesible 
+hacer tablas y lista accesible 
 
 00:09:24.840 --> 00:09:28.080
 el tipo de fuente su tamaño el contraste con el fondo y la 
@@ -511,17 +511,17 @@ el tipo de fuente su tamaño el contraste con el fondo y la
 y le alineación del texto 
 
 00:09:31.160 --> 00:09:33.760
-no utilizar imágenes para transmitirte 
+no utilizar imágenes para transmitirte como 
 
 00:09:33.840 --> 00:09:36.440
-como incluir texto 
+incluir texto matemática 
 
 00:09:36.800 --> 00:09:39.280
-matemática hay otro aspecto de accesibilidad de los textos digitales 
+hay otro aspecto de accesibilidad de los textos digitales 
 
 00:09:39.360 --> 00:09:40.640
 queremos atender 
 
 00:09:40.720 --> 00:09:43.960
-los tratamos en otro video hasta 
+los tratamos en otro video hasta pronto 
 

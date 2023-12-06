@@ -4,10 +4,10 @@ WEBVTT
 Hola, mi nombre es Alejandro Rodríguez Caso 
 
 00:00:07.760 --> 00:00:12.160
-soy profesor del Departamento de Inteligencia Artificial de la 
+soy profesor del Departamento de Inteligencia Artificial de la UNED. 
 
 00:00:12.600 --> 00:00:14.000
-UNED. Este vídeo se titula 
+Este vídeo se titula 
 
 00:00:14.080 --> 00:00:18.440
 Accesibilidad de los textos digitales, segunda parte. 
@@ -100,10 +100,10 @@ Además, así permitimos que los usuarios de lectores de pantalla
 conozcan la estructura del documento y puedan navegar por ella, 
 
 00:01:59.840 --> 00:02:02.640
-como ocurre en el siguiente vídeo. Normalmente, en 
+como ocurre en el siguiente vídeo. Normalmente, en documentos 
 
 00:02:02.720 --> 00:02:04.960
-documentos largos es muy 
+largos es muy 
 
 00:02:05.040 --> 00:02:08.480
 aconsejable navegar por la estructura. 
@@ -124,10 +124,10 @@ Elementos de un interfaz de usuario 2.2.
 Evolución histórica de los interfaces de usuario 2.2. 
 
 00:02:20.800 --> 00:02:25.520
-Productos de apoyo, abre paréntesis o ayudas técnicas, cierra paréntesis y tick 2.2. 
+Productos de apoyo, abre paréntesis o ayudas técnicas, cierra paréntesis y tick 2.2. Me 
 
 00:02:25.600 --> 00:02:27.160
-Me interesa lo que son los productos de 
+interesa lo que son los productos de 
 
 00:02:27.240 --> 00:02:30.000
 entonces, como estoy en el que me interesa, le doy a 
@@ -142,28 +142,28 @@ ayuntos 2.4. Productos de apoyo, abre paréntesis o ayudas técnicas, cierra par
 En HTML, la estructura de encabezado 
 
 00:02:41.600 --> 00:02:46.160
-se consigue con las etiquetas H1, H2, etc., 
+se consigue con las etiquetas H1, H2, 
 
 00:02:46.240 --> 00:02:52.080
-y ofrece ventajas similares a las que acabamos de contar. 
+etc., y ofrece ventajas similares a las que acabamos 
 
 00:02:52.600 --> 00:02:55.080
-Hay quien prefiere estudiar escuchando los textos. 
+de contar. Hay quien prefiere estudiar escuchando 
 
 00:02:55.160 --> 00:02:59.720
-Para ello, el estándar DAISY es un gran invento. 
+los textos. Para ello, el estándar DAISY es 
 
 00:02:59.800 --> 00:03:04.040
-A la hora de leer libros, el formato que se 
+un gran invento. A la hora de leer libros, el 
 
 00:03:04.120 --> 00:03:07.080
-la persona que tiene una deficiencia visual 
+que se utiliza a la persona que tiene una deficiencia 
 
 00:03:07.160 --> 00:03:08.960
-es el de los libros 
+visual es el de los 
 
 00:03:09.040 --> 00:03:12.400
-son libros grabados en voz humana. 
+libros DAISY, son libros grabados en voz humana. 
 
 00:03:12.480 --> 00:03:17.360
 En mi caso, la labor la hace la ONCE también, 
@@ -184,13 +184,13 @@ Se puede hacer o bien a través de un reproductor DAISY estándar o
 bien a través del ordenador que 
 
 00:03:34.880 --> 00:03:40.640
-puedes insertar el disco en 
+puedes insertar el disco en el 
 
 00:03:40.720 --> 00:03:43.160
-ordenador y hay una serie de reproductores que 
+y hay una serie de reproductores que te lo leen. 
 
 00:03:43.240 --> 00:03:46.440
-te lo leen. 
+   
 
 00:03:46.520 --> 00:03:49.160
    
@@ -199,10 +199,10 @@ te lo leen.
 terapias de conducta, 
 
 00:03:54.400 --> 00:03:57.120
-psicología clínica y 
+psicología clínica y psicología 
 
 00:03:57.200 --> 00:04:01.000
-psicología de la salud. Daisy también sirve para leer y escuchar texto al mismo tiempo, 
+de la salud. Daisy también sirve para leer y escuchar texto al mismo tiempo, 
 
 00:04:01.080 --> 00:04:05.680
 que es muy útil, por ejemplo, para las personas disléxicas. 
@@ -244,10 +244,10 @@ la separación de contenido y formato,
 el uso de los estilos de encabezado, 
 
 00:04:37.880 --> 00:04:40.480
-la utilidad de 
+la utilidad de DAISY. 
 
 00:04:42.440 --> 00:04:46.760
-DAISY. Recordemos que en otro vídeo tratamos recomendaciones sobre 
+Recordemos que en otro vídeo tratamos recomendaciones sobre 
 
 00:04:46.840 --> 00:04:48.080
 etiquetar el idioma, 
@@ -268,10 +268,10 @@ la alineación del texto,
 no utilizar imágenes para transmitir textos y 
 
 00:04:59.320 --> 00:05:02.680
-cómo incluir textos 
+cómo incluir textos matemáticos. 
 
 00:05:03.520 --> 00:05:06.240
-matemáticos. Otras recomendaciones importantes de accesibilidad 
+Otras recomendaciones importantes de accesibilidad 
 
 00:05:06.320 --> 00:05:09.120
 que no vamos a abordar ahora son 

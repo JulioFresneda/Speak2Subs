@@ -1,10 +1,11 @@
 # cli.py
 import argparse
 from Speak2Subs import speak2subs
-def transcript():
+def main():
     parser = argparse.ArgumentParser(description='Let\'s sub that media!')
     # Add command-line arguments here
 
+    parser.add_argument('--evaluate', action='store_true', help='Evaluate mode')
     parser.add_argument('-mf', '--media_folder', type=str, help='Path of the folder with the .mp4/.wav files (and .vtt if you want)')
     parser.add_argument('-ep', '--export_folder', type=str, help='Path of the folder where you want the results exported')
     parser.add_argument('--asr', type=str, default='whisperx', help='ASR model to use. Can be: whisper, whisperx, nemo, seamless, vosk.')
@@ -17,15 +18,21 @@ def transcript():
 
     args = parser.parse_args()
 
-    speak2subs.transcript(args.media_folder,
-                          export_path=args.export_folder,
-                          asr=args.asr,
-                          use_vad=not args.no_vad,
-                          segment=not args.no_segment,
-                          sentences=args.sentences,
-                          max_speech_duration=args.max_speech_duration,
-                          use_vtt_template=args.use_vtt_templates,
-                          reduce_noise=args.reduce_noise)
+    if not args.evaluate:
+        speak2subs.transcript(args.media_folder,
+                              export_path=args.export_folder,
+                              asr=args.asr,
+                              use_vad=not args.no_vad,
+                              segment=not args.no_segment,
+                              sentences=args.sentences,
+                              max_speech_duration=args.max_speech_duration,
+                              use_vtt_template=args.use_vtt_templates,
+                              reduce_noise=args.reduce_noise)
+    else:
+        speak2subs.evaluate("mda", "./datasets/mda", "./results")
+
+
+
 
 if __name__ == '__main__':
-    transcript()
+    main()

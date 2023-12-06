@@ -184,10 +184,10 @@ aprovechando que la fecha de entrega es la misma,
 el resultado será una tabla irregular, en la que, por ejemplo, 
 
 00:03:30.920 --> 00:03:34.280
-una celda se corresponde con dos filas al mismo 
+una celda se corresponde con dos filas al mismo tiempo. 
 
 00:03:34.760 --> 00:03:36.240
-tiempo. Mal rollo. 
+Mal rollo. 
 
 00:03:36.720 --> 00:03:39.920
 Al recorrer una tabla con un lector de pantalla, 
@@ -211,10 +211,10 @@ no es muy evidente, la verdad.
 debemos, en primer lugar, seleccionar esa fila de la tabla e 
 
 00:03:59.520 --> 00:04:04.080
-indicar que debe repetirse en cada 
+indicar que debe repetirse en cada página. 
 
 00:04:04.680 --> 00:04:07.640
-página. Si, en cambio, estamos editando en HTML, 
+Si, en cambio, estamos editando en HTML, 
 
 00:04:07.720 --> 00:04:13.520
 ese objetivo lo conseguimos mediante las etiquetas TH. 
@@ -298,28 +298,28 @@ Otra ventaja más, al añadir un nuevo elemento,
 la lista numerada se reordenará automáticamente. 
 
 00:05:32.320 --> 00:05:37.520
-En HTML existen etiquetas para crear una lista numerada, OL, 
+En HTML existen etiquetas para crear una lista numerada, 
 
 00:05:37.600 --> 00:05:40.920
-o una lista no numerada, UL, 
+OL, o una lista no numerada, 
 
 00:05:41.000 --> 00:05:45.280
-y para etiquetar cada elemento de la lista, LI. 
+UL, y para etiquetar cada elemento de la lista, 
 
 00:05:45.840 --> 00:05:50.480
-Vamos a hablar ahora de qué fuente utilizar en nuestro 
+LI. Vamos a hablar ahora de qué fuente utilizar en 
 
 00:05:50.560 --> 00:05:52.480
-texto. Se recomiendan fuentes sin serifa, 
+nuestro texto. Se recomiendan fuentes 
 
 00:05:52.560 --> 00:05:57.720
-es decir, sin el remate que tienen fuentes como Times New 
+serifa, es decir, sin el remate que tienen fuentes como Times New 
 
 00:05:57.800 --> 00:06:01.680
-Roman. Algunas fuentes sin serifa también tienen problemas de elegibilidad. 
+Roman. Algunas fuentes sin serifa también tienen problemas de elegibilidad. Es 
 
 00:06:01.760 --> 00:06:03.360
-Es el caso de la fuente arial, en 
+el caso de la fuente arial, en 
 
 00:06:03.440 --> 00:06:06.160
 la que no es posible diferenciar visualmente 
@@ -334,22 +334,22 @@ Un tipo de fuente
 recomendable desde el punto de vista de la accesibilidad es la verdana. 
 
 00:06:16.080 --> 00:06:20.400
-Además, en cuanto a la fuente, se recomienda evitar, en lo posible, 
+Además, en cuanto a la fuente, se recomienda evitar, en 
 
 00:06:20.480 --> 00:06:23.560
-el uso de negritas y cursivas. 
+posible, el uso de negritas y cursivas. 
 
 00:06:23.640 --> 00:06:28.000
 También es importante garantizar un tamaño de la fuente suficiente, 
 
 00:06:28.080 --> 00:06:31.080
-aunque, lógicamente, esto dependerá del dispositivo y 
+aunque, lógicamente, esto dependerá del 
 
 00:06:31.160 --> 00:06:36.080
-de las condiciones en las que se leerá el texto. 
+dispositivo y de las condiciones en las que se leerá 
 
 00:06:36.160 --> 00:06:37.880
-Otro aspecto muy importante. 
+el texto. Otro aspecto muy 
 
 00:06:37.960 --> 00:06:42.000
 el contraste entre los colores de la fuente y de fondo. 
@@ -361,10 +361,10 @@ Debe ser tan grande como sea posible.
 Una solución clásica, 
 
 00:06:47.240 --> 00:06:51.720
-fuente de color negro sobre fondo blanco, siempre 
+fuente de color negro sobre fondo blanco, siempre funciona. 
 
 00:06:51.800 --> 00:06:53.760
-funciona. Si utilizamos otras combinaciones de color, 
+Si utilizamos otras combinaciones de color, 
 
 00:06:53.840 --> 00:06:58.600
 debemos comprobar siempre que cumplimos el criterio 1.4.3 de 
@@ -463,10 +463,10 @@ los genere automáticamente.
 prácticamente todos los procesadores de texto 
 
 00:08:39.760 --> 00:08:44.440
-cuentan con un editor de fórmulas matemáticas. Usadlo. 
+cuentan con un editor de fórmulas matemáticas. 
 
 00:08:45.120 --> 00:08:49.240
-Por otra parte, cada vez más editores de contenido HTML 
+Usadlo. Por otra parte, cada vez más editores de contenido HTML 
 
 00:08:49.320 --> 00:08:52.120
 cuentan con editor matemático con 
@@ -475,28 +475,28 @@ cuentan con editor matemático con
 MathML. Algunos de ellos son gratuitos. 
 
 00:08:54.680 --> 00:08:57.680
-Os recomendamos que si en vuestro colegio o universidad 
+Os recomendamos que si en vuestro 
 
 00:08:57.760 --> 00:09:00.560
-no disponéis de uno, habléis con la dirección o 
+colegio o universidad no disponéis de uno, 
 
 00:09:00.640 --> 00:09:05.680
-con la persona que administre los sistemas para que los proporcionen. 
+habléis con la dirección o con la persona que administre los sistemas 
 
 00:09:05.760 --> 00:09:07.120
-En resumen, en este vídeo 
+para que los proporcionen. 
 
 00:09:07.200 --> 00:09:09.440
-sobre la accesibilidad de los textos digitales 
+resumen, en este vídeo sobre la accesibilidad 
 
 00:09:09.520 --> 00:09:12.520
-hemos tratado estos asuntos. 
+de los textos digitales hemos 
 
 00:09:12.600 --> 00:09:16.680
-Hemos definido el contenido tipo texto, 
+tratado estos asuntos. Hemos definido el 
 
 00:09:16.760 --> 00:09:20.080
-la importancia de etiquetar el idioma, 
+contenido tipo texto, la importancia 
 
 00:09:20.160 --> 00:09:21.960
 de incluir un glosario, 
@@ -508,16 +508,16 @@ de hacer tablas y listas accesibles,
 el tipo de fuente, su tamaño, el contraste con el fondo y la 
 
 00:09:28.160 --> 00:09:31.080
-alineación del 
+alineación del texto, 
 
 00:09:31.160 --> 00:09:33.760
-texto, no utilizar imágenes para transmitir texto, 
+no utilizar imágenes para transmitir texto, 
 
 00:09:33.840 --> 00:09:36.440
-cómo incluir texto 
+cómo incluir texto matemático. 
 
 00:09:36.800 --> 00:09:39.280
-matemático. Hay otros aspectos de accesibilidad a los textos digitales 
+Hay otros aspectos de accesibilidad a los textos digitales 
 
 00:09:39.360 --> 00:09:40.640
 que debemos atender. 
