@@ -8,7 +8,8 @@ setup(
         "moviepy",
         "jiwer",
         "pandas",
-        "pydub"
+        "pydub",
+        "noisereduce"
     ],
     entry_points={
         'console_scripts': [
