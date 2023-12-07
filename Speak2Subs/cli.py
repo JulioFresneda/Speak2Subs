@@ -21,10 +21,15 @@ def main():
 
     args = parser.parse_args()
 
+    if ", " in args.asr:
+        asrlist = args.asr.split(", ")
+    else:
+        asrlist = args.asr
+
     if not args.evaluate:
         speak2subs.transcript(args.media_path,
                               export_path=args.export_folder,
-                              asr=args.asr,
+                              asr=asrlist,
                               use_vad=not args.no_vad,
                               segment=not args.no_segment,
                               group_segments=not args.no_segment_group,
