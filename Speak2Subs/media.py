@@ -86,7 +86,7 @@ class Dataset:
         self.media = {}
         self.folder_path = os.path.abspath(folder_path)
 
-        self._load_media_folder(self.folder_path)
+        self._load_media_folder()
         self._order_media()
 
     def _order_media(self):
@@ -95,28 +95,40 @@ class Dataset:
         except Exception as e:
             logging.exception('Names not compatible with sorting: %s', e)
 
-    def _load_media_folder(self, folder_path):
-        if not os.path.exists(folder_path):
+    def _load_media_folder(self):
+        if not os.path.exists(self.folder_path):
             raise ValueError("Path does not exist")
 
-        wav_files = [wav for wav in os.listdir(folder_path) if wav.split('.')[-1] == 'wav']
-        for wav in wav_files:
-            if wav not in self.media.keys():
-                self.media[wav] = Media(os.path.join(folder_path, wav))
+        if os.path.isdir(self.folder_path):
+            wav_files = [wav for wav in os.listdir(self.folder_path) if wav.split('.')[-1] == 'wav']
+            for wav in wav_files:
+                if wav not in self.media.keys():
+                    self.media[wav] = Media(os.path.join(self.folder_path, wav))
 
-        mp4_files = [mp4 for mp4 in os.listdir(folder_path) if mp4.split('.')[-1] == 'mp4']
-        for mp4 in mp4_files:
-            mp4_waved = '.'.join(mp4.split('.')[:-1]) + '.wav'
-            if mp4_waved not in self.media.keys():
-                _mp42wav(os.path.join(folder_path, mp4), os.path.join(folder_path, mp4_waved))
-                self.media[mp4_waved] = Media(os.path.join(folder_path, mp4_waved))
+            mp4_files = [mp4 for mp4 in os.listdir(self.folder_path) if mp4.split('.')[-1] == 'mp4']
+            for mp4 in mp4_files:
+                mp4_waved = '.'.join(mp4.split('.')[:-1]) + '.wav'
+                if mp4_waved not in self.media.keys():
+                    _mp42wav(os.path.join(self.folder_path, mp4), os.path.join(self.folder_path, mp4_waved))
+                    self.media[mp4_waved] = Media(os.path.join(self.folder_path, mp4_waved))
 
-        if self.use_vtt:
-            vtt_files = [vtt for vtt in os.listdir(folder_path) if vtt.split('.')[-1] == 'vtt']
-            for vtt in vtt_files:
-                vtt_waved = '.'.join(vtt.split('.')[:-1]) + '.wav'
-                if vtt_waved in self.media.keys():
-                    self.media[vtt_waved].original_subtitles_path = os.path.join(folder_path, vtt)
+            if self.use_vtt:
+                vtt_files = [vtt for vtt in os.listdir(self.folder_path) if vtt.split('.')[-1] == 'vtt']
+                for vtt in vtt_files:
+                    vtt_waved = '.'.join(vtt.split('.')[:-1]) + '.wav'
+                    if vtt_waved in self.media.keys():
+                        self.media[vtt_waved].original_subtitles_path = os.path.join(self.folder_path, vtt)
+        else:
+            if self.folder_path[-3:] == "mp4":
+                mp4_waved = '.'.join(os.path.basename(self.folder_path).split('.')[:-1]) + '.wav'
+                _mp42wav(self.folder_path, self.folder_path[:-3] + "wav")
+                self.media[mp4_waved] = Media(self.folder_path[:-3] + "wav")
+            elif self.folder_path[-3:] == "wav":
+                self.media[os.path.basename(self.folder_path)] = Media(self.folder_path)
+            if self.use_vtt:
+                self.media[os.path.basename(self.folder_path)[:-3] + "wav"].original_subtitles_path = os.path.join(self.folder_path[:-3] + "vtt")
+            self.folder_path = os.path.dirname(self.folder_path)
+
 
     def __str__(self):
         return "<Dataset named " + self.name + ", with " + str(

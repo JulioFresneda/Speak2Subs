@@ -53,7 +53,10 @@ for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     # Get the final recognized result
     final_result = rec.FinalResult()
     final_result = json.loads(final_result)
-    final_result['words_ts'] = final_result.pop('result')
+    try:
+        final_result['words_ts'] = final_result.pop('result')
+    except:
+        final_result['words_ts'] = []
     for word in final_result['words_ts']:
         word['score'] = word.pop('conf')
         word['token'] = word.pop('word')

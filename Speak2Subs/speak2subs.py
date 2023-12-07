@@ -327,25 +327,25 @@ class Speak2Subs:
                 print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-def transcript(media_folder, export_path, asr='all', use_vad=True, segment=True, sentences=False,
+def transcript(media_path, export_path, asr='all', use_vad=True, segment=True, group_segments=True,
                max_speech_duration=float('inf'),
                use_vtt_template=False, reduce_noise=False):
     """
     Perform the entire transcription process on a media folder.
 
     Args:
-        media_folder (str): The path to the media folder.
+        media_path (str): The path to the media folder or mp4/wav file.
         export_path (str): The path where the exported subtitles will be saved.
         asr: The ASR system(s) to use for transcription. Default is 'all'.
         use_vad (bool): Flag indicating whether to use Voice Activity Detection. Default is True.
         segment (bool): Flag indicating whether to segment audio. Default is True.
-        sentences (bool): Flag indicating whether to transcribe at the sentence level. Default is False.
+        group_segments (bool): Flag indicating whether to group segments and don't transcribe at the sentence level. Default is True.
         max_speech_duration (float): Maximum duration for a segment. Default is infinity.
         use_vtt_template (bool): Flag indicating whether to use VTT template for subtitles. Default is False.
         reduce_noise (bool): Flag indicating whether to reduce noise in audio. Default is False.
     """
     # Load dataset
-    dataset = media.Dataset(media_folder, os.path.basename(media_folder), use_vtt_template)
+    dataset = media.Dataset(media_path, os.path.basename(media_path), use_vtt_template)
 
     # Load ASR systems
     asr_list = _load_asr(asr)
@@ -354,7 +354,7 @@ def transcript(media_folder, export_path, asr='all', use_vad=True, segment=True,
     s2s = Speak2Subs(dataset, asr_list, export_path, use_vtt_template)
 
     # Perform pre-processing steps
-    _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, s2s.cache_path, reduce_noise)
+    _pre_processing(dataset, max_speech_duration, use_vad, segment, group_segments, s2s.cache_path, reduce_noise)
 
     # Perform main processing steps
     _processing(s2s)
@@ -400,7 +400,7 @@ def _load_asr(asr):
     return _asr
 
 
-def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, cache_path, reduce_noise):
+def _pre_processing(dataset, max_speech_duration, use_vad, segment, group_segments, cache_path, reduce_noise):
     """
     Perform pre-processing steps on each media item in the dataset.
 
@@ -409,7 +409,7 @@ def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, c
         max_speech_duration (float): Maximum duration for a segment.
         use_vad (bool): Flag indicating whether to use Voice Activity Detection.
         segment (bool): Flag indicating whether to segment audio.
-        sentences (bool): Flag indicating whether to transcribe at the sentence level.
+        group_segments (bool): Flag indicating whether to group segments and don't transcribe at the sentence level.
         cache_path (str): The path to the cache directory.
         reduce_noise (bool): Flag indicating whether to reduce noise in audio.
 
@@ -421,7 +421,7 @@ def _pre_processing(dataset, max_speech_duration, use_vad, segment, sentences, c
         print(" ------- " + m)
 
         # Initialize VAD for the current media item
-        mvad = vad.VAD(dataset.media[m], max_speech_duration, use_vad, segment, sentences, reduce_noise)
+        mvad = vad.VAD(dataset.media[m], max_speech_duration, use_vad, segment, group_segments, reduce_noise)
 
         # Apply Voice Activity Detection (VAD) to the current media item and save the result in the cache
         mvad.apply_vad(cache_path)
@@ -435,6 +435,10 @@ def _post_processing(dataset):
     pass
 
 
-def evaluate(dataset_name, dataset_folder_path, results_folder_path):
+def evaluateFolder(dataset_folder_path, results_folder_path, dataset_name):
     evaluator = vtt_evaluator.Evaluator(dataset_name, os.path.abspath(dataset_folder_path),
                                         os.path.abspath(results_folder_path))
+
+def evaluatePair(ref_vtt_path, pred_vtt_path):
+    output = vtt_evaluator.evaluate_error_metrics(ref_vtt_path, pred_vtt_path)
+    return output

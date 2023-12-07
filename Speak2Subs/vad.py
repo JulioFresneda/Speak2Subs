@@ -7,7 +7,7 @@ from Speak2Subs import media
 
 
 class VAD:
-    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True, sentences=False, reduce_noise=True):
+    def __init__(self, my_media, max_speech_duration=float('inf'), use_vad=True, segment=True, group_segments=True, reduce_noise=True):
         """
         Initialize the VAD (Voice Activity Detection) configuration.
 
@@ -16,7 +16,7 @@ class VAD:
             max_speech_duration (float): Maximum duration for a segment. Default is infinity.
             use_vad (bool): Flag indicating whether to use Voice Activity Detection. Default is True.
             segment (bool): Flag indicating whether to segment audio. Default is True.
-            sentences (bool): Flag indicating whether to transcribe at the sentence level. Default is False.
+            group_segments (bool): Flag indicating whether to group segments and don't transcribe at the sentence level. Default is True.
             reduce_noise (bool): Flag indicating whether to reduce noise in audio. Default is True.
 
         """
@@ -25,7 +25,7 @@ class VAD:
         self.max_speech_duration = max_speech_duration
         self.use_vad = use_vad
         self.segment = segment
-        self.sentences = sentences
+        self.sentences = not group_segments
         self.reduce_noise = reduce_noise
 
         # If segmentation is disabled, set max_speech_duration to infinity
