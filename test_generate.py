@@ -5,7 +5,7 @@ speak2subs.transcript('./datasets/mda/mda_3.mp4',
                       asr='all',
                       use_vad=True,
                       segment=True,
-                      group_segments=True,
+                      group_segments=False,
                       max_speech_duration=30,
                       use_vtt_template=True,
                       reduce_noise=False)

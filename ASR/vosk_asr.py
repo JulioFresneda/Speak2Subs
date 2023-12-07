@@ -18,7 +18,7 @@ def save_progress(string):
 # Disable all logging from Vosk
 logging.getLogger('vosk').setLevel(logging.ERROR)
 
-#print("Hello from the vosk asr image")
+# print("Hello from the vosk asr image")
 
 # You can set log level to -1 to disable debug messages
 SetLogLevel(-1)
@@ -29,20 +29,16 @@ complete_result = {}
 
 for i, media in enumerate(sorted(os.listdir(media_volume)), start=1):
     print(media)
-    wf = wave.open(os.path.join(media_volume,media), "rb")
+    wf = wave.open(os.path.join(media_volume, media), "rb")
     if wf.getnchannels() != 1 or wf.getsampwidth() != 2 or wf.getcomptype() != "NONE":
         print("Audio file must be WAV format mono PCM.")
         sys.exit(1)
 
     model = Model(lang="es")
 
-
-
     rec = KaldiRecognizer(model, wf.getframerate())
     rec.SetWords(True)
-    #rec.SetPartialWords(True)
-
-
+    # rec.SetPartialWords(True)
 
     # Read the entire audio file
     audio_data = wf.readframes(wf.getnframes())
@@ -70,5 +66,3 @@ with open('/volume/result.txt', 'w') as file:
     file.close()
 
 save_progress("DONE")
-
-

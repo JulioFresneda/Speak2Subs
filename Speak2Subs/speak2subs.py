@@ -436,7 +436,9 @@ def _post_processing(dataset):
 
 
 def evaluateFolder(dataset_folder_path, results_folder_path, dataset_name):
-    evaluator = vtt_evaluator.Evaluator(dataset_name, os.path.abspath(dataset_folder_path),
+    if dataset_name == None:
+        dataset_name = os.path.basename(dataset_folder_path)
+    vtt_evaluator.Evaluator(dataset_name, os.path.abspath(dataset_folder_path),
                                         os.path.abspath(results_folder_path))
 
 def evaluatePair(ref_vtt_path, pred_vtt_path):
