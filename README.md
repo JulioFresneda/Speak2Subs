@@ -1,6 +1,8 @@
 # Speak2Subs
 Speak2Subs has three fundamental features: subtitle generation based on a reference template, subtitle quality evaluation, and subtitle generation without a reference template. This readme provides a concise introduction to each of these features, while subsequent sections describe the installation process, usage, and internal mechanics in more detail.
 
+![packageresume.png](packageresume.png)
+
 ## Features
 ### Subtitle generation based on a reference template
 
