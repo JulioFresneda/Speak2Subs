@@ -43,6 +43,7 @@ class Speak2Subs:
         print("Let's sub that media! - Julio A. Fresneda -> github.com/JulioFresneda")
         print("---------------------------------------------------------------------")
 
+
         self._load_variables(dataset, asr, export_path, use_templates)
         self.container_manager = container_manager.ContainerManager(self.asr_to_apply, self.host_volume_path)
 
@@ -352,6 +353,20 @@ def transcript(media_path, export_path, asr='all', use_vad=True, segment=True, g
 
     # Initialize Speak2Subs instance
     s2s = Speak2Subs(dataset, asr_list, export_path, use_vtt_template)
+
+    print(" ------- VAD -> " + str(use_vad))
+    print(" ------- Segment -> " + str(segment))
+    print(" ------- Group segments -> " + str(group_segments))
+    print(" ------- MSD -> " + str(max_speech_duration))
+    print(" ------- ASR -> " + str(asr))
+    print(" ------- Reduce noise -> " + str(reduce_noise))
+    print(" ------- Use VTT template -> " + str(use_vtt_template))
+
+
+
+
+
+
 
     # Perform pre-processing steps
     _pre_processing(dataset, max_speech_duration, use_vad, segment, group_segments, s2s.cache_path, reduce_noise)

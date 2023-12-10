@@ -25,7 +25,7 @@ class VAD:
         self.max_speech_duration = max_speech_duration
         self.use_vad = use_vad
         self.segment = segment
-        self.sentences = not group_segments
+        self.group_segments = group_segments
         self.reduce_noise = reduce_noise
 
         # If segmentation is disabled, set max_speech_duration to infinity
@@ -141,7 +141,7 @@ class VAD:
         self.segment_groups = []
 
         # Check if grouping by sentences is disabled
-        if not self.sentences:
+        if self.group_segments and self.segments:
             print(" ------> Group segments - KO", end='\r', flush=True)
             current_list = []
 

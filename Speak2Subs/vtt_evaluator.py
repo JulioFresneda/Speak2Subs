@@ -4,6 +4,7 @@ import jiwer
 from Speak2Subs.vtt_loader import load_vtt_template
 import pandas as pd
 
+
 # https://github.com/jitsi/jiwer
 class Evaluator:
     def __init__(self, dataset_name, vtt_reference_folder, results_folder):
@@ -19,7 +20,19 @@ class Evaluator:
         self._export_to_excel()
 
     def _export_to_excel(self):
-        self.metrics_df.to_excel(os.path.join(self.results_folder, "metrics.xlsx"), index=False)
+        export_path = os.path.join(self.results_folder, "metrics.xlsx")
+        if not os.path.exists(export_path):
+            self.metrics_df.to_excel(export_path, index=False)
+        else:
+            # Read existing Excel file
+            existing_df = pd.read_excel(export_path)
+
+            # Concatenate DataFrames vertically
+            combined_df = pd.concat([existing_df, self.metrics_df], ignore_index=True)
+
+            # Save the combined DataFrame back to Excel
+            combined_df.to_excel(export_path, index=False)
+
     def _generate_metrics(self):
         self.metrics_df_list = []
         for media_name in self.media_names:
@@ -33,19 +46,9 @@ class Evaluator:
                 else:
                     exec_m = 0
 
-
-
-                self.metrics_df_list.append(MediaMetrics(self.dataset_name, media_name, asr_name, error_m, comp_m, exec_m))
+                self.metrics_df_list.append(
+                    MediaMetrics(self.dataset_name, media_name, asr_name, error_m, comp_m, exec_m))
                 self.metrics_df = MediaMetrics.vstack_metrics(self.metrics_df_list)
-
-
-
-
-
-
-
-
-
 
     def _load_exec_time(self):
         with open(os.path.join(self.vtt_folder_path, "execution_times_" + self.dataset_name + ".json"),
@@ -95,21 +98,20 @@ class Evaluator:
 
         execution_metrics = load_execution_times(results_folder, dataset_name)
 
-        return {'error_metrics': error_metrics, 'compliance_metrics': compliance_metrics, 'execution_metrics':execution_metrics}
+        return {'error_metrics': error_metrics, 'compliance_metrics': compliance_metrics,
+                'execution_metrics': execution_metrics}
 
 
 class MediaMetrics:
     def __init__(self, dataset_name, media_name, asr_name, error_metrics, compliance_metrics, execution_metrics):
         self.media_name = media_name
         self.asr_name = asr_name
-        self.metrics = {'dataset':dataset_name, 'media':media_name, 'ASR':asr_name}
+        self.metrics = {'dataset': dataset_name, 'media': media_name, 'ASR': asr_name}
         self._load_error_metrics(error_metrics)
         self._load_execution_metrics(execution_metrics)
         self._load_compliance_metrics(compliance_metrics)
 
-
         self.metrics_df = pd.DataFrame.from_dict(self.metrics)
-
 
     @staticmethod
     def vstack_metrics(metrics: list):
@@ -118,15 +120,15 @@ class MediaMetrics:
             mlist.append(m.metrics_df)
         return pd.concat(mlist, axis=0, ignore_index=True)
 
-
-
     def _load_execution_metrics(self, execution_metrics):
         self.metrics['exec_time'] = [execution_metrics]
+
     def _load_compliance_metrics(self, compliance_metrics):
         self.metrics['une_4_3'] = [compliance_metrics['4_3']]
         self.metrics['une_4_6'] = [compliance_metrics['4_6']]
         self.metrics['une_5_1'] = [compliance_metrics['5_1']]
         self.metrics['une_total'] = [compliance_metrics['total']]
+
     def _load_error_metrics(self, error_metrics):
         # Not normalized
         self.metrics['wer'] = [error_metrics['not_normalized']['wer']]
@@ -156,18 +158,12 @@ class MediaMetrics:
         self.metrics['ner_R'] = [error_metrics['ner']['R']]
 
 
-
-
-
-
-
-
-
 def load_execution_times(folder, dataset_name):
     filepath = os.path.join(folder, "execution_times_" + dataset_name + ".json")
     with open(filepath, 'r') as json_file:
         # Load the JSON content
         return json.load(json_file)
+
 
 def evaluate_error_metrics(reference, predicted):
     _, reference = load_vtt_template(reference)
@@ -267,7 +263,7 @@ def evaluate_mislocated_words(reference, prediction):
 
         last_word_pred = _normalize_string(prediction[i - 1].split(" ")[-1])
         current_word_ref = _normalize_string(reference[i].split(" ")[0])
-        if  last_word_pred == current_word_ref:
+        if last_word_pred == current_word_ref:
             mislocated += 1
 
     return {'mislocated_rate': mislocated / total, 'mislocated': mislocated, 'total': total}
@@ -295,7 +291,10 @@ def eval_une_4_6(sentence):
 def eval_une_5_1(sentence, duration):
     sen_len = len(sentence)
     sen_sec = duration
-    vel = sen_len / sen_sec
+    if sen_sec != 0:
+        vel = sen_len / sen_sec
+    else:
+        vel = 0
     duration_comply = sen_len / 15
     return vel <= 15, duration_comply
 
