@@ -214,7 +214,7 @@ def _wwer_wmer(num_substitutions, num_deletions, num_insertions, num_hits):
 
 def evaluate_compliance(vtt_path):
     # Reglas
-    vtt_ts, vtt = load_vtt_template(vtt_path)
+    vtt_ts, vtt = load_vtt_template(vtt_path, strip_newlines=False)
 
     comply_4_3 = 0
     comply_4_6 = 0
@@ -275,14 +275,24 @@ def _normalize_string(string):
 
 # No more than 3 lines
 def eval_une_4_3(sentence):
-    return sentence.count('\n') < 2
+    last_newline_index = sentence.rfind('\n')
+    finalnewline = 0
+    if last_newline_index != -1 and last_newline_index == len(sentence) - 1:
+        finalnewline = 1
+    return sentence.count('\n') - finalnewline < 2
 
 
 # No more than 37 char per line
 def eval_une_4_6(sentence):
     comply_bool = True
     for sub_s in sentence.split('\n'):
-        if len(sub_s) > 37:
+        sub_wo_spaces = sub_s
+
+        while len(sub_wo_spaces) > 0 and sub_wo_spaces[0] == ' ':
+            sub_wo_spaces = sub_wo_spaces[1:]
+        while len(sub_wo_spaces) > 0 and sub_wo_spaces[-1] == ' ':
+            sub_wo_spaces = sub_wo_spaces[:-1]
+        if len(sub_wo_spaces) > 37:
             comply_bool = False
     return comply_bool
 

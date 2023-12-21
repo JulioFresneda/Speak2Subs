@@ -1,13 +1,17 @@
 from Speak2Subs import speak2subs
+import os
 
-speak2subs.transcript('./datasets/mda/mda_3.mp4',
+# = ["mda", "mat", "cdp", "atc", "ddl"]
+#for ds in datasets:
+speak2subs.transcript('./datasets/mda/mda_1.wav',
                       export_path='./results',
-                      asr='all',
+                      asr='whisperx',
                       use_vad=True,
                       segment=True,
-                      group_segments=False,
+                      group_segments=True,
                       max_speech_duration=30,
-                      use_vtt_template=True,
+                      use_vtt_template=False,
                       reduce_noise=False)
+
 
 

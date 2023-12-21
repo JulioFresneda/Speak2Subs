@@ -69,7 +69,7 @@ class Subtitle:
             if eval_une_4_6(subtitle + token.text) or eval_une_4_3(subtitle + "\n newline"):
                 if eval_une_4_6(subtitle + token.text):
                     subtitle = subtitle + token.text
-                elif eval_une_4_3(subtitle + "\n newline"):
+                elif eval_une_4_3(subtitle + "\n" + token.text) and eval_une_4_6(subtitle + "\n" + token.text):
                     subtitle += "\n" + token.text
 
                 if self._end_of_sentence(subtitle):
@@ -77,9 +77,13 @@ class Subtitle:
                     if not comply and i < len(self.tokens)-1 and self.tokens[i+1].start - start > duration_comply:
                         token.end = start + duration_comply
 
+                    if not eval_une_4_6(subtitle):
+                        print(3)
                     predicted_ts_format.append({'text': subtitle, 'start': start, 'end': token.end})
                     subtitle = ""
             else:
+                if not eval_une_4_6(subtitle):
+                    print(3)
                 predicted_ts_format.append({'text':subtitle, 'start':start, 'end':last_end})
                 subtitle = token.text
                 start = token.start

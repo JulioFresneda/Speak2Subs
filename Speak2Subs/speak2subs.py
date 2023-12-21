@@ -459,3 +459,7 @@ def evaluateFolder(dataset_folder_path, results_folder_path, dataset_name):
 def evaluatePair(ref_vtt_path, pred_vtt_path):
     output = vtt_evaluator.evaluate_error_metrics(ref_vtt_path, pred_vtt_path)
     return output
+
+def evaluateCompliance(vtt_path):
+    comp = vtt_evaluator.evaluate_compliance(vtt_path)
+    return comp

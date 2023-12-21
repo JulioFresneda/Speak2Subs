@@ -1,12 +1,14 @@
 
-def load_vtt_template(template_path):
+def load_vtt_template(template_path, strip_newlines = True):
     subtitles_with_timestamps = []
     subtitles = []
     with open(template_path, 'r') as file:
         lines = file.readlines()
         last_ts = None
         for line in lines[1:]:
-            line = line.rstrip('\n')
+
+            if strip_newlines or line == '\n' or '-->' in line:
+                line = line.rstrip('\n')
             while len(line) > 1 and line[0] == ' ':
                 line = line[1:]
             while len(line) > 1 and line[-1] == ' ':
