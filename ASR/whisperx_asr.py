@@ -5,7 +5,7 @@ import sys
 import os
 import json
 
-device = "cpu"
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
 media_volume = "/volume/media"
 batch_size = 16 # reduce if low on GPU mem
 compute_type = "int8" # change to "int8" if low on GPU mem (may reduce accuracy)

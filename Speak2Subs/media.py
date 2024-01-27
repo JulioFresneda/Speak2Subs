@@ -91,13 +91,15 @@ class Dataset:
 
     def _order_media(self):
         try:
+            # Numerically
             self.media = dict(sorted(self.media.items(), key=lambda x: int(x[0].split('_')[-1].split('.')[0])))
-        except Exception as e:
-            logging.exception('Names not compatible with sorting: %s', e)
+        except:
+            # Alphabetically
+            self.media = dict(sorted(self.media.items(), key=lambda x: x[0]))
 
     def _load_media_folder(self):
         if not os.path.exists(self.folder_path):
-            raise ValueError("Path does not exist")
+            raise ValueError("Path does not exist: " + self.folder_path)
 
         if os.path.isdir(self.folder_path):
             wav_files = [wav for wav in os.listdir(self.folder_path) if wav.split('.')[-1] == 'wav']

@@ -13,7 +13,7 @@ def main():
     parser.add_argument('--no_segment', action='store_true', help='s2s segments the audio by default. You can disable it, but it is not assured than some ASR models will work')
     parser.add_argument('--no_segment_group', action='store_true', help='Segment into sentences, without grouping')
     parser.add_argument('--max_speech_duration', type=int, default=30, help='Max speech duration for each segment group')
-    parser.add_argument('--use_vtt_templates', action='store_false', help='You can use the original VTT files as template for the new ones.')
+    parser.add_argument('--use_vtt_templates', action='store_true', help='You can use the original VTT files as template for the new ones.')
     parser.add_argument('--reduce_noise', action='store_false', help='If the audio has some noise, maybe this helps.')
     parser.add_argument('--dataset_name', type=str, default=None, help='Set dataset name.')
     parser.add_argument('--ref_vtt_path', type=str, default=None, help='Evaluate mode: Reference VTT path.')

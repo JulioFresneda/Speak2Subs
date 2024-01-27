@@ -3,7 +3,7 @@ import os
 
 # = ["mda", "mat", "cdp", "atc", "ddl"]
 #for ds in datasets:
-speak2subs.transcript('./datasets/mda/mda_1.wav',
+speak2subs.transcript('./datasets/mda/audios/Demo.mp4',
                       export_path='./results',
                       asr='whisperx',
                       use_vad=True,
