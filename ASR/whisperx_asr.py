@@ -5,10 +5,10 @@ import sys
 import os
 import json
 
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 media_volume = "/volume/media"
 batch_size = 16 # reduce if low on GPU mem
-compute_type = "int8" # change to "int8" if low on GPU mem (may reduce accuracy)
+compute_type = "float16" if torch.cuda.is_available() else "int8" # change to "int8" if low on GPU mem (may reduce accuracy)
 
 complete_result = {}
 model = whisperx.load_model("large-v2", device, compute_type=compute_type, language='es')
