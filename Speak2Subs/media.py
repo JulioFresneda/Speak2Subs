@@ -90,12 +90,7 @@ class Dataset:
         self._order_media()
 
     def _order_media(self):
-        try:
-            # Numerically
-            self.media = dict(sorted(self.media.items(), key=lambda x: int(x[0].split('_')[-1].split('.')[0])))
-        except:
-            # Alphabetically
-            self.media = dict(sorted(self.media.items(), key=lambda x: x[0]))
+        self.media = dict(sorted(self.media.items(), key=lambda x: x[0]))
 
     def _load_media_folder(self):
         if not os.path.exists(self.folder_path):
